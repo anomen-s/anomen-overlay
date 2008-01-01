@@ -1,0 +1,18 @@
+--- duke3d-20040817-r2.ebuild	2007-11-20 03:40:14.000000000 +0100
++++ duke3d-20040817-r2.ebuild	2008-01-01 13:17:45.000000000 +0100
+@@ -96,11 +96,13 @@
+ 			|| die "sed failed"
+ 	fi
+ 
+-	# causes crazy redefine errors with gcc-3.[2-4].x
+-	replace-flags -O3 -O2
++	# causes redefine errors due to optimizations of asm code
++	replace-flags "-O?" -O2
+ }
+ 
+ src_compile() {
++	ewarn "If compilation fails with \"symbol already defined\" errors,"
++	ewarn "remove optimization flags from your CFLAGS."
+ 	emake -C source/buildengine OPTFLAGS="${CFLAGS}" || die "buildengine failed"
+ 	emake -C source OPTIMIZE="${CFLAGS}" || die "duke3d failed"
+ }
