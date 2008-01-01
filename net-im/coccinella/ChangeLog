@@ -1,0 +1,56 @@
+# ChangeLog for net-im/coccinella
+# Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/net-im/coccinella/ChangeLog,v 1.8 2007/05/06 11:27:05 genone Exp $
+
+  06 May 2007; Marius Mauch <genone@gentoo.org> coccinella-0.95.7.ebuild,
+  coccinella-0.95.10.ebuild:
+  Replacing einfo with elog
+
+  28 Apr 2007; Sven Wegener <swegener@gentoo.org> coccinella-0.95.7.ebuild,
+  coccinella-0.95.10.ebuild:
+  Fix *initd, *confd and *envd calls (#173884, #174266)
+
+  09 Feb 2007; Diego Pettenò <flameeyes@gentoo.org> ChangeLog:
+  Regenerate digest in Manifest2 format.
+
+*coccinella-0.95.10 (28 Dec 2005)
+
+  28 Dec 2005; josé Alberto Suárez López <bass@gentoo.org> +metadata.xml,
+  -coccinella-0.94.7.ebuild:
+  Added metadata.xml and remove old ebuilds.
+
+  28 Dec 2005; josé Alberto Suárez López <bass@gentoo.org>
+  +coccinella-0.95.10.ebuild:
+  Bump version. Enjoy
+
+*coccinella-0.95.7 (13 Jun 2005)
+
+  28 Aug 2005; Stuart Longland <redhatter@gentoo.org> coccinella-0.95.7.ebuild:
+  Tested and working on MIPS, adding ~mips keyword
+
+  13 Jun 2005; J. Alberto Suarez L. <bass@gentoo.org> coccinella-0.95.7.ebuild:
+  Version bumped, category changed. Bug #46810
+
+*coccinella-0.94.7 (29 Feb 2004)
+  29 Feb 2004; J. Alberto Suarez L. <bass@gentoo.org> coccinella-0.94.7.ebuild:
+  Version bumped
+
+*coccinella-0.94.3 (03 Mar 2003)
+ 03 Mar 2003; J. Alberto Suarez L. <bass@gentoo.org> coccinella-0.94.3.ebuild:
+ New dev version.
+
+ 06 Dec 2002; Rodney Rees <manson@gentoo.org> : changed sparc ~sparc keywords
+
+*coccinella-0.94.2 (11 Dec 2002)
+
+  11 Dec 2002; J. Alberto Suarez L. <bass@gentoo.org> coccinella-0.94.2.ebuild:
+  New version.
+
+*coccinella-0.94 (11 Jun 2002)
+
+  06 Jul 2002; phoen][x <phoenix@gentoo.org> ChangeLog coccinella-0.94.ebuild:  
+  Added KEYWORDS.
+
+  09 Jun 2002; J. Alberto S. L. <bass@gentoo.org> coccinella-0.94.ebuild:
+  The initial package.
+  
