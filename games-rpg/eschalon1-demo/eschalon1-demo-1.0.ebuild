@@ -41,15 +41,12 @@ src_install() {
 
 	dohtml "help.html"
 	dodoc "license.txt"
-	dodoc "Eschalon Players Manual.pdf"
-#	mv -f "Eschalon Players Manual.pdf" "${D}/usr/share/doc/${PF}/"
+	mv -f "Eschalon Players Manual.pdf" "${D}/usr/share/doc/${PF}/"	
 	
 	doins -r data music sound gfx.pak eschalon.cfg || die "cp failed"
 	doexe eschalon_book_1_demo
 
-#	fperms 750 "${dir}"/eschalon_book_1_demo
 	fperms 660 "${dir}"/eschalon.cfg
-#	fowners root:games "${dir}"/eschalon.cfg
 
 	games_make_wrapper ${PN} ./eschalon_book_1_demo "${dir}" "${dir}"
 
