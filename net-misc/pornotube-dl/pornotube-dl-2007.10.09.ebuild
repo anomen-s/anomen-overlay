@@ -9,7 +9,7 @@ SRC_URI="http://www.arrakis.es/~rggi3/${PN}/${P}"
 RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="amd64 ~ppc ~ppc64 x86"
 IUSE=""
 
 DEPEND=">=dev-lang/python-2.4"
