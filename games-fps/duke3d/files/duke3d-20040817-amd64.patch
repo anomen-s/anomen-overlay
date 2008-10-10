@@ -1,0 +1,44 @@
+--- source/Makefile	2008-10-10 17:59:52.000000000 +0200
++++ source/Makefile	2008-10-10 18:03:27.640604880 +0200
+@@ -5,6 +5,7 @@
+ beos := false
+ macosx := false
+ solaris := false
++linux64 := true
+ #use_asm := true
+ use_opengl := true
+ use_physfs := false
+@@ -71,6 +72,11 @@
+   EXTRALDFLAGS += -lsocket -lnsl
+ endif
+ 
++ifeq ($(strip $(linux64)),true)
++  EXTRACFLAGS +=-m32 -march=i686
++  EXTRALDFLAGS +=-m32 -L/usr/lib32 -march=i686
++endif
++
+ # check out buildengine in this directory:
+ #  cvs -z3 -d:pserver:anonymous@cvs.icculus.org:/cvs/cvsroot login
+ #   (password is "anonymous", without the quotes.)
+--- source/buildengine/Makefile	2008-10-10 17:59:52.000000000 +0200
++++ source/buildengine/Makefile	2008-10-10 18:05:40.650605400 +0200
+@@ -8,6 +8,7 @@
+ beos := false
+ macosx := false
+ solaris := false
++linux64 := true
+ 
+ #-----------------------------------------------------------------------------#
+ # If this makefile fails to detect Cygwin correctly, or you want to force
+@@ -106,6 +107,11 @@
+   SDL_LIBS := $(shell sdl-config --libs)
+ endif
+ 
++ifeq ($(strip $(linux64)),true)
++  CFLAGS +=-m32 -march=i686
++  LDFLAGS +=-m32 -L/usr/lib32 -march=i686
++endif
++
+ CC = gcc
+ 
+ # Uncomment to use the Intel compiler (v6.0)

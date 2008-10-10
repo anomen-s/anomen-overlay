@@ -1,6 +1,6 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817-r2.ebuild,v 1.3 2007/11/20 02:16:56 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-fps/duke3d/duke3d-20040817-r2.ebuild,v 1.5 2008/02/28 03:24:23 mr_bones_ Exp $
 
 fromcvs=0
 ECVS_MODULE="duke3d"
@@ -24,7 +24,7 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~hppa ~ppc ~x86"
+KEYWORDS="~hppa ~ppc ~x86 ~amd64"
 IUSE="demo pic perl opengl"
 
 RDEPEND="media-libs/libsdl
@@ -32,7 +32,11 @@ RDEPEND="media-libs/libsdl
 	media-sound/timidity++
 	media-sound/timidity-eawpatches
 	perl? ( dev-lang/perl )
-	opengl? ( virtual/opengl )"
+	opengl? ( virtual/opengl )
+	amd64? ( 
+	        app-emulation/emul-linux-x86-sdl 
+		app-emulation/emul-linux-x86-soundlibs
+	)"
 DEPEND="${RDEPEND}
 	demo? ( app-arch/unzip )
 	!pic? ( x86? ( dev-lang/nasm ) )"
@@ -63,6 +67,7 @@ src_unpack() {
 		unzip -qo DN3DSW13.SHR || die "unzip DN3DSW13.SHR failed"
 	fi
 
+
 	# configure buildengine
 	cd "${S}/source/buildengine"
 	sed -i \
@@ -77,11 +82,13 @@ src_unpack() {
 
 	# configure duke3d
 	cd "${S}/source"
-	epatch "${FILESDIR}/${PV}-credits.patch"
 	# need to sync features with build engine
-	epatch "${FILESDIR}/${PV}-duke3d-makefile-opts.patch"
-	epatch "${FILESDIR}/${PV}-gcc34.patch" # compile fixes for GCC 3.4
-	epatch "${FILESDIR}"/${P}-gcc4.patch
+	epatch \
+		"${FILESDIR}/${PV}-credits.patch" \
+		"${FILESDIR}/${PV}-duke3d-makefile-opts.patch" \
+		"${FILESDIR}/${PV}-gcc34.patch" \
+		"${FILESDIR}"/${P}-gcc4.patch \
+		"${FILESDIR}"/${P}-as-needed.patch
 	sed -i \
 		-e "/^use_opengl := / s:=.*:= $(use_tf opengl):" \
 		-e "/^use_physfs := / s:=.*:= false:" \
@@ -96,13 +103,16 @@ src_unpack() {
 			|| die "sed failed"
 	fi
 
-	# causes redefine errors due to optimizations of asm code
-	replace-flags "-O?" -O2
+	if use amd64 ; then
+	    epatch "${FILESDIR}"/${P}-amd64.patch
+	fi
+
+	# causes crazy redefine errors with gcc-3.[2-4].x
+	replace-flags -O3 -O2
+	strip-flags #203969
 }
 
 src_compile() {
-	ewarn "If compilation fails with \"symbol already defined\" errors,"
-	ewarn "remove optimization flags from your CFLAGS."
 	emake -C source/buildengine OPTFLAGS="${CFLAGS}" || die "buildengine failed"
 	emake -C source OPTIMIZE="${CFLAGS}" || die "duke3d failed"
 }
