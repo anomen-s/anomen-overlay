@@ -40,7 +40,7 @@ src_install() {
 	insinto ${FRD_INSTALL_DIR}
 	doins -r lib lookandfeel plugins frd.jar frd.sh frd.png
 
-	chmod 755 ${D}/${FRD_INSTALL_DIR}/frd.sh
+	chmod +x ${D}/${FRD_INSTALL_DIR}/frd.sh
 
         dosym "${FRD_INSTALL_DIR}/frd.sh" /opt/bin/frd
 
