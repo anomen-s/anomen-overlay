@@ -67,12 +67,15 @@ src_unpack() {
 		unzip -qo DN3DSW13.SHR || die "unzip DN3DSW13.SHR failed"
 	fi
 
+	cd "${S}"
+	epatch "${FILESDIR}"/${P}-amd64.patch
 
 	# configure buildengine
 	cd "${S}/source/buildengine"
 	sed -i \
 		-e "/^useperl := / s:=.*:= $(use_tf perl):" \
 		-e "/^useopengl := / s:=.*:= $(use_tf opengl):" \
+		-e "/^linux64 := / s:=.*:= $(use_tf amd64):" \
 		-e "/^usephysfs := / s:=.*:= false:" \
 		-e 's:-O3::' -e 's: -g : :' \
 		-e 's:/usr/lib/perl5/i386-linux/CORE/libperl.a::' \
@@ -91,6 +94,7 @@ src_unpack() {
 		"${FILESDIR}"/${P}-as-needed.patch
 	sed -i \
 		-e "/^use_opengl := / s:=.*:= $(use_tf opengl):" \
+		-e "/^linux64 := / s:=.*:= $(use_tf amd64):" \
 		-e "/^use_physfs := / s:=.*:= false:" \
 		Makefile \
 		|| die "sed duke3d Makefile failed"
@@ -101,10 +105,6 @@ src_unpack() {
 		sed -i \
 			-e '/^#use_asm := /s:#::' Makefile \
 			|| die "sed failed"
-	fi
-
-	if use amd64 ; then
-	    epatch "${FILESDIR}"/${P}-amd64.patch
 	fi
 
 	# causes crazy redefine errors with gcc-3.[2-4].x

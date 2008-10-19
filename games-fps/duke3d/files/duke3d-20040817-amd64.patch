@@ -1,13 +1,13 @@
 --- source/Makefile	2008-10-10 17:59:52.000000000 +0200
 +++ source/Makefile	2008-10-10 18:03:27.640604880 +0200
-@@ -5,6 +5,7 @@
+@@ -1,6 +1,6 @@
+ #-----------------------------------------------------------------------------#
+ # Duke3D makefile.
+ #-----------------------------------------------------------------------------#
+-
++linux64 := false
  beos := false
  macosx := false
- solaris := false
-+linux64 := true
- #use_asm := true
- use_opengl := true
- use_physfs := false
 @@ -71,6 +72,11 @@
    EXTRALDFLAGS += -lsocket -lnsl
  endif
@@ -22,14 +22,14 @@
  #   (password is "anonymous", without the quotes.)
 --- source/buildengine/Makefile	2008-10-10 17:59:52.000000000 +0200
 +++ source/buildengine/Makefile	2008-10-10 18:05:40.650605400 +0200
-@@ -8,6 +8,7 @@
+@@ -4,6 +4,6 @@
+ #  Written by Ryan C. Gordon (icculus@clutteredmind.org)
+ #   Do NOT contact Ken Silverman for support of BUILD on Unix or Linux.
+ #----------------------------------------------------------------------------
+-
++linux64 := false
  beos := false
  macosx := false
- solaris := false
-+linux64 := true
- 
- #-----------------------------------------------------------------------------#
- # If this makefile fails to detect Cygwin correctly, or you want to force
 @@ -106,6 +107,11 @@
    SDL_LIBS := $(shell sdl-config --libs)
  endif
