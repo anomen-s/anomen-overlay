@@ -1,0 +1,10 @@
+--- unicode-0.9/unicode	2007-09-24 21:31:49.000000000 +0200
++++ unicode-0.9/unicode.g	2007-09-24 21:05:32.000000000 +0200
+@@ -198,6 +198,7 @@
+     UnicodeDataFileNames = [HomeUnicodeData, '/usr/share/unidata/UnicodeData.txt', '/usr/share/unicode/UnicodeData.txt', './UnicodeData.txt'] + \
+         glob.glob('/usr/share/unidata/UnicodeData*.txt') + \
+         glob.glob('/usr/share/perl/*/unicore/UnicodeData.txt') + \
++        glob.glob('/usr/lib/perl?/*/unicore/UnicodeData.txt') + \
+         glob.glob('/System/Library/Perl/*/unicore/UnicodeData.txt') # for MacOSX
+ 
+ 
