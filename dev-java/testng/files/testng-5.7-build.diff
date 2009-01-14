@@ -1,0 +1,15 @@
+--- build.xml	2007-09-07 16:55:00.000000000 +0200
++++ build.xml	2009-01-14 15:21:33.000000000 +0100
+@@ -125,11 +125,7 @@
+     <echo message="                                 -- Compiling 1.5 sources --" />
+ 
+     <path id="compile2.cp">
+-      <fileset dir="${lib.dir}">
+-        <include name="junit.jar" />
+-        <include name="${qdox.jar}" />
+-        <include name="${beanshell.jar}" />
+-      </fileset>
++      <fileset dir="${lib.dir}" includes="*.jar"/>
+     </path>
+ 
+     <javac classpathref="compile2.cp"
