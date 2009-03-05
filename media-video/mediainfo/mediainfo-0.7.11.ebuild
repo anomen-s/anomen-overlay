@@ -11,17 +11,39 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="app-arch/bzip2"
+DEPEND=""
 RDEPEND=""
 
 S="${WORKDIR}/MediaInfo_CLI_GNU_FromSource"
 
 src_compile() {
-	./CLI_Compile.sh
+	cd ${S}/ZenLib/Project/GNU/Library && ./configure
+	econf || die "econf failed!"
+	emake || die "emake failed!"
+	
+	cd ${S}/MediaInfoLib/Project/GNU/Library && ./configure
+	econf || die "econf failed!"
+	emake || die "emake failed!"
+	
+	cd ${S}/MediaInfo/Project/GNU/CLI && ./configure
+	econf --enable-staticlibs || die "econf failed!"
+	emake || die "emake failed!"
 }
 
 src_install() {
 	cd ${S}
 	dobin MediaInfo/Project/GNU/CLI/mediainfo
-        dodoc MediaInfo/History_CLI.txt MediaInfo/Release/ReadMe_CLI_Linux.txt MediaInfo/Contrib/CLI_Help.doc MediaInfoLib/History_DLL.txt
+
+        dodoc \
+		MediaInfo/*.txt \
+		MediaInfo/*.html \
+		MediaInfo/Release/*.txt \
+		MediaInfo/Contrib/CLI_Help.doc
+	
+	docinto MediaInfoLib
+	dodoc MediaInfoLib/*.txt MediaInfoLib/*.html MediaInfoLib/Release/*.txt
+	
+	docinto ZenLib
+        dodoc ZenLib/*.txt
+	
 }
