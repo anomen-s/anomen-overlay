@@ -4,12 +4,12 @@
 
 inherit eutils
 
-FRD_ZIP_FILE="FreeRapid-${PV}.zip"
+FRD_ZIP_FILE="Freerapid-Downloader_${PV}.zip"
 FRD_P_ZIP_FILE="rapidshare_premium.frp"
 FRD_INSTALL_DIR="/opt/FreeRapid"
 
 DESCRIPTION="Downloader with support for downloading from Rapidshare and other share file archives."
-SRC_URI="http://frd.sislik.net/${FRD_ZIP_FILE}
+SRC_URI="http://download.sosej.cz/programy4/${FRD_ZIP_FILE}
          premium? ( http://wordrider.net/download/${FRD_P_ZIP_FILE} )"
 HOMEPAGE="http://wordrider.net/freerapid"
 RESTRICT="mirror"
