@@ -17,15 +17,15 @@ RDEPEND=""
 S="${WORKDIR}/MediaInfo_CLI_GNU_FromSource"
 
 src_compile() {
-	cd ${S}/ZenLib/Project/GNU/Library && ./configure
+	cd "${S}/ZenLib/Project/GNU/Library"
 	econf || die "econf failed!"
 	emake || die "emake failed!"
 	
-	cd ${S}/MediaInfoLib/Project/GNU/Library && ./configure
+	cd "${S}/MediaInfoLib/Project/GNU/Library"
 	econf || die "econf failed!"
 	emake || die "emake failed!"
 	
-	cd ${S}/MediaInfo/Project/GNU/CLI && ./configure
+	cd "${S}/MediaInfo/Project/GNU/CLI"
 	econf --enable-staticlibs || die "econf failed!"
 	emake || die "emake failed!"
 }
@@ -34,7 +34,7 @@ src_install() {
 	cd ${S}
 	dobin MediaInfo/Project/GNU/CLI/mediainfo
 
-        dodoc \
+    dodoc \
 		MediaInfo/*.txt \
 		MediaInfo/*.html \
 		MediaInfo/Release/*.txt \
@@ -44,6 +44,6 @@ src_install() {
 	dodoc MediaInfoLib/*.txt MediaInfoLib/*.html MediaInfoLib/Release/*.txt
 	
 	docinto ZenLib
-        dodoc ZenLib/*.txt
+    dodoc ZenLib/*.txt
 	
 }
