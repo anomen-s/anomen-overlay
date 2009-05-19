@@ -22,12 +22,12 @@ DEPEND="fbsplash? ( =sys-apps/tuxonice-userui-${PV}[fbsplash] )
 RDEPEND="${DEPEND}"
 
 src_unpack() {
-	mkdir "${S}"
-	cp -p /sbin/tuxoniceui_text "$S"
+	mkdir -p "${S}"
+	cp -p "${ROOT}/sbin/tuxoniceui_text" "$S"
 	
 	if use fbsplash; then
-	    cp -p /sbin/tuxoniceui_fbsplash "$S"
-	    cp -p /etc/splash/tuxonice "$S"
+	    cp -p "${ROOT}/sbin/tuxoniceui_fbsplash" "$S"
+	    cp -p "${ROOT}/etc/splash/tuxonice" "$S"
 	fi
 }
 
