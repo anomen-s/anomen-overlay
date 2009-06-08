@@ -16,9 +16,7 @@ KEYWORDS="~amd64 ~x86"
 RESTRICT="binchecks strip"
 
 IUSE="fbsplash"
-DEPEND="fbsplash? ( =sys-apps/tuxonice-userui-${PV}[fbsplash] )
-		!fbsplash? ( =sys-apps/tuxonice-userui-${PV} )
-		"
+DEPEND="=sys-apps/tuxonice-userui-${PV}[fbsplash=]"
 RDEPEND="${DEPEND}"
 
 src_unpack() {
