@@ -1,0 +1,19 @@
+#!/sbin/runscript
+
+depend() {
+	need postgresql
+}
+
+start() {
+	ebegin "Starting WinStrom server"
+	start-stop-daemon --start --oknodo --quiet --make-pidfile --background --user ${WINSTROM_USER} \
+		--pidfile /var/run/winstrom-server.pid \
+		--exec /usr/sbin/winstrom-server -- ${WINSTROM_ARGS}
+	eend $? "Failed to start WinStrom server."
+}
+
+stop() {
+	ebegin "Stopping WinStrom server"
+	start-stop-daemon --stop --pidfile /var/run/winstrom-server.pid
+	eend $? "Failed to stop WinStrom server."
+}
