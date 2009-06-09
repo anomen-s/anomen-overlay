@@ -1,0 +1,22 @@
+diff -u -r acpitool-0.5/src/freq.cpp acpitool-0.5p/src/freq.cpp
+--- src/freq.cpp	2008-07-21 00:47:55.000000000 +0200
++++ src/freq.cpp	2009-06-08 22:34:01.000000000 +0200
+@@ -34,6 +34,7 @@
+ #include <dirent.h>
+ #include "acpitool.h"
+ #include "freq.h"
++#include <cstring>
+ 
+ 
+ using namespace std;
+diff -u -r acpitool-0.5/src/toshiba.cpp acpitool-0.5p/src/toshiba.cpp
+--- src/toshiba.cpp	2007-11-06 22:19:59.000000000 +0100
++++ src/toshiba.cpp	2009-06-08 22:31:58.000000000 +0200
+@@ -33,6 +33,7 @@
+ #include <iomanip>
+ #include <fstream>
+ #include "toshiba.h"
++#include <cstring>
+ 
+ using namespace std;
+ 

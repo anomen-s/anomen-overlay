@@ -1,0 +1,12 @@
+--- src/cpu.cpp	2008-07-21 00:44:11.000000000 +0200
++++ src/cpu.cpp	2009-06-09 09:50:03.000000000 +0200
+@@ -176,7 +176,8 @@
+ 				cout<<"  Throttling control     : "<<temp<<endl;
+ 				if(strncmp(temp,"yes",3)==0)
+ 					thrott = 1;		//yes, this CPU reports it can do power throttling //
+-
++				else 
++					thrott = 0;
+ 				file_in.getline(str, 100);	// limit interface (beware: on linux2.4
+ 											// this line yields "perf mgmt")
+ 				memset(temp, '\0', 130);

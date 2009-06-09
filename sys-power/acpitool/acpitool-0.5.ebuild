@@ -6,17 +6,20 @@ inherit eutils
 
 DESCRIPTION="A small command line application, intended to be a replacement for the apm tool"
 HOMEPAGE="http://freeunix.dyndns.org:8088/site2/acpitool.shtml"
-SRC_URI="http://freeunix.dyndns.org:8088/ftp_site/pub/unix/acpitool/acpitool-0.5.tar.bz2"
+#SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
+SRC_URI="http://freeunix.dyndns.org:8000/ftp_site/pub/unix/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE=""
+RESTRICT="mirror"
 
 src_unpack() {
 	unpack ${A}
-#	epatch "${FILESDIR}"/${PN}-0.4.7-proc_acpi_info_move.patch
-#	epatch "${FILESDIR}"/${PN}-0.4.7-gcc43.patch #214171
+	cd "${S}"
+	epatch "${FILESDIR}"/${P}-gcc43.patch #214171, #250535
+	epatch "${FILESDIR}"/${P}-cpu.patch
 }
 
 src_install() {
