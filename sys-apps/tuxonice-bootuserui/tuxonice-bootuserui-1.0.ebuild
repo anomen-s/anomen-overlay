@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit eutils
+inherit mount-boot eutils
 
 DESCRIPTION="Installs copy of TuxOnIce UI into the /boot partition"
 HOMEPAGE="http://www.tuxonice.net"
