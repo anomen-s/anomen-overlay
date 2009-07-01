@@ -6,6 +6,10 @@ depend() {
 
 start() {
 	ebegin "Starting WinStrom server"
+	if [ -z $(java-config-2 -f | grep -- '-1\.6') ] ; then
+	    eerror "Java 1.6 required. Use java-config-2 to select Java 1.6 as default"
+	    return 1
+	fi
 	start-stop-daemon --start --oknodo --quiet --make-pidfile --background --user ${WINSTROM_USER} \
 		--pidfile /var/run/winstrom-server.pid \
 		--exec /usr/sbin/winstrom-server -- ${WINSTROM_ARGS}
