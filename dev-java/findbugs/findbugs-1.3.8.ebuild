@@ -50,7 +50,7 @@ src_unpack(){
 	unpack ${A}
 
 	cd "${S}"
-	find -name "*.jar" '!' -name jFormatString.jar ! -name jsr305.jar  ! -name bcel.jar | xargs rm -v
+	find -name "*.jar" "!" -name jFormatString.jar "!" -name jsr305.jar  "!" -name bcel.jar | xargs rm -v
 	cd "${S}"/lib
 #	java-pkg_jarfrom findbugs-bcel findbugs-bcel.jar bcel.jar
 	java-pkg_jarfrom apple-java-extensions-bin,junit
