@@ -41,7 +41,7 @@ pkg_setup() {
 src_unpack() {
     unpack ${A}
     cd ${S}
-    use "cz_prog" && epatch "${FILESDIR}"/${P}-cz_prog.patch
+    use "cz_prog" && epatch "${FILESDIR}"/${PN}-cz_prog.patch
 }
 
 src_compile() {
