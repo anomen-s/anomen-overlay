@@ -1,0 +1,10 @@
+--- main.cc	2009-08-21 00:36:35.000000000 +0200
++++ main.cc	2009-08-21 00:36:06.000000000 +0200
+@@ -12,6 +12,7 @@
+ #include <iostream>	// cerr, cout
+ #include <sys/stat.h>	// lstat, S_ISLNK, S_ISDIR
+ #include <unistd.h>	// access, getopt, perror, readlink, unlink
++#include <cstdio>
+ 
+ using namespace std;
+ 
