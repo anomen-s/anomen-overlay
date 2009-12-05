@@ -2,13 +2,15 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils
+inherit eutils versionator
 
-FRD_ZIP_FILE="Freerapid-Downloader_${PV}.zip"
+MY_PVL=$(replace_version_separator 2 'u')
+MY_PVU=$(replace_version_separator 2 'U')
+FRD_ZIP_FILE="FreeRapid-${MY_PVU}.zip"
 FRD_INSTALL_DIR="/opt/FreeRapid"
 
 DESCRIPTION="Downloader with support for downloading from Rapidshare and other share file archives."
-SRC_URI="http://download.sosej.cz/programy4/${FRD_ZIP_FILE}"
+SRC_URI="http://download.sosej.cz/programy4/${FRD_ZIP_FILE} http://freerapid-downloader.sweb.cz/${FRD_ZIP_FILE}"
 HOMEPAGE="http://wordrider.net/freerapid"
 RESTRICT="mirror"
 
@@ -20,7 +22,7 @@ IUSE=""
 DEPEND="app-arch/unzip"
 RDEPEND=">=virtual/jre-1.6.0"
 
-S="${WORKDIR}/FreeRapid-${PV}"
+S="${WORKDIR}/FreeRapid-${MY_PVL}"
 
 src_unpack() {
         unpack $FRD_ZIP_FILE || die
