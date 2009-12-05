@@ -1,0 +1,24 @@
+--- openssl-0.9.8l/crypto/rand/md_rand.c	2006/05/02 16:25:19	140
++++ openssl-0.9.8l/crypto/rand/md_rand.c	2006/05/02 16:34:53	141
+@@ -266,7 +266,10 @@
+ 		else
+ 			MD_Update(&m,&(state[st_idx]),j);
+ 			
++/*		
++ * Don't add uninitialised data.
+ 		MD_Update(&m,buf,j);
++*/
+ 		MD_Update(&m,(unsigned char *)&(md_c[0]),sizeof(md_c));
+ 		MD_Final(&m,local_md);
+ 		md_c[1]++;
+@@ -477,7 +480,10 @@
+ 		MD_Update(&m,local_md,MD_DIGEST_LENGTH);
+ 		MD_Update(&m,(unsigned char *)&(md_c[0]),sizeof(md_c));
+ #ifndef PURIFY
++/*
++ * Don't add uninitialised data.
+ 		MD_Update(&m,buf,j); /* purify complains */
++/* */
+ #endif
+ 		k=(st_idx+MD_DIGEST_LENGTH/2)-st_num;
+ 		if (k > 0)
