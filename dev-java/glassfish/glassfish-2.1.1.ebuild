@@ -89,7 +89,6 @@ src_install() {
 	done
 	einfo "Fixing hardcoded paths - done"
 
-	dosym ../../var/opt/glassfish/domains domains
 	#diropts -m775 -o glassfish -g glassfish
 	dodir ${GLASSFISH_INSTALL_BASE}
 	cp -pPR ${GLASSFISH_WORKDIR}/* "${D}${GLASSFISH_INSTALL_BASE}"
@@ -97,6 +96,10 @@ src_install() {
 
 	dodir ${GLASSFISH_DOMAINS}
 	cp -pPR ${GLASSFISH_DOMAINS_WORKDIR}/* "${D}${GLASSFISH_DOMAINS}"
+
+	dosym ../../var/opt/glassfish/domains ${GLASSFISH_INSTALL_BASE}/domains
+	fowners -R glassfish:glassfish ${GLASSFISH_DOMAINS}
+	fperms a+w -R ${GLASSFISH_DOMAINS}
 
 	local envd_dir="${D}/etc/env.d/" 
 	mkdir -p "${envd_dir}"
@@ -119,12 +122,10 @@ src_install() {
 	from running Glassfish, e.g. log files, new domains, etc.  The removal
 	process deliberately leaves these files alone.
 	EOF
-	chown glassfish:glassfish "${D}"${GLASSFISH_GENTOO_README}
 }
 
 pkg_postinst() {
 	einfo "${GLASSFISH_GENTOO_README} contains more information on this installation."
-	chown -R glassfish:glassfish ${GLASSFISH_DOMAINS}/..
 }
 
 pkg_prerm() {
