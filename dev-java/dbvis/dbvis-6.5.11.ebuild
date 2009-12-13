@@ -7,7 +7,7 @@
 
 # TODO: jdbc symlinks
 
-IUSE="postgresql mysql mssql"
+IUSE="postgresql mysql mssql jtds"
 
 inherit eutils versionator java-utils-2
 
@@ -28,6 +28,7 @@ RESTRICT="mirror"
 RDEPEND="virtual/jre 
 	postgresql? ( dev-java/jdbc-postgresql )
 	mssql? ( dev-java/jdbc-mssqlserver )
+	jtds? ( dev-java/jtds:1.2 )
 	mysql? ( dev-java/jdbc-mysql )"
 DEPEND="${RDEPEND}"
 
@@ -46,6 +47,11 @@ src_unpack() {
 		java-pkg_jar-from --into jdbc/mssql  jdbc-mssqlserver-2005
 	fi
 
+	if use jtds ; then
+		rm jdbc/jtds/*
+		java-pkg_jar-from --into jdbc/jtds jtds-1.2
+	fi
+
 	if use mysql ; then
 		rm jdbc/mysql/*
 		java-pkg_jar-from --into jdbc/mysql  jdbc-mysql
@@ -59,21 +65,6 @@ src_unpack() {
 }
 
 src_install() {
-
-	if use mssql ; then
-		mkdir jdbc/mssql
-		java-pkg_jar-from --into jdbc/mssql  jdbc-mssqlserver-2005
-	fi
-
-	if use mysql ; then
-		rm jdbc/mysql/*
-		java-pkg_jar-from --into jdbc/mysql  jdbc-mysql
-	fi
-	
-	if use postgresql ; then
-		rm jdbc/postgresql/*
-		java-pkg_jar-from --into jdbc/postgresql  jdbc-postgresql
-	fi
 
 	insinto ${INSTALLDIR}
 
