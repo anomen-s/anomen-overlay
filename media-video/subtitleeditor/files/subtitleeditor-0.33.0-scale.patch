@@ -1,0 +1,44 @@
+--- subtitleeditor-0.33.0/plugins/actions/scalesubtitles/scalesubtitles.cc	2009-05-29 12:57:29.000000000 +0200
++++ subtitleeditor-0.33.0/plugins/actions/scalesubtitles/scalesubtitles.cc	2009-12-14 21:19:11.586712304 +0100
+@@ -96,7 +96,7 @@
+ 				// apply change
+ 				doc->start_command(_("Scale subtitles"));
+ 				
+-				scale(firstSubtitle, dest1, lastSubtitle, dest2);
++				scale(doc, firstSubtitle, dest1, lastSubtitle, dest2);
+ 
+ 				doc->emit_signal("subtitle-time-changed");
+ 				doc->finish_command();
+@@ -223,7 +223,7 @@
+ 	/*
+ 	 *
+ 	 */
+-	void scale(
++	void scale(Document *doc,
+ 			const Subtitle &sub1, const SubtitleTime &dest1,
+ 			const Subtitle &sub2, const SubtitleTime &dest2)
+ 	{
+@@ -234,19 +234,19 @@
+ 				sub1.get_start().totalmsecs, dest1.totalmsecs,
+ 				sub2.get_start().totalmsecs, dest2.totalmsecs);
+ 
+-		// sub2 + 1
+-		Subtitle end = sub2; ++end;
++		Subtitles subtitles = doc->subtitles();
++		Subtitle subtitle = subtitles.get_first();
+ 
+-		for(Subtitle subtitle=sub1; subtitle != end; ++subtitle)
++		while(subtitle)
+ 		{
+ 			SubtitleTime start = calcul(subtitle.get_start(), scale, source1, dest1);
+ 			SubtitleTime end = calcul(subtitle.get_end(), scale, source1, dest1);
+ 
+ 			subtitle.set_start_and_end(start, end);
++			++subtitle;
+ 		}
+ 	}
+ 
+-
+ 	/*
+ 	 *
+ 	 */
