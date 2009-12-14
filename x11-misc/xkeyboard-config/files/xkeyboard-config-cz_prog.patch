@@ -6,7 +6,7 @@
  };
 +
 +partial default alphanumeric_keys 
-+xkb_symbols "cz_prog" {
++xkb_symbols "prog" {
 +     
 +     // This layout based on czech programmers' keyboard layout from windows nt 
 +     // (c) 2007 by anomen
@@ -82,3 +82,35 @@
 +
 +    include "level3(ralt_switch)"
 +};
+--- keymap/xfree86	2009-12-14 15:31:56.315468740 +0100
++++ keymap/xfree86	2009-12-14 15:38:21.741712519 +0100
+@@ -347,6 +347,14 @@
+     xkb_symbols		{ include "en_US(pc105)+cz(qwerty)"	};
+     xkb_geometry	{ include "pc"			};
+ };
++# svu: compatibility keymaps, based on variants
++xkb_keymap "cz_prog" {
++    xkb_keycodes	{ include "xfree86"		};
++    xkb_types		{ include "default"		};
++    xkb_compatibility	{ include "default"		};
++    xkb_symbols		{ include "en_US(pc105)+cz(prog)"	};
++    xkb_geometry	{ include "pc"			};
++};
+ xkb_keymap "de_CH"	{
+     xkb_keycodes	{ include "xfree86"		};
+     xkb_types		{ include "default"		};
+--- rules/evdev.xml.in	2009-12-14 16:06:18.656463131 +0100
++++ rules/evdev.xml.in	2009-12-14 16:07:16.519712506 +0100
+@@ -2058,6 +2058,12 @@
+ 	    <_description>UCW layout (accented letters only)</_description>
+ 	 </configItem>
+ 	</variant>
++	<variant>
++	  <configItem>
++	    <name>prog</name>
++	    <_description>Programmers layout (US layout with accented letters under RAlt )</_description>
++	 </configItem>
++	</variant>
+       </variantList>
+     </layout>
+     <layout>
