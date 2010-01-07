@@ -20,7 +20,7 @@ DEPEND="dev-libs/openssl
 src_unpack() {
 	unpack ${A}
 	cd "${S}"
-	epatch "${FILESDIR}"/${P}-build.patch #248034, 152489, ...
+	epatch "${FILESDIR}"/${P}-build.patch #248034, 152489, 299070
 	sed -i -e '/CFLAGS/s|:=|+=|' src/Makefile.in || die
 }
 
@@ -29,6 +29,6 @@ src_install() {
 	doman man/*
 	insinto /usr/include/libbt
 	doins include/*
-	dolib src/libbt.a
+	dolib.a src/libbt.a
 	dodoc CHANGELOG CREDITS README docs/*
 }
