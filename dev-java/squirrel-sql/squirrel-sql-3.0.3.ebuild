@@ -4,7 +4,7 @@
 
 # Author: anomen
 
-
+# TODO: java launcher
 
 inherit eutils java-utils-2
 
@@ -28,15 +28,18 @@ INSTALL_DIR="/opt/SQuirreL"
 
 src_install() {
 
+	rm *.bat *.sh
+
 	insinto ${INSTALL_DIR}
 
 	doins -r *
+	
+	
+	doins ${FILESDIR}/squirrel-sql
+	fperms +x ${INSTALL_DIR}/squirrel-sql
 
-#	fperms +x ${INSTALLDIR}/dbvis
-
-#	dosym ${INSTALLDIR}/dbvis /opt/bin/${PN}
+	dosym ${INSTALL_DIR}/squirrel-sql /opt/bin/${PN}
 
 	newicon icons/acorn.png ${PN}.png
-	make_desktop_entry ${PN} "SQuirrel SQL Client" ${PN}.png "Development;Database" 
+	make_desktop_entry /opt/bin/${PN} "SQuirrel SQL Client" ${PN}.png "Development;Database" ${INSTALL_DIR}
 }
-
