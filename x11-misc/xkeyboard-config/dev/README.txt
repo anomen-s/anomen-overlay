@@ -11,3 +11,8 @@ Gentoo
 * use cz.override to simply replace czech layout (basic) [DEPRECATED]
 * use cz to add new layout "cz - programmers"
 
+
+Links
+=====
+http://poli.cs.vsb.cz/linux/czsk/
+
