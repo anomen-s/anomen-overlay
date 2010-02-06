@@ -1,13 +1,13 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-perl/Net-DNS/Net-DNS-0.66.ebuild,v 1.4 2010/01/10 16:14:00 maekke Exp $
+# $Header: $
 
 EAPI=2
 
 MODULE_AUTHOR=MACGYVER
 inherit perl-module
 
-DESCRIPTION="Perl Net::DNS - Perl DNS Resolver Module"
+DESCRIPTION="Perl Net::SMTPLLServer - Perl SMTP::SERVER Module"
 
 LICENSE="GPL-2"
 SLOT="0"
