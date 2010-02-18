@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit cmake-utils
+inherit cmake-utils qt3
 
 DESCRIPTION="PDF rendering library based on the xpdf-3.0 code base"
 HOMEPAGE="http://poppler.freedesktop.org/"
@@ -45,9 +45,6 @@ src_prepare() {
 }
 
 src_configure() {
-	# added by anomen
-	addpredict /usr/qt/3/etc/settings/.qtrc.lock
-	
 	mycmakeargs=(
 		-DBUILD_GTK_TESTS=OFF
 		-DBUILD_QT4_TESTS=OFF
