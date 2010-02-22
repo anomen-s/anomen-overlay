@@ -14,7 +14,7 @@ LICENSE="GPL-2"
 IUSE=""
 
 DEPEND="app-arch/unzip"
-RDEPEND="virtual/jre"
+RDEPEND="|| ( >=virtual/jre-1.5 >=virtual/jdk-1.5 )"
 
 
 
