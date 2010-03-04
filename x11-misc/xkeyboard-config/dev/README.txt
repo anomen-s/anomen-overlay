@@ -16,3 +16,5 @@ Links
 =====
 http://poli.cs.vsb.cz/linux/czsk/
 
+TODO:
+http://korpus.juls.savba.sk/~garabik/software/
