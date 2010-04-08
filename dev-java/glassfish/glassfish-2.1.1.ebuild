@@ -12,7 +12,7 @@ SRC_URI="http://java.net/download/javaee5/v${PV}_branch/promoted/Linux/${INSTALL
 RESTRICT="mirror strip binchecks"
 
 LICENSE="|| ( CDDL GPL-2-with-linking-exception )"
-SLOT="2.1"
+SLOT="${PV}"
 KEYWORDS="~x86 ~amd64"
 IUSE="cluster ml"
 DEPEND=">=virtual/jdk-1.5"

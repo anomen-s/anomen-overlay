@@ -16,7 +16,7 @@ SRC_URI="!ml? (
 RESTRICT="mirror strip binchecks"
 
 LICENSE="|| ( CDDL GPL-2-with-linking-exception )"
-SLOT="2.1"
+SLOT="${PV}"
 KEYWORDS="~x86 ~amd64"
 IUSE="cluster ml"
 DEPEND=">=virtual/jdk-1.5"
@@ -76,6 +76,8 @@ src_install() {
 	addwrite /root/cf.out
 	lib/ant/bin/ant -f ${setupfile}
 
+	sed -i -e 's!AS_JAVA=.*!AS_JAVA="/etc/java-config-2/current-system-vm"!'  "${GLASSFISH_WORKDIR}/config/asenv.conf"
+	sed -i -e 's!ASK_FOR_REGISTRATION!DONT_ASK_FOR_REGISTRATION!' "${GLASSFISH_WORKDIR}/lib/registration/servicetag-registry.xml"
 
 # Remove sunos files as we don't need them
 	find ${GLASSFISH_WORKDIR} -type d -name sunos -prune -exec rm -rf {} \;
@@ -103,7 +105,7 @@ src_install() {
 
 	dosym ../../var/opt/glassfish/domains ${GLASSFISH_INSTALL_BASE}/domains
 	fowners -R glassfish:glassfish ${GLASSFISH_DOMAINS}
-	fperms a+w -R ${GLASSFISH_DOMAINS}
+	fperms ug+w -R ${GLASSFISH_DOMAINS}
 
 	local envd_dir="${D}/etc/env.d/" 
 	mkdir -p "${envd_dir}"
