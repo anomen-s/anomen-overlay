@@ -1,0 +1,8 @@
+For new installations:
+  edit ${MY_INSTALLDIR}/local/config.php to suit your site setup
+
+Also read the release notes for any other upgrade notes at:
+  http://www.pmwiki.org/wiki/PmWiki/ReleaseNotes
+
+And the "Initial Setup Tasks" page:
+  http://www.pmwiki.org/wiki/PmWiki/InitialSetupTasks
