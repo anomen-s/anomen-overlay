@@ -44,10 +44,11 @@ src_install() {
 	
 	doicon ApacheDirectoryStudio.xpm
 	
-	make_desktop_entry "${INSTALL_DIR}/ApacheDirectoryStudio" "Apache Directory Studio" ApacheDirectoryStudio.xpm "System"
-	
-	
+	make_desktop_entry "${INSTALL_DIR}/ApacheDirectoryStudio" "Apache Directory Studio" ApacheDirectoryStudio "System"
+		
 	doins -r *
 	
 	fperms +x ${INSTALL_DIR}/ApacheDirectoryStudio
+	
+	dosym "${INSTALL_DIR}/ApacheDirectoryStudio" /opt/bin/ApacheDirectoryStudio
 }
