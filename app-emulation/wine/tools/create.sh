@@ -44,6 +44,8 @@ PROFILE=$PROFILE    # <<--- SET
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 #export WINEDEBUG=-all
 
+cd "\$WINEPREFIX/drive_c"
+
 winecfg
 #regedit
 
@@ -57,6 +59,7 @@ cat > "$WINEPREFIX/run.sh" << EOT
 PROFILE=$PROFILE    # <<--- SET
 ISOFILE=
 
+# english locale
 #export LC_ALL=en_US
 #export LANG=en_US
 
@@ -70,8 +73,8 @@ if test -n "\$ISOFILE" ; then
 fi
 
 cd drive_c
-
-sudo cpufreq-set -g performance  || echo cpu perf. setting failed
+# cpu freq
+#sudo cpufreq-set -g performance  || echo cpu perf. setting failed
 
 #taskset 01 wine "c:\\\\game\\\\game.exe"
 taskset 01 wine "t:\\\\totalcmd\\\\totalcmd.exe"
@@ -80,9 +83,11 @@ if test -n "\$ISOFILE" ; then
   fusermount -z -u "\$WINEPREFIX/loop"
 fi
 
-sudo cpufreq-set -g ondemand  || echo cpu perf. setting failed
+### restore settings
 
+#sudo cpufreq-set -g ondemand  || echo cpu perf. setting failed
 #xrandr -s 1440x900 -r 54
+#nvidia-settings -l
 
 EOT
 
