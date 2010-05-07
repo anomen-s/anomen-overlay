@@ -8,7 +8,6 @@ DESCRIPTION="Display unicode character properties"
 HOMEPAGE="http://kassiopeia.juls.savba.sk/~garabik/software/unicode/"
 MY_P=$(replace_version_separator 1 '_' $P)
 SRC_URI="http://kassiopeia.juls.savba.sk/~garabik/software/unicode/${MY_P}.tar.gz
-		 http://kassiopeia.juls.savba.sk/~garabik/software/unicode/old/${MY_P}.tar.gz
 		 unicode? ( http://www.unicode.org/Public/UNIDATA/UnicodeData.txt )
 		 cjk? ( http://www.unicode.org/Public/UNIDATA/Unihan.zip )"
 LICENSE="GPL-3"
