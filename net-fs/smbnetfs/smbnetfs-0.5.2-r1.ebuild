@@ -13,7 +13,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE=""
 
 RDEPEND=">=sys-fs/fuse-2.3
-	|| ( >=net-fs/samba-libs-3.2[smbclient] <net-fs/samba-3.2  )"
+	|| ( >=net-fs/samba-libs-3.2[smbclient] >=net-fs/samba-3.0  )"
 
 DEPEND="${RDEPEND}
 	virtual/libc
