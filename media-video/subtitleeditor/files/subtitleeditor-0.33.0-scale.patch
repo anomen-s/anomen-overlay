@@ -1,44 +1,79 @@
+--- subtitleeditor-0.33.0/plugins/actions/scalesubtitles/dialog-scale-subtitles.glade	2009-05-23 12:35:03.000000000 +0200
++++ ./plugins/actions/scalesubtitles/dialog-scale-subtitles.glade	2010-06-05 19:38:34.846931088 +0200
+@@ -315,6 +315,17 @@
+             <property name="position">1</property>
+           </packing>
+         </child>
++                        <child>
++                          <widget class="GtkCheckButton" id="check-all-subtitles">
++                            <property name="visible">True</property>
++                            <property name="can_focus">True</property>
++                            <property name="tooltip_text">If the option is activated, all subtitles are scaled. Without this option, it scales only subtitles between the two selected points.</property>
++                            <property name="label" translatable="yes">_All subtitles</property>
++                            <property name="use_underline">True</property>
++                            <property name="response_id">0</property>
++                            <property name="draw_indicator">True</property>
++                          </widget>
++                        </child>
+         <child internal-child="action_area">
+           <widget class="GtkHButtonBox" id="dialog-action_area2">
+             <property name="visible">True</property>
 --- subtitleeditor-0.33.0/plugins/actions/scalesubtitles/scalesubtitles.cc	2009-05-29 12:57:29.000000000 +0200
-+++ subtitleeditor-0.33.0/plugins/actions/scalesubtitles/scalesubtitles.cc	2009-12-14 21:19:11.586712304 +0100
-@@ -96,7 +96,7 @@
++++ ./plugins/actions/scalesubtitles/scalesubtitles.cc	2010-06-05 19:39:24.144180246 +0200
+@@ -50,6 +50,7 @@
+ 		refGlade->get_widget_derived("spin-last-start-value", m_spinLastStartValue);
+ 		refGlade->get_widget_derived("spin-last-new-start", m_spinLastNewStart);
+ 		refGlade->get_widget("label-last-text", m_labelLastText);
++		refGlade->get_widget("check-all-subtitles", m_allSelectedSubtitles);
+ 
+ 		// signaux
+ 		m_spinFirstNumber->signal_value_changed().connect(
+@@ -93,10 +94,12 @@
+ 				SubtitleTime dest1( (long int)m_spinFirstNewStart->get_value() );
+ 				SubtitleTime dest2( (long int)m_spinLastNewStart->get_value() );
+ 
++				bool all_subtitles = m_allSelectedSubtitles->get_active();
++
  				// apply change
  				doc->start_command(_("Scale subtitles"));
  				
 -				scale(firstSubtitle, dest1, lastSubtitle, dest2);
-+				scale(doc, firstSubtitle, dest1, lastSubtitle, dest2);
++				scale(doc, all_subtitles, firstSubtitle, dest1, lastSubtitle, dest2);
  
  				doc->emit_signal("subtitle-time-changed");
  				doc->finish_command();
-@@ -223,7 +223,7 @@
+@@ -223,7 +226,7 @@
  	/*
  	 *
  	 */
 -	void scale(
-+	void scale(Document *doc,
++	void scale(Document *doc, bool all_subtitles,
  			const Subtitle &sub1, const SubtitleTime &dest1,
  			const Subtitle &sub2, const SubtitleTime &dest2)
  	{
-@@ -234,19 +234,19 @@
+@@ -234,10 +237,14 @@
  				sub1.get_start().totalmsecs, dest1.totalmsecs,
  				sub2.get_start().totalmsecs, dest2.totalmsecs);
  
 -		// sub2 + 1
 -		Subtitle end = sub2; ++end;
 +		Subtitles subtitles = doc->subtitles();
-+		Subtitle subtitle = subtitles.get_first();
++		// first
++		Subtitle start = (all_subtitles ? subtitles.get_first() : sub1);
++		// last + 1
++		Subtitle end = (all_subtitles ? subtitles.get_last() : sub2);
++		++end;
  
 -		for(Subtitle subtitle=sub1; subtitle != end; ++subtitle)
-+		while(subtitle)
++		for(Subtitle subtitle=start; subtitle != end; ++subtitle)
  		{
  			SubtitleTime start = calcul(subtitle.get_start(), scale, source1, dest1);
  			SubtitleTime end = calcul(subtitle.get_end(), scale, source1, dest1);
+@@ -279,6 +286,7 @@
+ 	Gtk::Label*				m_labelLastStartValue;
+ 	SpinButtonTime*		m_spinLastNewStart;
+ 	Gtk::Label*				m_labelLastText;
++	Gtk::CheckButton*	m_allSelectedSubtitles;
+ };
  
- 			subtitle.set_start_and_end(start, end);
-+			++subtitle;
- 		}
- 	}
- 
--
- 	/*
- 	 *
- 	 */
+ /*
