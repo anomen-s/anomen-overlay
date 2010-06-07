@@ -1,5 +1,5 @@
---- subtitleeditor-0.36.1.orig/plugins/actions/scalesubtitles/dialog-scale-subtitles.ui	2010-01-19 13:04:21.000000000 +0100
-+++ subtitleeditor-0.36.1/plugins/actions/scalesubtitles/dialog-scale-subtitles.ui	2010-06-05 20:53:53.318180804 +0200
+--- subtitleeditor-0.36.2.orig/plugins/actions/scalesubtitles/dialog-scale-subtitles.ui	2010-01-19 13:04:21.000000000 +0100
++++ subtitleeditor-0.36.2/plugins/actions/scalesubtitles/dialog-scale-subtitles.ui	2010-06-05 20:53:53.318180804 +0200
 @@ -342,6 +342,20 @@
                      <property name="position">1</property>
                    </packing>
@@ -21,8 +21,8 @@
                </object>
                <packing>
                  <property name="position">1</property>
---- subtitleeditor-0.36.1.orig/plugins/actions/scalesubtitles/scalesubtitles.cc	2009-12-21 12:49:24.000000000 +0100
-+++ subtitleeditor-0.36.1/plugins/actions/scalesubtitles/scalesubtitles.cc	2010-06-05 20:57:52.044930839 +0200
+--- subtitleeditor-0.36.2.orig/plugins/actions/scalesubtitles/scalesubtitles.cc	2009-12-21 12:49:24.000000000 +0100
++++ subtitleeditor-0.36.2/plugins/actions/scalesubtitles/scalesubtitles.cc	2010-06-05 20:57:52.044930839 +0200
 @@ -50,6 +50,7 @@
  		builder->get_widget_derived("spin-last-start-value", m_spinLastStartValue);
  		builder->get_widget_derived("spin-last-new-start", m_spinLastNewStart);
