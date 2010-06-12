@@ -10,7 +10,7 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
     
-    $Id: geobox.php 363 2009-06-23 09:33:55Z ludek $
+    $Id: geobox.php 367 2009-07-28 15:46:10Z ludek $
 
     TODO:
     * geobox for conversions (is it useful?)
@@ -19,7 +19,7 @@
 
 define('COORDS_INVALID', 0);
 
-$RecipeInfo['']['Version'] = '$Rev: 363 $';
+$RecipeInfo['']['Version'] = '$Rev: 367 $';
 
 Markup('geo','fulltext','/\(:geo\s+([dmsDMS,.]+:)?\s*(.*?)\s*:\)/e',
     "geomaps(strtoupper('$1'),'$2')");
@@ -79,8 +79,11 @@ function parse_coords($coords)
 	$res['result'] = "";
     }    
     
-    $res[0] = asint($m, 3) + asint($m, 4)/60 + asint($m, 5)/(60*60);
-    $res[1] = asint($m, 8) + asint($m, 9)/60 + asint($m, 10)/(60*60);
+    $res[0] = abs(asint($m, 3)) + asint($m, 4)/60 + asint($m, 5)/(60*60);
+    $res[1] = abs(asint($m, 8)) + asint($m, 9)/60 + asint($m, 10)/(60*60);
+
+    if (asint($m, 3) < 0) { $res[0] = -$res[0]; }
+    if (asint($m, 8) < 0) { $res[1] = -$res[1]; }
 
     if (strtoupper($m[1]) == 'S') { $res[0] = -$res[0]; }
     if (strtoupper($m[6]) == 'W') { $res[1] = -$res[1]; }
@@ -109,7 +112,7 @@ function convert_coords($c)
     $c['LON'] = ($c[0] > 0) ? "E" : "W";
     
     $c['NSig'] = sign($c[0]);
-    $c['ESig'] = sign($c[0]);
+    $c['ESig'] = sign($c[1]);
 
     $c['N'] = sprintf("%'08.5f",$c[0]);
     $c['E'] = sprintf("%'08.5f",$c[1]);
