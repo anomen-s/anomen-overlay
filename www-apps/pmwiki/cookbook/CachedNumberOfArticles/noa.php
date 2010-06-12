@@ -12,7 +12,7 @@
     (at your option) any later version.
 */
 
-Markup('(:numberofarticles:)','>','/\\(:numberofarticles(\s+refresh)?\s*:\\)/e',
+Markup('(:numberofarticles:)','_begin','/\(:numberofarticles(\s+refresh)?\s*:\)/e',
     "Keep(getNumArticles('$1'))");
 
 $noafile = "$WorkDir/.noa";
