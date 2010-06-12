@@ -40,9 +40,9 @@ function parse_coords($coords)
     $re_coord="
 	    ([-+]?${re_num})
 	    \s*
-	    (?:°|˚||
+	    (?:°|˚|º||
 		(?:
-		    (?:°|˚)
+		    (?:°|˚|º)
 		    \s*
 		    (${re_num})
 		    \s*
