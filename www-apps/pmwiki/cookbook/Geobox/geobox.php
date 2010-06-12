@@ -10,7 +10,7 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
     
-    $Id: geobox.php 309 2008-12-10 07:48:20Z ludek $
+    $Id: geobox.php 363 2009-06-23 09:33:55Z ludek $
 
     TODO:
     * geobox for conversions (is it useful?)
@@ -19,7 +19,7 @@
 
 define('COORDS_INVALID', 0);
 
-$RecipeInfo['']['Version'] = '$Rev: 309 $';
+$RecipeInfo['']['Version'] = '$Rev: 363 $';
 
 Markup('geo','fulltext','/\(:geo\s+([dmsDMS,.]+:)?\s*(.*?)\s*:\)/e',
     "geomaps(strtoupper('$1'),'$2')");
@@ -110,9 +110,13 @@ function convert_coords($c)
     
     $c['NSig'] = sign($c[0]);
     $c['ESig'] = sign($c[0]);
-    
-    $c['Nd'] = abs($c['N'] = $c[0]);$c['S'] = -$c[0];
-    $c['Ed'] = abs($c['E'] = $c[1]);$c['W'] = -$c[1];
+
+    $c['N'] = sprintf("%'08.5f",$c[0]);
+    $c['E'] = sprintf("%'08.5f",$c[1]);
+    $c['W'] = sprintf("%'08.5f",-$c[1]);
+    $c['S'] = sprintf("%'08.5f",-$c[0]);
+    $c['Nd'] = sprintf("%'08.5f",abs($c[0]));
+    $c['Ed'] = sprintf("%'08.5f",abs($c[1]));
 
     //FIXME: negative numbers - do not return negative min, sec
 
