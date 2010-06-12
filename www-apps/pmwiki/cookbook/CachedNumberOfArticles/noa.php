@@ -12,7 +12,9 @@
     (at your option) any later version.
 */
 
-Markup('(:numberofarticles:)','_begin','/\(:numberofarticles(\s+refresh)?\s*:\)/e',
+$RecipeInfo['CachedNumberOfArticles']['Version'] = '2010-06-12';
+
+Markup('numberofarticles','inline','/\(:numberofarticles(\s+refresh)?\s*:\)/e',
     "Keep(getNumArticles('$1'))");
 
 $noafile = "$WorkDir/.noa";
