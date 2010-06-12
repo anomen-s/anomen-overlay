@@ -1,8 +1,8 @@
 <?php if (!defined('PmWiki')) exit();
 
 /*
-    The noa script adds support for gps coordinates conversion and displaying at maps
-    - add (:geo coords :) tag functionality
+    This  script adds support for gps coordinates conversion and displaying at maps
+    - add (:geo [format:] coords :) tag functionality
 
     Copyright 2006 Anomen (ludek_h@seznam.cz)
     This program is free software; you can redistribute it and/or modify
@@ -10,18 +10,24 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
     
-    $Id$
+    $Id: geobox.php 309 2008-12-10 07:48:20Z ludek $
+
+    TODO:
+    * geobox for conversions (is it useful?)
+    * GPX export (see sourceblock for howto)
 */
 
 define('COORDS_INVALID', 0);
 
-$RecipeInfo['']['Version'] = '$Rev$';
+$RecipeInfo['']['Version'] = '$Rev: 309 $';
 
-Markup('geo','fulltext','/\(:geo\s+(.*?)\s*:\)/e',
-    "geomaps('$1')");
+Markup('geo','fulltext','/\(:geo\s+([dmsDMS,.]+:)?\s*(.*?)\s*:\)/e',
+    "geomaps(strtoupper('$1'),'$2')");
 
 Markup('geobox','fulltext','/\(:geobox\s+(.*?)\s*:\)/e',
     "geobox('$1')");
+
+SDV($GeoBoxDefaultFormat,'DM');
 
 function asint($m, $index) 
 {
@@ -137,8 +143,10 @@ function build_link($link, $coords)
     return preg_replace($k, $v, $link);
 }
 
-function geomaps($param)
+function geomaps($cformat, $param)
 {
+    global $GeoBoxDefaultFormat;
+
     $c = parse_coords($param);
     
     if (empty($c['result'])) {
@@ -155,10 +163,22 @@ function geomaps($param)
 	
 	// FIXME - sign OR NS/EW
 	//$COORDS="${c['NSig']}${c['Ndi']}°${c['Nm']} ${c['ESig']}${c['Edi']}°${c['Em']}";
-	
-	$COORDS=build_link("!NSig!Ndi°!Nm' !ESig!Edi°!Em'", $c);//
+
+
+	if (empty($cformat)) { 
+		$cformat = $GeoBoxDefaultFormat; 
+	}
+	if (strpos($cformat, "S") !== false) {
+		$COORDS=build_link("!NSig!Ndi°!Nmi'!Ns\" !ESig!Edi°!Emi'!Es\"", $c);// DMS
+	}
+	else if (strpos($cformat, "M") !== false) {
+		$COORDS=build_link("!NSig!Ndi°!Nm' !ESig!Edi°!Em'", $c);// DM
+	}
+	else {
+		$COORDS=build_link("!NSig!Nd !ESig!Ed", $c);//
+	}
 #	return Keep("<span><i>$COORDS</i><a href='$LINK_MAPY'>mapy</a> <a href='$LINK_GMAPS'>gmaps</a></span>");
-	return "''$COORDS''  – [[$LINK_MAPY | mapy]] [[$LINK_GMAPS | gmaps]] [[$LINK_AMAPY | amapy]] [[$LINK_GC | gc]] [[$LINK_GC_LIST | gc list]]";
+	return "''$COORDS'' – [[$LINK_MAPY | mapy]] [[$LINK_GMAPS | gmaps]] [[$LINK_AMAPY | amapy]] [[$LINK_GC | gc]] [[$LINK_GC_LIST | gc list]]";
 	
     }
 }
