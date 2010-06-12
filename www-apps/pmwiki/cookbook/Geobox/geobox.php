@@ -46,13 +46,13 @@ function parse_coords($coords)
 		    \s*
 		    (${re_num})
 		    \s*
-		    (?:'| |
+		    (?:'|’| |
 			(?:
-			    (?:')
+			    (?:'|’)
 			    \s*
 			    (${re_num})
 			    \s*
-			    (?:''|\"|“|”|)
+			    (?:''|\"|“|”|’’|)
 			)
 		    )
 		)
@@ -110,19 +110,21 @@ function convert_coords($c)
 
     //FIXME: negative numbers - do not return negative min, sec
 
-    // convert to [Nd.]°[Nm.]'[Ns]" and  [Nd.]°[Nm]'
-    $c['Ndi'] = floor0($c['Nd']);
-    $c['Nm'] = abs(($c['Nd']-$c['Ndi'])*60);
-    $c['Nmi'] = floor0($c['Nm']);
-    $c['Ns'] = ($c['Nm']-$c['Nmi'])*60;
-    $c['Nsi'] = floor0($c['Ns']);
+    // convert to [Ndi]°[Nmi]'[Ns]" and  [Ndi]°[Nm]'
+    $c['Ndi'] = sprintf("%'02.0f",floor($c['Nd']));
+    $c['Nm']  = sprintf("%'06.3f",($c['Nd']-$c['Ndi'])*60);
+    $c['Nmi'] = sprintf("%'02.0f",floor($c['Nm']));
+    $s = ($c['Nd']*60);
+    $c['Ns']  = sprintf("%'06.3f",($s-floor($s))*60);
+    $c['Nsi'] = sprintf("%'02.0f",floor($c['Ns']));
 
-    $c['Edi'] = floor0($c['Ed']);
-    $c['Em'] = abs(($c['Ed']-$c['Edi'])*60);
-    $c['Emi'] = floor0($c['Em']);
-    $c['Es'] = ($c['Em']-$c['Emi'])*60;
-    $c['Esi'] = floor0($c['Es']);
-
+    $c['Edi'] = sprintf("%'03.0f",floor($c['Ed']));
+    $c['Em']  = sprintf("%'06.3f",($c['Ed']-$c['Edi'])*60);
+    $c['Emi'] = sprintf("%'02.0f",floor($c['Em']));
+    $s = ($c['Ed']*60);
+    $c['Es']  = sprintf("%'06.3f",($s-floor($s))*60);
+    $c['Esi'] = sprintf("%'02.0f",floor($c['Es']));
+   
     return $c;
 }
 
@@ -154,7 +156,7 @@ function geomaps($param)
 	// FIXME - sign OR NS/EW
 	//$COORDS="${c['NSig']}${c['Ndi']}°${c['Nm']} ${c['ESig']}${c['Edi']}°${c['Em']}";
 	
-	$COORDS=build_link("!NSig!Ndi°!Nm !ESig!Edi°!Em", $c);//
+	$COORDS=build_link("!NSig!Ndi°!Nm' !ESig!Edi°!Em'", $c);//
 #	return Keep("<span><i>$COORDS</i><a href='$LINK_MAPY'>mapy</a> <a href='$LINK_GMAPS'>gmaps</a></span>");
 	return "''$COORDS''  – [[$LINK_MAPY | mapy]] [[$LINK_GMAPS | gmaps]] [[$LINK_AMAPY | amapy]] [[$LINK_GC | gc]] [[$LINK_GC_LIST | gc list]]";
 	
