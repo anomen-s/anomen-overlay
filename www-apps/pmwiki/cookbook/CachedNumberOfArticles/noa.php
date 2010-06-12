@@ -1,9 +1,9 @@
 <?php if (!defined('PmWiki')) exit();
 
 /*
-    The noa script adds support for printing number of pages in wiki
+    CachedNumberOfArticles script adds support for printing number of pages in wiki
     - add (:numberofarticles:) tag functionality
-    - this version uses WikiDir->ls() to obtin numberer of articles
+    - this version uses WikiDir->ls() to obtin number of articles
 
     Copyright 2006 Anomen (ludek_h@seznam.cz)
     This program is free software; you can redistribute it and/or modify
