@@ -28,6 +28,13 @@ cat >> "$WINEPREFIX/system.reg" << EOT
 
 EOT
 
+cat >> "$WINEPREFIX/user.reg" << EOT
+
+[Software\\\\Wine\\\\DllOverrides] 1249894386
+"winemenubuilder.exe"=""
+
+EOT
+
 for D in "Desktop" "My Documents" "My Music" "My Pictures" "My Videos"
 do
     ln -sfn ../../../home "${WINEPREFIX}/drive_c/users/${USER}/${D}"
