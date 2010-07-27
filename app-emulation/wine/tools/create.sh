@@ -4,12 +4,10 @@ PROFILE=$1
 [[ -z "$1" ]]  && exit 1
 
 export WINEPREFIX="$HOME/Wine/$PROFILE"
-mkdir -p "$WINEPREFIX"
 
-wineprefixcreate
+mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/winetrickscache"
 
-mkdir -p "$WINEPREFIX/loop"
-mkdir -p "$WINEPREFIX/home"
+winecfg
 
 ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
 ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
@@ -69,11 +67,12 @@ export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 cd "\$WINEPREFIX"
 if test -n "\$ISOFILE" ; then
   test -n  "\`ls loop/\`"  &&  fusermount -z -u "\$WINEPREFIX/loop"
-  fuseiso "\$ISOFILE" "\$WINEPREFIX/loop"
+  fuseiso "\$ISOFILE" "\$WINEPREFIX/loop" || exit 1
 fi
 
 cd drive_c
 # cpu freq
+#xrandr -s 1024x768
 #sudo cpufreq-set -g performance  || echo cpu perf. setting failed
 
 #taskset 01 wine "c:\\\\game\\\\game.exe"
@@ -93,7 +92,26 @@ EOT
 
 #############################################################################
 
-chmod 755 "$WINEPREFIX/run.sh" "$WINEPREFIX/config.sh"
+cat > "$WINEPREFIX/winetricks.sh" << EOT
+#!/bin/sh -x
+PROFILE=$PROFILE    # <<--- SET
+
+export WINEPREFIX="\$HOME/Wine/\$PROFILE"
+export WINETRICKS_CACHE="\$WINEPREFIX/winetrickscache"
+#export WINEDEBUG=-all
+cd "\$WINEPREFIX"
+
+wget -nc http://www.kegel.com/wine/winetricks || exit 1
+
+chmod 755 winetricks
+
+exec ./winetricks  "\$@"
+
+EOT
+
+#############################################################################
+
+chmod 755 "$WINEPREFIX/run.sh" "$WINEPREFIX/config.sh" "$WINEPREFIX/winetricks.sh"
 
 #winecfg
 
