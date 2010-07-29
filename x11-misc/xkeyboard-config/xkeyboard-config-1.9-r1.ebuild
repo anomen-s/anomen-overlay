@@ -14,7 +14,7 @@ HOMEPAGE="http://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 SRC_URI="${BASE_INDIVIDUAL_URI}/data/xkeyboard-config/${P}.tar.bz2"
 
 KEYWORDS="~alpha amd64 ~arm hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
-IUSE=""
+IUSE="cz_prog"
 
 LICENSE="MIT"
 SLOT="0"
