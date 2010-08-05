@@ -1,6 +1,6 @@
 # Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: pornotube-dl-2007.10.09.ebuild 16 2008-02-05 00:48:42Z ludek $
+# $Id$
 
 DESCRIPTION="A small command-line program to download videos from pornotube.com."
 HOMEPAGE="http://www.arrakis.es/~rggi3/pornotube-dl/"
