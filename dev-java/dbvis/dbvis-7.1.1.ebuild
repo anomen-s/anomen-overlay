@@ -14,8 +14,7 @@ inherit eutils versionator java-utils-2
 MY_PV=$(replace_all_version_separators '_')
 At=dbvis_unix_${MY_PV}.tar.gz
 
-DOWNLOAD_URL="http://www.minq.se/products/{$PN}/download.html
-http://www.dbvis.com/product_download/dbvis-7.1.1/media/dbvis_unix_7_1_1.tar.gz"
+DOWNLOAD_URL="http://www.dbvis.com/"
 
 DESCRIPTION="DB Visualizer (Free Version)"
 HOMEPAGE="http://www.dbvis.com/"
@@ -34,14 +33,14 @@ RDEPEND="virtual/jre
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/DbVisualizer-${PV}"
-INSTALLDIR="/opt/DbVisualizer"
+INSTALLDIR="/opt/DbVisualizer-${PV}"
 
 src_unpack() {
 	unpack ${A}
 
 	cd ${S}
 
-	epatch ${FILESDIR}/app_home.patch
+	epatch ${FILESDIR}/${PV}-app_home.patch
 
 	if use mssql ; then
 		mkdir jdbc/mssql
@@ -71,7 +70,7 @@ src_install() {
 
 	doins -r .install4j *
 
-	fperms +x ${INSTALLDIR}/dbvis
+	fperms +x ${INSTALLDIR}/{dbvis,dbviscmd.sh,dbvisgui.sh}
 
 	dosym ${INSTALLDIR}/dbvis /opt/bin/${PN}
 
