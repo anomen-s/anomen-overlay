@@ -1,0 +1,33 @@
+--- digikam-0.9.5/digikam/kioslave/digikamthumbnail.cpp	2010-08-19 23:56:19.000000000 +0200
++++ digikam-0.9.5/digikam/kioslave/digikamthumbnail.cpp	2010-08-19 23:55:56.000000000 +0200
+@@ -466,7 +466,7 @@
+     {
+         png_set_gray_to_rgb(png_ptr);
+         if (png_get_bit_depth(png_ptr, info_ptr) < 8)
+-            png_set_gray_1_2_4_to_8(png_ptr);
++            png_set_expand_gray_1_2_4_to_8(png_ptr);
+     }
+ 
+     int sizeOfUint = sizeof(unsigned int);
+--- digikam-0.9.5/digikam/libs/dimg/loaders/pngloader.cpp	2010-08-19 23:56:19.000000000 +0200
++++ digikam-0.9.5/digikam/libs/dimg/loaders/pngloader.cpp	2010-08-19 23:56:06.000000000 +0200
+@@ -252,7 +252,7 @@
+ #ifdef ENABLE_DEBUG_MESSAGES
+                 DDebug() << "PNG in PNG_COLOR_TYPE_GRAY" << endl;
+ #endif
+-                png_set_gray_1_2_4_to_8(png_ptr);
++                png_set_expand_gray_1_2_4_to_8(png_ptr);
+                 png_set_gray_to_rgb(png_ptr);
+ 
+                 if (QImage::systemByteOrder() == QImage::LittleEndian)       // Intel
+--- digikam-0.9.5/digikam/libs/greycstoration/CImg.h	2010-08-19 23:56:19.000000000 +0200
++++ digikam-0.9.5/digikam/libs/greycstoration/CImg.h	2010-08-19 23:56:13.000000000 +0200
+@@ -29449,7 +29449,7 @@
+         new_bit_depth = 8;
+       }
+       if (new_color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8){
+-        png_set_gray_1_2_4_to_8(png_ptr);
++        png_set_expand_gray_1_2_4_to_8(png_ptr);
+         new_bit_depth = 8;
+       }
+       if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
