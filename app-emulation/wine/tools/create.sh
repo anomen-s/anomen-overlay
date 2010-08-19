@@ -10,9 +10,10 @@ mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/winetr
 winecfg
 
 ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
+ln -sfn .. "$WINEPREFIX/dosdevices/p:"
+ln -sfn /dev/shm "$WINEPREFIX/dosdevices/s:"
 ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
 ln -sfn ../home "$WINEPREFIX/dosdevices/z:"
-ln -sfn .. "$WINEPREFIX/dosdevices/p:"
 
 for I in `seq 1 5 ` ; do
 # wait for registry
