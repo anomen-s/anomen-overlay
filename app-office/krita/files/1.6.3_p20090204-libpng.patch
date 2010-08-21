@@ -1,0 +1,11 @@
+--- krita-1.6.3_p20090204/filters/krita/png/kis_png_converter.cc	2010-08-21 12:27:57.000000000 +0200
++++ krita-1.6.3_p20090204/filters/krita/png/kis_png_converter.cc	2010-08-21 12:29:02.000000000 +0200
+@@ -43,6 +43,8 @@
+ #include <kis_paint_layer.h>
+ #include <kis_group_layer.h>
+ 
++#define PNG_MAX_UINT PNG_UINT_31_MAX
++
+ namespace {
+ 
+     const Q_UINT8 PIXEL_BLUE = 0;
