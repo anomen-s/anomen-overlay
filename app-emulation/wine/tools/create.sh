@@ -107,7 +107,7 @@ PROFILE=$PROFILE    # <<--- SET
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 export WINETRICKS_CACHE="\$WINEPREFIX/winetrickscache"
 #export WINEDEBUG=-all
-cd "\$WINEPREFIX"
+cd "\$WINETRICKS_CACHE"
 
 wget -nc http://www.kegel.com/wine/winetricks || exit 1
 
