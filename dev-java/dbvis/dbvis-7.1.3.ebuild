@@ -2,10 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-# Maintainer: Tony Kay <tkay@uoregon.edu>
-# Author: Tony Kay <tkay@uoregon.edu>
-
 # TODO: jdbc symlinks
+
+EAPI="2"
 
 IUSE="postgresql mysql mssql jtds"
 
@@ -40,8 +39,6 @@ src_unpack() {
 
 	cd ${S}
 
-	epatch ${FILESDIR}/${PV}-app_home.patch
-
 	if use mssql ; then
 		mkdir jdbc/mssql
 		java-pkg_jar-from --into jdbc/mssql  jdbc-mssqlserver-2005
@@ -61,6 +58,7 @@ src_unpack() {
 		rm jdbc/postgresql/*
 		java-pkg_jar-from --into jdbc/postgresql  jdbc-postgresql
 	fi
+	
 
 }
 
@@ -71,6 +69,9 @@ src_install() {
 	doins -r .install4j *
 
 	fperms +x ${INSTALLDIR}/{dbvis,dbviscmd.sh,dbvisgui.sh}
+
+	dosed -e "3i cd ${INSTALLDIR}" ${INSTALLDIR}/dbvis || die patch failed
+	dosed -e "s@^app_home=\.\$@app_home=${INSTALLDIR}@" ${INSTALLDIR}/dbvis || die patch failed
 
 	dosym ${INSTALLDIR}/dbvis /opt/bin/${PN}
 
