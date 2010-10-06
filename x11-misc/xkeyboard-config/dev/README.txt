@@ -9,8 +9,14 @@ Gentoo
 * package x11-misc/xkeyboard-config
 * file /usr/share/X11/xkb/symbols/cz
 * use cz.override to simply replace czech layout (basic) [DEPRECATED]
-* use cz to add new layout "cz - programmers"
+* use cz to add new layout "cz - programmers" [DEPRECATED]
+* use cz_prog useflag
 
+setxkbmap -model pc104 -layout cz -variant prog
+
+Ubuntu
+======
+* use dev/ubuntu.patch
 
 Links
 =====
