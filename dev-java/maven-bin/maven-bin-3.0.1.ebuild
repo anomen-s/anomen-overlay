@@ -1,18 +1,18 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header$
+# $Header: /var/cvsroot/gentoo-x86/dev-java/maven-bin/maven-bin-3.0.ebuild,v 1.1 2010/10/29 18:41:24 caster Exp $
 
 inherit java-pkg-2
 
 MY_PN=apache-${PN%%-bin}
-MY_P="${MY_PN}-${PV/_beta/-beta-}"
+MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Project Management and Comprehension Tool for Java"
 SRC_URI="mirror://apache/maven/binaries/${MY_P}-bin.tar.gz"
 HOMEPAGE="http://maven.apache.org/"
 LICENSE="Apache-2.0"
 SLOT="3.0"
-KEYWORDS="amd64 ~ppc x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 
 RDEPEND=">=virtual/jdk-1.5
 	app-admin/eselect-maven"
@@ -28,6 +28,7 @@ src_unpack() {
 	unpack ${A}
 
 	rm -v "${S}"/bin/*.bat || die
+	chmod 644 "${S}"/boot/*.jar "${S}"/lib/*.jar "${S}"/conf/settings.xml || die
 }
 
 # TODO we should use jars from packages, instead of what is bundled
@@ -41,4 +42,8 @@ src_install() {
 
 	dodir /usr/bin
 	dosym "${MAVEN_SHARE}/bin/mvn" /usr/bin/mvn-${SLOT}
+
+	# bug #342901
+	echo "CONFIG_PROTECT=\"${MAVEN_SHARE}/conf\"" > "${T}/25${MAVEN}" || die
+	doenvd "${T}/25${MAVEN}"
 }
