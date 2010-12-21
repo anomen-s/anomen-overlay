@@ -11,8 +11,8 @@ HOMEPAGE="http://www.nongnu.org/gcmd/"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="chm doc exif +gsf id3 pdf python"
+KEYWORDS="~amd64 x86"
+IUSE="chm doc exif +gsf id3 pdf python taglib"
 
 DEPEND="app-text/gnome-doc-utils
 	dev-libs/glib:2
