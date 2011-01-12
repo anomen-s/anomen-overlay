@@ -1,8 +1,8 @@
---- symbols/cz	2005-01-18 19:17:48.000000000 +0100
-+++ symbols/cz	2009-01-13 10:29:02.447426440 +0100
-@@ -106,3 +106,81 @@
+--- symbols/cz	2010-05-06 02:03:46.000000000 +0200
++++ symbols/cz	2011-01-12 11:50:12.165720799 +0100
+@@ -172,3 +172,81 @@
  
-     key <BKSL>	{ [ backslash,        bar,        slash,     NoSymbol ]	};
+     include "level3(ralt_switch)"
  };
 +
 +partial default alphanumeric_keys 
@@ -82,10 +82,10 @@
 +
 +    include "level3(ralt_switch)"
 +};
---- keymap/xfree86	2009-12-14 15:31:56.315468740 +0100
-+++ keymap/xfree86	2009-12-14 15:38:21.741712519 +0100
+--- keymap/xfree86	2010-02-02 00:00:18.000000000 +0100
++++ keymap/xfree86	2011-01-12 11:50:12.166718279 +0100
 @@ -347,6 +347,14 @@
-     xkb_symbols		{ include "en_US(pc105)+cz(qwerty)"	};
+     xkb_symbols		{ include "pc(pc105)+cz(qwerty)"	};
      xkb_geometry	{ include "pc"			};
  };
 +# svu: compatibility keymaps, based on variants
@@ -93,16 +93,16 @@
 +    xkb_keycodes	{ include "xfree86"		};
 +    xkb_types		{ include "default"		};
 +    xkb_compatibility	{ include "default"		};
-+    xkb_symbols		{ include "en_US(pc105)+cz(prog)"	};
++    xkb_symbols		{ include "pc(pc105)+cz(prog)"	};
 +    xkb_geometry	{ include "pc"			};
 +};
  xkb_keymap "de_CH"	{
      xkb_keycodes	{ include "xfree86"		};
      xkb_types		{ include "default"		};
---- rules/evdev.xml.in	2009-12-14 16:06:18.656463131 +0100
-+++ rules/evdev.xml.in	2009-12-14 16:07:16.519712506 +0100
-@@ -2058,6 +2058,12 @@
- 	    <_description>UCW layout (accented letters only)</_description>
+--- rules/evdev.xml.in	2010-09-05 14:40:14.000000000 +0200
++++ rules/evdev.xml.in	2011-01-12 11:50:12.172469360 +0100
+@@ -2122,6 +2122,12 @@
+ 	    <_description>US Dvorak with CZ UCW support</_description>
  	 </configItem>
  	</variant>
 +	<variant>
