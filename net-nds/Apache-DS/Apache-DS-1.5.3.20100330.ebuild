@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+EAPI="2"
+
 inherit eutils versionator
 
 MY_PV=$(replace_version_separator 3 '.v')
