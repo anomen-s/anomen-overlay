@@ -1,0 +1,21 @@
+--- unicode.orig	2011-01-29 12:36:06.000000000 +0100
++++ unicode	2011-01-29 12:37:23.000000000 +0100
+@@ -195,15 +195,13 @@
+     HomeDir = os.path.expanduser('~/.unicode')
+     HomeUnicodeData = os.path.join(HomeDir, "UnicodeData.txt")
+     global UnicodeDataFileNames
+-    UnicodeDataFileNames = [HomeUnicodeData, '/usr/share/unidata/UnicodeData.txt', '/usr/share/unicode/UnicodeData.txt', './UnicodeData.txt'] + \
+-        glob.glob('/usr/share/unidata/UnicodeData*.txt') + \
+-        glob.glob('/usr/share/perl/*/unicore/UnicodeData.txt') + \
+-        glob.glob('/System/Library/Perl/*/unicore/UnicodeData.txt') # for MacOSX
++    UnicodeDataFileNames = [HomeUnicodeData, '/usr/share/unicode-data/UnicodeData.txt', '/usr/share/unicode/UnicodeData.txt', './UnicodeData.txt'] + \
++        glob.glob('/usr/lib/perl/*/unicore/UnicodeData.txt')
+ 
+ 
+     HomeUnihanData = os.path.join(HomeDir, "Unihan*")
+     global UnihanDataGlobs
+-    UnihanDataGlobs = [HomeUnihanData, '/usr/share/unidata/Unihan*', '/usr/share/unicode/Unihan*', './Unihan*']
++    UnihanDataGlobs = [HomeUnihanData, '/usr/share/unicode-data/Unihan*', './Unihan*']
+ 
+ 
+ def get_unihan_files():
