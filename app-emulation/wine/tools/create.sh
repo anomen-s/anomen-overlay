@@ -3,6 +3,7 @@
 PROFILE=$1
 [[ -z "$1" ]]  && exit 1
 
+export WINEARCH=win32
 export WINEPREFIX="$HOME/Wine/$PROFILE"
 
 mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/winetrickscache"
@@ -47,6 +48,7 @@ cat > "$WINEPREFIX/config.sh" << EOT
 #!/bin/sh -x
 PROFILE=$PROFILE    # <<--- SET
 
+export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 #export WINEDEBUG=-all
 
@@ -69,6 +71,7 @@ ISOFILE=
 #export LC_ALL=en_US
 #export LANG=en_US
 
+export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 #export WINEDEBUG=-all
 
@@ -104,9 +107,12 @@ cat > "$WINEPREFIX/winetricks.sh" << EOT
 #!/bin/sh -x
 PROFILE=$PROFILE    # <<--- SET
 
+export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 export WINETRICKS_CACHE="\$WINEPREFIX/winetrickscache"
+export W_CACHE="\$WINEPREFIX/winetrickscache"
 #export WINEDEBUG=-all
+
 cd "\$WINETRICKS_CACHE"
 
 wget -nc http://www.kegel.com/wine/winetricks || exit 1
