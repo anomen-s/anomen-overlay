@@ -4,9 +4,10 @@ PROFILE=$1
 [[ -z "$1" ]]  && exit 1
 
 export WINEARCH=win32
-export WINEPREFIX="$HOME/Wine/$PROFILE"
+export WINECELLAR="$HOME/Wine"
+export WINEPREFIX="$WINECELLAR/$PROFILE"
 
-mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/winetrickscache"
+mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/winetrickscache"
 
 winecfg
 
@@ -23,24 +24,28 @@ for I in `seq 1 5 ` ; do
 done
 sleep 1
 
-cat >> "$WINEPREFIX/system.reg" << EOT
+#############################################################################
 
-[Software\\\\Wine\\\\Drives] 1249894386
-"d:"="cdrom"
+cp -f -v  "$WINECELLAR/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
 
-EOT
-
-cat >> "$WINEPREFIX/user.reg" << EOT
-
-[Software\\\\Wine\\\\DllOverrides] 1249894386
-"winemenubuilder.exe"=""
-
-EOT
+#############################################################################
 
 for D in "Desktop" "My Documents" "My Music" "My Pictures" "My Videos"
 do
     ln -sfn ../../../home "${WINEPREFIX}/drive_c/users/${USER}/${D}"
 done
+
+#############################################################################
+
+cat >> "$WINEPREFIX/drive_c/setup.reg" << EOT
+[HKEY_LOCAL_MACHINE\Software\Wine\Drives]
+"d:"="cdrom"
+
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"winemenubuilder.exe"="native"
+EOT
+
+wine regedit "c:\\setup.reg"
 
 #############################################################################
 
@@ -109,8 +114,8 @@ PROFILE=$PROFILE    # <<--- SET
 
 export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
-export WINETRICKS_CACHE="\$WINEPREFIX/winetrickscache"
-export W_CACHE="\$WINEPREFIX/winetrickscache"
+export WINETRICKS_CACHE="\$WINEPREFIX/drive_c/winetrickscache"
+export W_CACHE="\$WINETRICKS_CACHE"
 #export WINEDEBUG=-all
 
 cd "\$WINETRICKS_CACHE"
@@ -127,5 +132,4 @@ EOT
 
 chmod 755 "$WINEPREFIX/run.sh" "$WINEPREFIX/config.sh" "$WINEPREFIX/winetricks.sh"
 
-#winecfg
 
