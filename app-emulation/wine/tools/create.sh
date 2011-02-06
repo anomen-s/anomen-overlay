@@ -7,7 +7,7 @@ export WINEARCH=win32
 export WINECELLAR="$HOME/Wine"
 export WINEPREFIX="$WINECELLAR/$PROFILE"
 
-mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/winetrickscache"
+mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/wine"
 
 winecfg
 
@@ -24,9 +24,9 @@ ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
 ln -sfn .. "$WINEPREFIX/dosdevices/p:"
 ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
 ln -sfn /usr/share/wine "$WINEPREFIX/dosdevices/w:"
+rm "$WINEPREFIX/dosdevices/z:"
 
-
-echo 0 > "$WINEPREFIX/drive_c/winetrickscache/track_usage"
+echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
 
 cp -f -v  "$WINECELLAR/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
 
@@ -37,7 +37,7 @@ done
 
 #############################################################################
 
-cat >> "$WINEPREFIX/drive_c/setup.reg" << EOT
+cat >> "$WINEPREFIX/drive_c/wine/setup.reg" << EOT
 [HKEY_LOCAL_MACHINE\Software\Wine\Drives]
 "d:"="cdrom"
 
@@ -48,7 +48,7 @@ cat >> "$WINEPREFIX/drive_c/setup.reg" << EOT
 "ShowCrashDialog"=dword:00000000
 EOT
 
-wine regedit "c:\\setup.reg"
+wine regedit "c:\\wine\\setup.reg"
 
 #############################################################################
 
@@ -117,7 +117,7 @@ PROFILE=$PROFILE    # <<--- SET
 
 export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
-export WINETRICKS_CACHE="\$WINEPREFIX/drive_c/winetrickscache"
+export WINETRICKS_CACHE="\$WINEPREFIX/drive_c/wine"
 export W_CACHE="\$WINETRICKS_CACHE"
 #export WINEDEBUG=-all
 
