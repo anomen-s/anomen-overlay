@@ -11,12 +11,6 @@ mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_
 
 winecfg
 
-ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
-ln -sfn .. "$WINEPREFIX/dosdevices/p:"
-ln -sfn /dev/shm "$WINEPREFIX/dosdevices/s:"
-ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
-ln -sfn ../home "$WINEPREFIX/dosdevices/z:"
-
 for I in `seq 1 5 ` ; do
 # wait for registry
  sleep 3
@@ -26,9 +20,15 @@ sleep 1
 
 #############################################################################
 
-cp -f -v  "$WINECELLAR/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
+ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
+ln -sfn .. "$WINEPREFIX/dosdevices/p:"
+ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
+ln -sfn /usr/share/wine "$WINEPREFIX/dosdevices/w:"
 
-#############################################################################
+
+echo 0 > "$WINEPREFIX/drive_c/winetrickscache/track_usage"
+
+cp -f -v  "$WINECELLAR/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
 
 for D in "Desktop" "My Documents" "My Music" "My Pictures" "My Videos"
 do
@@ -43,6 +43,9 @@ cat >> "$WINEPREFIX/drive_c/setup.reg" << EOT
 
 [HKEY_CURRENT_USER\Software\Wine\DllOverrides]
 "winemenubuilder.exe"="native"
+
+[HKEY_CURRENT_USER\Software\Wine\WineDbg]
+"ShowCrashDialog"=dword:00000000
 EOT
 
 wine regedit "c:\\setup.reg"
