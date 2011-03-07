@@ -25,10 +25,10 @@ sleep 1
 #############################################################################
 
 ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
+ln -sfn /usr/share/fonts "$WINEPREFIX/dosdevices/f:"
 ln -sfn .. "$WINEPREFIX/dosdevices/p:"
 ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
 ln -sfn /usr/share/wine "$WINEPREFIX/dosdevices/w:"
-#ln -sfn /usr/share/fonts "$WINEPREFIX/dosdevices/f:"
 rm "$WINEPREFIX/dosdevices/z:"
 
 echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
