@@ -1,14 +1,18 @@
 #!/bin/sh -x
 
-PROFILE=$1
-[[ -z "$1" ]]  && exit 1
+PROFILE="$1"
+if [ -z "$1" ]; then
+ echo 'Missing argument: profile name'
+ exit 1
+fi
 
-export WINEARCH=win32
+export WINEARCH="win32"
 export WINECELLAR="$HOME/Wine"
 export WINEPREFIX="$WINECELLAR/$PROFILE"
 
 mkdir -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/wine"
 
+cd "$WINEPREFIX/drive_c"
 winecfg
 
 for I in `seq 1 5 ` ; do
@@ -24,6 +28,7 @@ ln -sfn ../loop  "$WINEPREFIX/dosdevices/d:"
 ln -sfn .. "$WINEPREFIX/dosdevices/p:"
 ln -sfn ../../drive_t "$WINEPREFIX/dosdevices/t:"
 ln -sfn /usr/share/wine "$WINEPREFIX/dosdevices/w:"
+#ln -sfn /usr/share/fonts "$WINEPREFIX/dosdevices/f:"
 rm "$WINEPREFIX/dosdevices/z:"
 
 echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
@@ -37,7 +42,7 @@ done
 
 #############################################################################
 
-cat >> "$WINEPREFIX/drive_c/wine/setup.reg" << EOT
+cat > "$WINEPREFIX/drive_c/wine/setup.reg" << EOT
 [HKEY_LOCAL_MACHINE\Software\Wine\Drives]
 "d:"="cdrom"
 
@@ -54,7 +59,7 @@ wine regedit "c:\\wine\\setup.reg"
 
 cat > "$WINEPREFIX/config.sh" << EOT
 #!/bin/sh -x
-PROFILE=$PROFILE    # <<--- SET
+PROFILE="$PROFILE"
 
 export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
@@ -63,7 +68,7 @@ export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 cd "\$WINEPREFIX/drive_c"
 
 winecfg
-#regedit
+#wine regedit
 
 EOT
 
@@ -72,7 +77,7 @@ EOT
 cat > "$WINEPREFIX/run.sh" << EOT
 #!/bin/sh -x
 
-PROFILE=$PROFILE    # <<--- SET
+PROFILE="$PROFILE"
 ISOFILE=
 
 # english locale
@@ -113,7 +118,7 @@ EOT
 
 cat > "$WINEPREFIX/winetricks.sh" << EOT
 #!/bin/sh -x
-PROFILE=$PROFILE    # <<--- SET
+PROFILE="$PROFILE"
 
 export WINEARCH=win32
 export WINEPREFIX="\$HOME/Wine/\$PROFILE"
