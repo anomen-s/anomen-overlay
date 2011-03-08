@@ -43,6 +43,8 @@ done
 #############################################################################
 
 cat > "$WINEPREFIX/drive_c/wine/setup.reg" << EOT
+REGEDIT4
+
 [HKEY_LOCAL_MACHINE\Software\Wine\Drives]
 "d:"="cdrom"
 
@@ -68,7 +70,6 @@ export WINEPREFIX="\$HOME/Wine/\$PROFILE"
 cd "\$WINEPREFIX/drive_c"
 
 winecfg
-#wine regedit
 
 EOT
 
