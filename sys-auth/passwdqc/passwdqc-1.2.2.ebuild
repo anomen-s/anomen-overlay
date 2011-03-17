@@ -36,7 +36,7 @@ src_install() {
 	dodoc README PLATFORMS INTERNALS
 	dobin pwqgen pwqcheck
 	dolib libpasswdqc.so.*
-	dosym libpasswdqc.so.* /usr/$(get_libdir)/libglfw.so
+	dosym libpasswdqc.so.* /usr/$(get_libdir)/libpasswdqc.so
 	insinto /etc
 	doins passwdqc.conf
 }
