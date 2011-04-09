@@ -14,7 +14,7 @@ IUSE=""
 KEYWORDS="~amd64 ~x86"
 
 DEPEND=""
-RDEPEND="virtual/php"
+RDEPEND="dev-lang/php"
 
 src_install() {
 	webapp_src_preinst
