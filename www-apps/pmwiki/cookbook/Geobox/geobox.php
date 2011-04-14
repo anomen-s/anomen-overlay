@@ -16,7 +16,7 @@
 */
 
 
-$RecipeInfo['Geobox']['Version'] = '2010-06-12';
+$RecipeInfo['Geobox']['Version'] = '2011-04-14';
 
 Markup('geo','fulltext','/\(:geo\s+([dmsDMS,.]+:)?\s*(.*?)\s*:\)/e',
     "geomaps(strtoupper('$1'),'$2')");
@@ -63,11 +63,11 @@ function parse_coords($coords)
     $m[] = array();
     if (preg_match("/^\s*${regex_pre}\s*\$/xi", $coords, $m)) {
 	$res['result'] = 'PRE';
-	$res['pattern'] = $regexp_pre;
+	$res['pattern'] = $regex_pre;
     }
     else if (preg_match("/^\s*${regex_post}\s*\$/xi", $coords, $m)) {
 	$res['result'] = 'POST';
-	$res['pattern'] = $regexp_post;
+	$res['pattern'] = $regex_post;
 	$m[1]=$m[6];$m[6]=$m[11]; // move directions
     } 
     else  {
