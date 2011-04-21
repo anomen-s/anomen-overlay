@@ -1,10 +1,7 @@
 <?php if (!defined('PmWiki')) exit();
 
 /*
-    ASPageStore
-     - wiki attic
-     - page scan
-     - XML pages
+    XMLPageStore
 
     Copyright 2006 Anomen (ludek_h@seznam.cz)
     This program is free software; you can redistribute it and/or modify
@@ -13,13 +10,10 @@
     (at your option) any later version.
 */
 
-/**
- * This is AtticPageStore with modified directory scanner.
- */
+SDV($XMLPages,false);
 
-SDV($AtticDir,'wiki.attic');
 
-class ASPageStore extends PageStore {
+class XMLPageStore extends PageStore {
 
   function read_xml($data, $since=0)
   {
@@ -40,7 +34,6 @@ class ASPageStore extends PageStore {
 	    
 	    if (!empty($t)) {
     		if ($since > 0 && $t < $since) {
-    		    wikidebug("skip (since) $k");
         	    continue;
     		}
 		$k = "$k:$t";
@@ -49,7 +42,6 @@ class ASPageStore extends PageStore {
 		$k = "$k:$p:";
     	    }
     	    $page[$k] = $v['value'];
-    	    wikidebug("$k > " . $v['value']);
 	}
      }
     return @$page;
@@ -94,6 +86,11 @@ class ASPageStore extends PageStore {
   }
 
   function write($pagename,$page) {
+    global $XMLPages;  
+    ($XMLPages == true) ? $this->write_xml($pagename,$page) : parent::write($pagename,$page);
+  }
+  
+  function write_xml($pagename,$page) {
     global $Now, $Version, $Charset;
     $page['name'] = $pagename;
     $page['time'] = $Now;
@@ -105,7 +102,6 @@ class ASPageStore extends PageStore {
     $s = false;
     $pagefile = $this->pagefile($pagename);
     $dir = dirname($pagefile); mkdirp($dir);
-    //  removed:  creating useless .htaccess
     if ($pagefile && ($fp=fopen("$pagefile,new","w"))) {
       $x = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<page xmlns=\"http://www.pmwiki.org/anomen/xmlpage\" version=\"$Version\">\n";
       $s = true && fputs($fp, $x); $sz = strlen($x);
@@ -134,57 +130,6 @@ class ASPageStore extends PageStore {
     PCache($pagename, $page);
   }
 
-  function delete($pagename) {
-    global $AtticDir, $Now;
-    $pagefile = $this->pagefile($pagename);
-    wikidebug("Attic: $pagefile / " . basename($pagefile));
-    @rename($pagefile,"$AtticDir/".basename($pagefile).",del-$Now");
-  }
-
-  function pagefile($pagename) {
-    global $FarmD;
-    $dfmt = $this->dirfmt;
-    if ($pagename > '') {
-//      wikidebug('#' . $pagename);
-      $pagename = str_replace('/', '.', $pagename);
-      $pagename = fileNameEncode ($pagename);  ##Anomen patch
-//      wikidebug('>' . $pagename);
-      if ($dfmt == 'wiki.d/{$FullName}')               # optimizations for
-        return "wiki.d/$pagename";                     # standard locations
-      if ($dfmt == '$FarmD/wikilib.d/{$FullName}')     # 
-        return "$FarmD/wikilib.d/$pagename";           #
-      if ($dfmt == 'wiki.d/{$Group}/{$FullName}')
-        return preg_replace('/([^.]+).*/', 'wiki.d/$1/$0', $pagename);
-    }
-    return FmtPageName($dfmt, $pagename);
-  }
-
-  function ls($pats=NULL) {
-    global $GroupPattern, $NamePattern;
-// this->dir doesn't exist?
-//    StopWatch("ASPageStore::ls begin {$this->dir}");
-    $pats=(array)$pats; 
-    array_push($pats, "/^$GroupPattern\.$NamePattern$/");
-    $dir = $this->pagefile('$Group.$Name');
-    $dirlist = array(preg_replace('!/*[^/]*\\$.*$!','',$dir));
-    $out = array();
-    while (count($dirlist)>0) {
-      $dir = array_shift($dirlist);
-      $dfp = @opendir($dir); if (!$dfp) { continue; }
-      $o = array();
-      while ( ($pagefile = readdir($dfp)) !== false) {
-        if ($pagefile{0} == '.') continue;
-        if (is_dir("$dir/$pagefile"))
-          { array_push($dirlist,"$dir/$pagefile"); continue; }
-        $o[] = fileNameDecode($pagefile);
-      }
-      closedir($dfp);
-//      StopWatch("ASPageStore::ls merge {$this->dir}");
-      $out = array_merge($out, MatchPageNames($o, $pats));
-    }
-//    StopWatch("ASPageStore::ls end {$this->dir}");
-    return $out;
-  }
 
 }
 
