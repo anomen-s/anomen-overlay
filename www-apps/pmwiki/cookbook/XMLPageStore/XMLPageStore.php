@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-SDV($XMLPages,false);
+SDV($EnablePageStoreXML,false);
 
 
 class XMLPageStore extends PageStore {
@@ -86,8 +86,8 @@ class XMLPageStore extends PageStore {
   }
 
   function write($pagename,$page) {
-    global $XMLPages;  
-    ($XMLPages == true) ? $this->write_xml($pagename,$page) : parent::write($pagename,$page);
+    global $EnablePageStoreXML;
+    ($EnablePageStoreXML == true) ? $this->write_xml($pagename,$page) : parent::write($pagename,$page);
   }
   
   function write_xml($pagename,$page) {
