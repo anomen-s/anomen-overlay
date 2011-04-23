@@ -5,6 +5,30 @@
     targetNamespace="http://www.pmwiki.org/anomen/xmlpage" 
     elementFormDefault="qualified">
 
+    <xs:complexType name="diffAuthorType">
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="time" type="xs:string"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+         
+    <xs:complexType name="diffHostType">
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="time" type="xs:string"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+    <xs:complexType name="diffType">
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="time" type="xs:string"/>
+              <xs:attribute name="prev" type="xs:string"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+         
 <xs:element name="page">
   <xs:complexType>
     <xs:sequence>
@@ -24,6 +48,12 @@
         <xs:element name="targets" type="xs:string" minOccurs="0"/>
         <xs:element name="text" type="xs:string" minOccurs="0"/>
         <xs:element name="time" type="xs:positiveInteger"/>
+        
+        <xs:sequence>
+    	    <xs:element name="author" type="diffAuthorType"/>
+    	    <xs:element name="diff" type="diffType"/>
+    	    <xs:element name="host" type="diffHostType"/>
+        </xs:sequence>
     </xs:sequence>
     <xs:attribute name="version" type="xs:string" use="required"/>
   </xs:complexType>
