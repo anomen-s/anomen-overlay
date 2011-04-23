@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.pmwiki.org/anomen/xmlpage"
+    targetNamespace="http://www.pmwiki.org/anomen/xmlpage" 
+    elementFormDefault="qualified">
+
+<xs:element name="page">
+  <xs:complexType>
+    <xs:sequence>
+        <xs:element name="agent" type="xs:string" minOccurs="0"/>
+        <xs:element name="author" type="xs:string" minOccurs="0"/>
+        <xs:element name="charset" type="xs:string" minOccurs="0"/>
+        <xs:element name="csum" type="xs:string" minOccurs="0"/>
+        <xs:element name="ctime" type="xs:positiveInteger"/>
+        <xs:element name="host" type="xs:string"/>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="passwdattr" type="xs:string" minOccurs="0"/>
+        <xs:element name="passwdedit" type="xs:string" minOccurs="0"/>
+        <xs:element name="passwdread" type="xs:string" minOccurs="0"/>
+        <xs:element name="passwdupload" type="xs:string" minOccurs="0"/>
+        
+        <xs:element name="rev" type="xs:positiveInteger"/>
+        <xs:element name="targets" type="xs:string" minOccurs="0"/>
+        <xs:element name="text" type="xs:string" minOccurs="0"/>
+        <xs:element name="time" type="xs:positiveInteger"/>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
