@@ -1,13 +1,44 @@
---- symbols/cz	2010-05-06 02:03:46.000000000 +0200
-+++ symbols/cz	2010-07-22 22:44:18.160704371 +0200
-@@ -172,3 +172,81 @@
+--- keymap/xfree86	2011-03-09 21:59:04.000000000 +0100
++++ keymap/xfree86	2011-05-03 10:48:13.873497390 +0200
+@@ -344,6 +344,13 @@
+     xkb_symbols		{ include "pc(pc105)+cz(qwerty)"	};
+     xkb_geometry	{ include "pc"			};
+ };
++xkb_keymap "cz_prog" {
++    xkb_keycodes	{ include "xfree86"		};
++    xkb_types		{ include "default"		};
++    xkb_compatibility	{ include "default"		};
++    xkb_symbols		{ include "pc(pc105)+cz(prog)"	};
++    xkb_geometry	{ include "pc"			};
++};
+ xkb_keymap "de_CH"	{
+     xkb_keycodes	{ include "xfree86"		};
+     xkb_types		{ include "default"		};
+--- rules/evdev.xml.in	2011-04-06 00:47:53.000000000 +0200
++++ rules/evdev.xml.in	2011-05-03 10:50:29.399497572 +0200
+@@ -2329,6 +2329,12 @@
+             <_description>Czech (US Dvorak with CZ UCW support)</_description>
+           </configItem>
+         </variant>
++        <variant>
++          <configItem>
++            <name>prog</name>
++            <_description>Programmers layout (US layout with accented letters under RAlt )</_description>
++          </configItem>
++        </variant>
+       </variantList>
+     </layout>
+     <layout>
+--- symbols/cz	2011-04-06 00:33:21.000000000 +0200
++++ symbols/cz	2011-05-03 10:46:52.926498124 +0200
+@@ -168,3 +168,81 @@
  
      include "level3(ralt_switch)"
  };
 +
 +partial default alphanumeric_keys 
 +xkb_symbols "prog" {
-+     
++ 
 +     // This layout based on czech programmers' keyboard layout from windows nt 
 +     // (c) 2007 by anomen
 +     // $Id: cz 16 2007-07-14 10:48:28Z ludek $
@@ -16,13 +47,13 @@
 +
 +    name[Group1]= "Czechia - programmers";
 +
-+    key <TLDE>	{ [ grave,   asciitilde,      semicolon, dead_abovering ]	}; // TODO: replace semicolon
++    key <TLDE>	{ [ grave,   asciitilde,      semicolon, dead_abovering ]}; // TODO: replace semicolon
 +
-+    key <AE01>	{ [         1,     exclam,         plus,       dead_tilde ]	};
-+    key <AE02>	{ [         2,         at,       ecaron,       dead_caron ]	};
-+    key <AE03>	{ [         3, numbersign,       scaron,  dead_circumflex ]	};
-+    key <AE04>	{ [         4,     dollar,       ccaron,       dead_breve ]	};
-+    key <AE05>	{ [         5,    percent,       rcaron,   dead_abovering ]	};
++    key <AE01>	{ [         1,     exclam,         plus,       dead_tilde ]};
++    key <AE02>	{ [         2,         at,       ecaron,       dead_caron ]};
++    key <AE03>	{ [         3, numbersign,       scaron,  dead_circumflex ]};
++    key <AE04>	{ [         4,     dollar,       ccaron,       dead_breve ]};
++    key <AE05>	{ [         5,    percent,       rcaron,   dead_abovering ]};
 +    key <AE06>	{ [         6, asciicircum,      zcaron,      dead_ogonek ]     };
 +    key <AE07>	{ [         7,  ampersand,       yacute,       dead_grave ]	};
 +    key <AE08>	{ [         8,   asterisk,       aacute,    dead_abovedot ]	};
@@ -82,35 +113,3 @@
 +
 +    include "level3(ralt_switch)"
 +};
---- keymap/xfree86	2010-02-02 00:00:18.000000000 +0100
-+++ keymap/xfree86	2010-07-22 22:44:18.161704131 +0200
-@@ -347,6 +347,14 @@
-     xkb_symbols		{ include "pc(pc105)+cz(qwerty)"	};
-     xkb_geometry	{ include "pc"			};
- };
-+# svu: compatibility keymaps, based on variants
-+xkb_keymap "cz_prog" {
-+    xkb_keycodes	{ include "xfree86"		};
-+    xkb_types		{ include "default"		};
-+    xkb_compatibility	{ include "default"		};
-+    xkb_symbols		{ include "pc(pc105)+cz(prog)"	};
-+    xkb_geometry	{ include "pc"			};
-+};
- xkb_keymap "de_CH"	{
-     xkb_keycodes	{ include "xfree86"		};
-     xkb_types		{ include "default"		};
---- rules/evdev.xml.in	2010-05-07 00:41:01.000000000 +0200
-+++ rules/evdev.xml.in	2010-07-22 22:44:18.173454495 +0200
-@@ -2086,6 +2086,12 @@
- 	    <_description>US Dvorak with CZ UCW support</_description>
- 	 </configItem>
- 	</variant>
-+	<variant>
-+	  <configItem>
-+	    <name>prog</name>
-+	    <_description>Programmers layout (US layout with accented letters under RAlt )</_description>
-+	 </configItem>
-+	</variant>
-       </variantList>
-     </layout>
-     <layout>
