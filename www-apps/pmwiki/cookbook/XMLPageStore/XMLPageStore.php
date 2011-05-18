@@ -9,6 +9,7 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 */
+$RecipeInfo['XMLPageStore']['Version'] = '2011-05-18';
 
 SDV($EnablePageStoreXML,false);
 
@@ -20,11 +21,11 @@ class XMLPageStore extends PageStore {
     global $Charset;
     $p = xml_parser_create();
     xml_parser_set_option($p,XML_OPTION_CASE_FOLDING, false);
+    xml_parser_set_option($p,XML_OPTION_TARGET_ENCODING, $Charset);
 
 #    bug? http://bugs.php.net/bug.php?id=33240
 #    xml_parser_set_option($p,XML_OPTION_SKIP_WHITE, true);
 
-    xml_parser_set_option($p,XML_OPTION_TARGET_ENCODING, $Charset);
 
     xml_parse_into_struct($p, $data, $vals, $index);
     xml_parser_free($p);

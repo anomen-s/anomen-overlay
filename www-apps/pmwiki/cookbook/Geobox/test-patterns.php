@@ -10,10 +10,7 @@ function Markup($a=0, $b=0, $c=0, $d=0)
  return ""; // dummy
 
 }
-function SDV($a, $b)
-{
- return ""; // dummy
-}
+function SDV(&$v,$x) { if (!isset($v)) $v=$x; }
 
 define("PmWiki", "1");
 include("geobox.php");
