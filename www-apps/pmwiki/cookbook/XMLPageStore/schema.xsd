@@ -9,22 +9,27 @@
 			<xs:element name="author" type="xs:string" minOccurs="0"/>
 			<xs:element name="charset" type="xs:string" minOccurs="0" default="UTF-8"/>
 			<xs:element name="csum" type="xs:string" minOccurs="0"/>
-			<xs:element name="ctime" type="xs:positiveInteger"/>
-			<xs:element name="host" type="xs:string"/>
+			<xs:element name="ctime" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="host" type="xs:string" minOccurs="0"/>
+			<xs:element name="keywords" type="xs:string" minOccurs="0"/>
 			<xs:element name="name" type="xs:string"/>
+			<!--xs:element name="newline" type="xs:string" minOccurs="0"/-->
 			<xs:element name="passwdattr" type="xs:string" minOccurs="0"/>
 			<xs:element name="passwdedit" type="xs:string" minOccurs="0"/>
 			<xs:element name="passwdread" type="xs:string" minOccurs="0"/>
 			<xs:element name="passwdupload" type="xs:string" minOccurs="0"/>
+			<xs:element name="post" type="xs:string" minOccurs="0"/>
 			<xs:element name="rev" type="xs:positiveInteger"/>
 			<xs:element name="targets" type="xs:string" minOccurs="0"/>
 			<xs:element name="text" type="xs:string" minOccurs="0"/>
 			<xs:element name="time" type="xs:positiveInteger"/>
+			<xs:element name="title" type="xs:string" minOccurs="0"/>
+			<xs:element name="updatedto" type="xs:positiveInteger" minOccurs="0"/>
 			<xs:group ref="diffGroup" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="version" type="xs:string" use="required"/>
-		<xs:attribute name="ordered" type="xs:string" use="optional" fixed="1"/>
-		<xs:attribute name="urlencoded" type="xs:string" use="optional" fixed="1"/>
+		<!--xs:attribute name="ordered" type="xs:string" use="optional" fixed="1"/-->
+		<!--xs:attribute name="urlencoded" type="xs:string" use="optional" fixed="1"/-->
 	</xs:complexType>
 
 	<xs:group name="diffGroup">
