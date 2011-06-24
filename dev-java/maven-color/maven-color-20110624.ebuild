@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/cracklib-words/cracklib-words-20080507.ebuild,v 1.8 2010/05/21 02:00:44 vapier Exp $
+# $Header$
 EAPI="3"
 
 DESCRIPTION="Colorize Maven output"
