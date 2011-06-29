@@ -15,8 +15,14 @@ IUSE=""
 DEPEND=""
 RDEPEND="dev-java/maven-bin"
 
+src_unpack() {
+	cd "${WORKDIR}"
+	cp "${FILESDIR}/cmvn-${PV}" cmvn
+}
+
+
 
 src_install() {
-	dobin "${FILESDIR}/cmvn"
+	dobin "cmvn"
 }
 
