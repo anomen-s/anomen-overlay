@@ -1,0 +1,16 @@
+#! /bin/sh
+
+if [ "$1" == "-h" ]
+then
+ echo "Removes empty directories from given directory"
+ echo "arguments: [dir]"
+ exit 1
+
+else if [ -n "$1" ]
+then
+ cd "$1"
+fi
+
+fi
+
+find .  -depth -mindepth 1 -type d -print0 -exec rmdir --ignore-fail-on-non-empty '{}' ';'

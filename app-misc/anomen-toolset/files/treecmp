@@ -1,0 +1,48 @@
+#! /bin/sh
+
+TPATH=/usr/local/lib/anomen-toolset
+
+if [ -z "$1" ]
+then
+ echo "Removes same files from src/current directory."
+ echo "arguments: [source_dir] dest_dir"
+ exit 1
+fi
+
+SRCDIR="$1"
+DESTDIR="$2"
+
+if [ -z "$2" ]
+then
+ SRCDIR=`pwd`
+ DESTDIR="$1"
+fi
+
+if [ ! -d "$SRCDIR" ]
+then
+ echo "Specified source directory does not exist ($SRCDIR)"
+ exit 2
+fi
+
+if [ ! -d "$DESTDIR" ]
+then
+ echo "Specified destination directory does not exist ($DESTDIR)"
+ exit 3
+fi
+
+if [ "$SRCDIR" -ef "$DESTDIR" ]
+then
+ echo "WARNING: source and destination directories are same!"
+ exit 4
+fi
+
+find "$SRCDIR" -type f -exec $TPATH/treecmp.sha "$SRCDIR" "$DESTDIR" '{}' ';'
+
+
+DODIFF=`expr match "$0" '.*treecmp\(d\)$'`
+
+if [ -n "$DODIFF"  ]
+then
+ echo "##DIFF"
+ find "$SRCDIR" -type f -exec $TPATH/treecmp.diff "$SRCDIR" "$DESTDIR" '{}' ';'
+fi

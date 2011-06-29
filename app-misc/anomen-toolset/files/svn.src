@@ -1,0 +1,14 @@
+#! /bin/sh
+
+
+for A
+do
+
+ #col -x < "$A" > "$A.RMLF"
+ #mv -f "$1".RMLF "$1"
+
+ svn ps svn:keywords "Author Date Id HeadURL Revision" "$A"
+ svn ps svn:eol-style "native" "$A"
+
+done
+

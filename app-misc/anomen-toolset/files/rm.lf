@@ -1,0 +1,24 @@
+#! /bin/sh
+
+#if [ -z "$1" -a -f "$1" ] 
+#then
+# echo "filename required"
+# exit 1 
+#fi
+
+T=`mktemp`
+
+for A 
+do 
+ echo -ne "$A\t" 1>&2
+ if [ -f "$A" ]
+ then
+  eval tr -d '"\r"' '<' '"$A"' '>' '"$T"'
+  # col -x < $1 > $1.XXX
+  mv -f "$T" "$A"
+  echo "ok" 1>&2
+ else
+  echo "not regular file" 1>&2
+ fi
+
+done

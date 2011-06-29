@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ svn add `svn stat | sed -n -e 's/$/@HEAD/;s/^\?//p' `
+
