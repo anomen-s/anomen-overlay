@@ -1,0 +1,37 @@
+#!/bin/sh -x
+
+PROFILE="@PROFILE@"
+ISOFILE=
+
+# english locale
+#export LC_ALL=en_US
+#export LANG=en_US
+
+export WINEARCH=win32
+export WINEPREFIX="$HOME/Wine/$PROFILE"
+#export WINEDEBUG=-all
+
+cd "$WINEPREFIX"
+if test -n "$ISOFILE" ; then
+  test -n  "`ls loop/`"  &&  fusermount -z -u "$WINEPREFIX/loop"
+  fuseiso "$ISOFILE" "$WINEPREFIX/loop" || exit 1
+fi
+
+cd drive_c
+# cpu freq
+#xrandr -s 1024x768
+#sudo cpufreq-set -g performance  || echo cpu perf. setting failed
+
+#taskset 01 wine "c:\\game\\game.exe"
+taskset 01 wine "t:\\totalcmd\\totalcmd.exe"
+
+if test -n "$ISOFILE" ; then
+  fusermount -z -u "$WINEPREFIX/loop"
+fi
+
+### restore settings
+
+#sudo cpufreq-set -g ondemand  || echo cpu perf. setting failed
+#xrandr -s 1440x900 -r 54
+#nvidia-settings -l
+

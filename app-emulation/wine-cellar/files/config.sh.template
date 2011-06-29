@@ -1,0 +1,11 @@
+#!/bin/sh -x
+PROFILE="@PROFILE@"
+
+export WINEARCH=win32
+export WINEPREFIX="$HOME/Wine/$PROFILE"
+#export WINEDEBUG=-all
+
+cd "$WINEPREFIX/drive_c"
+
+winecfg
+
