@@ -9,3 +9,7 @@ REGEDIT4
 [HKEY_CURRENT_USER\Software\Wine\WineDbg]
 "ShowCrashDialog"=dword:00000000
 
+[HKEY_LOCAL_MACHINE\Software\Ghisler\Total Commander]
+"FtpIniName"=".\\wcx_ftp.ini"
+"IniFileName"=".\\wincmd.ini"
+"InstallDir"="t:\\totalcmd"
