@@ -13,7 +13,9 @@ KEYWORDS="amd64 x86"
 IUSE=""
 
 DEPEND=""
-RDEPEND="dev-java/maven-bin"
+RDEPEND="
+	dev-java/maven-bin:2.2
+	app-misc/realpath"
 
 src_unpack() {
 	cd "${WORKDIR}"
