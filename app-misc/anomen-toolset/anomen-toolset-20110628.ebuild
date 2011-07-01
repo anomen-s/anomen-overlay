@@ -37,6 +37,6 @@ src_install() {
 	
 	insinto /usr/local/lib/anomen-toolset
 	doins lib/*
-	fperms 0755 /usr/local/lib/anomen-toolset/*
+	fperms 0755 /usr/local/lib/anomen-toolset/treecmp.{sha,diff}
 }
 
