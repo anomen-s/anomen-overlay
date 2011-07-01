@@ -33,10 +33,11 @@ mvn-color-2()
   mvn "$@" | sed -e "s/\(\[INFO\]\ \-.*\)/${TEXT_BLUE}${BOLD}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(^-----.*\)/${TEXT_BLUE}${BOLD}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(^ T E S T S.*\)/${TEXT_BLUE}${BOLD}\1${RESET_FORMATTING}/g" \
-	       -e "s/\(\[INFO\]\ \[.*\)/${RESET_FORMATTING}${BOLD}\1${RESET_FORMATTING}/g" \
-	       -e "s/\(\[INFO\]\ BUILD SUCCESSFUL\)/${BOLD}${TEXT_GREEN}\1${RESET_FORMATTING}/g" \
+	       -e "s/\(\[INFO\] \[.*\)/${RESET_FORMATTING}${BOLD}\1${RESET_FORMATTING}/g" \
+	       -e "s/\(\[INFO\] BUILD SUCCESSFUL\)/${BOLD}${TEXT_GREEN}\1${RESET_FORMATTING}/g" \
+	       -e "s/\(\[INFO\] Building module \)\(.*\)/${BOLD}${TEXT_BLUE}\1${TEXT_GREEN}\2${RESET_FORMATTING}/g" \
 	       -e "s/\(\[WARNING\].*\)/${BOLD}${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
-	       -e "s/\([0-9*]) [^:]*:[^:]*:[^:]*:.*\)/${BOLD}${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
+	       -e "s/\([0-9]*) [^:]*:[^:]*:[^:]*:.*\)/${BOLD}${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(\[ERROR\].*\)/${BOLD}${TEXT_RED}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(\[INFO\] Failed to resolve artifact\\..*\)/${BOLD}${TEXT_RED}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(Exception in thread \"[^\"]*\" \)\(.*\)/\1${BOLD}${TEXT_RED}\2${RESET_FORMATTING}/g" \
@@ -47,7 +48,7 @@ mvn-color-2()
   echo -ne ${RESET_FORMATTING}
 }
 
-# Wrapper function for Maven's mvn-2.2 command.
+# Wrapper function for Maven's mvn-3.0 command.
 mvn-color-3()
 {
   # Filter mvn output using sed
