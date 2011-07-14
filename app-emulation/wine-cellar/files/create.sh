@@ -32,9 +32,9 @@ done
 sleep 1
 
 ln -v -s -f -n ../loop  "$WINEPREFIX/dosdevices/d:"
-ln -v -s -f -n /usr/share/fonts "$WINEPREFIX/dosdevices/f:"
 ln -v -s -f -n .. "$WINEPREFIX/dosdevices/p:"
 ln -v -s -f -n ../../drive_t "$WINEPREFIX/dosdevices/t:"
+ln -v -s -f -n /usr/share/fonts "$WINEPREFIX/dosdevices/v:"
 ln -v -s -f -n /usr/share/wine "$WINEPREFIX/dosdevices/w:"
 rm -v "$WINEPREFIX/dosdevices/z:"
 
@@ -48,7 +48,7 @@ done
 
 cp -f -v  "$CELLAR_SHARE/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
 
-for F in config.sh run.sh winetricks.sh
+for F in config.sh regedit.sh run.sh winetricks.sh
 do
     sed -e  "s/@PROFILE@/$PROFILE/g" "$CELLAR_SHARE/$F.template" > "$WINEPREFIX/$F"
     chmod -v 755 "$WINEPREFIX/$F"
