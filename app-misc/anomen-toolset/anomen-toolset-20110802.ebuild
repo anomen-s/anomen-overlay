@@ -10,11 +10,12 @@ SRC_URI=""
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="subversion"
+IUSE="subversion +ssh"
 
 DEPEND=""
 RDEPEND="
 	subversion? ( dev-vcs/subversion )
+	ssh? ( net-misc/openssh )
 	virtual/libiconv
 	"
 
@@ -24,6 +25,7 @@ src_unpack() {
 
 	cp -t bin "${FILESDIR}"/{decwin,chmod.std,psm,rm.lf,treecmp,treeprune}
 	cp -t lib "${FILESDIR}"/{treecmp.diff,treecmp.sha}
+	use "ssh" && cp -t bin "${FILESDIR}"/ssh-agent-shared
 	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src}
 
 	cp -t sbin "${FILESDIR}"/revdep-list.sh
