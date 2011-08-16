@@ -1,0 +1,29 @@
+#!/bin/sh -x
+
+# manual svn move 
+# moves source to dest in subversion without replacing current unversioned dest
+
+if [ -e "$2.tmp" ] ;
+then
+ echo "Temp file already exists: $2.tmp"
+ exit 3
+fi
+
+if [ ! -e "$2" ] ;
+then
+ echo "Dest file doesnt exist: $2"
+ exit 2
+fi
+
+svn revert "$1"
+
+if [ ! -e "$1" ] ;
+then
+ echo "Source file doesn't exist: $1"
+ exit 1
+fi
+
+mv "$2" "$2.tmp" && \
+svn mv "$1" "$2" && \
+mv -f "$2.tmp" "$2"
+

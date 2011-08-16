@@ -17,7 +17,7 @@ END_TEXT
 
 cat /var/cache/revdep-rebuild/5_order.rr | while read P
 do
-  echo "=$P \\" >> revdep.emerge.sh
+  echo "$P \\" >> revdep.emerge.sh
 done
 
 echo " " >> revdep.emerge.sh

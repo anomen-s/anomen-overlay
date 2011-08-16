@@ -10,35 +10,37 @@ SRC_URI=""
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="subversion +ssh"
+IUSE="subversion +ssh +xml"
 
 DEPEND=""
 RDEPEND="
 	subversion? ( dev-vcs/subversion )
 	ssh? ( net-misc/openssh )
+	xml? ( dev-libs/libxml2 )
 	virtual/libiconv
 	"
 
 src_unpack() {
 	cd "${WORKDIR}"
-	mkdir {bin,sbin,lib}
+	mkdir {bin,sbin,libexec}
 
-	cp -t bin "${FILESDIR}"/{decwin,chmod.std,psm,rm.lf,treecmp,treeprune}
-	cp -t lib "${FILESDIR}"/{treecmp.diff,treecmp.sha}
+	cp -t bin "${FILESDIR}"/{decwin,chmod.std,psm,treecmp,treeprune}
+	cp -t libexec "${FILESDIR}"/{treecmp.diff,treecmp.sha}
 	use "ssh" && cp -t bin "${FILESDIR}"/ssh-agent-shared
-	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src}
+	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src,svn.mv}
+	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
 
 	cp -t sbin "${FILESDIR}"/revdep-list.sh
 
 }
 
 src_install() {
-	into /usr/local
+	into /usr
 	dobin bin/*
 	dosbin sbin/*
 	
-	insinto /usr/local/lib/anomen-toolset
-	doins lib/*
-	fperms 0755 /usr/local/lib/anomen-toolset/treecmp.{sha,diff}
+	insinto /usr/libexec/anomen-toolset
+	doins libexec/*
+	fperms 0755 /usr/libexec/anomen-toolset/treecmp.{sha,diff}
 }
 

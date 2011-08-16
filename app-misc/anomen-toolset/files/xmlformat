@@ -1,0 +1,13 @@
+#!/bin/sh
+
+export XMLLINT_INDENT=$'\t'
+if [ ! "$1" ] 
+then
+ echo "missing param" > /dev/stderr
+ exit 1
+fi
+TMP=$(mktemp)
+
+xmllint --encode UTF-8 --noent --format --output "$TMP" "$1"  || exit 2
+
+rm "$1" && cp "$TMP" "$1"
