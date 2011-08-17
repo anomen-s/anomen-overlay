@@ -12,11 +12,9 @@ export WINEPREFIX="$WINECELLAR/$PROFILE"
 export CELLAR_SHARE=/usr/share/wine/cellar
 
 if [ ! -d "$WINECELLAR" ]; then
-  echo Creating cellar in "$WINECELLAR"...
-  mkdir -v "$WINECELLAR" ||  exit 1
-  mkdir -v "$WINECELLAR/drive_t" || exit 1
-  ln -v -s ../.wine "$WINECELLAR/Default"
-  ln -v -s "$CELLAR_SHARE/create.sh" "$WINECELLAR/create.sh"
+  echo Missing cellar: "$WINECELLAR"...
+  echo Use $CELLAR_SHARE/install.sh to create it.
+  exit 1
 fi
 
 mkdir -v -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/wine"

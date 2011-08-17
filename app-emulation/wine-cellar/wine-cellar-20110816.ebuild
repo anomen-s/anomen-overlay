@@ -25,5 +25,6 @@ INSTALL_DIR=/usr/share/wine/cellar
 src_install() {
 	insinto "$INSTALL_DIR"
 	doins *
-	fperms 0755 "$INSTALL_DIR/create.sh"
+	fperms 0755 "$INSTALL_DIR/install.sh"
+	fperms 0755 "$INSTALL_DIR/create.sh.template"
 }
