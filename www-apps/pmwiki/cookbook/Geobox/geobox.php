@@ -11,8 +11,8 @@
     (at your option) any later version.
     
     TODO:
-    * geobox for conversions (is it useful?)
     * GPX export (see sourceblock for howto)
+    * bearing calc. check 0deg, etc...
 */
 
 
@@ -30,7 +30,7 @@ SDV($GeoBoxDefaultFormat,'dm');
 SDVA($GeoBoxLinks, array(
 'maps.google.com'=>'http://maps.google.com/?q=$N%20$E',
 'mapy.cz'=>'http://www.mapy.cz/?query=Loc:$N%20$E',
-'atlas.cz'=>'http://amapy.atlas.cz/?q=$Ndi°$Nmi\'$Ns%22$LAT;$Edi°$Emi\'$Es%22$LON',
+//'atlas.cz'=>'http://amapy.atlas.cz/?q=$Ndi°$Nmi\'$Ns%22$LAT;$Edi°$Emi\'$Es%22$LON',
 'geocaching.com/maps'=>'http://www.geocaching.com/map/default.aspx?lat=$N&lng=$E',
 'geocaching.com/near'=>'http://www.geocaching.com/seek/nearest.aspx?lat=$N&lng=$E&f=1'
 ));
