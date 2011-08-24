@@ -16,23 +16,20 @@
 */
 
 
-$RecipeInfo['Geobox']['Version'] = '2011-08-22';
+$RecipeInfo['Geobox']['Version'] = '2011-08-24';
 
 
 Markup('geo','fulltext','/\(:geo\s+((?:[dmsDMS,.]+:\s+)?(?:[a-z]+=\S+\s+)*)?(.*?)\s*:\)/e',
     "geobox_maps(strtolower('$1'),'$2')");
 
-//Markup('geo2','fulltext','/\(:geo2\s+((?:[dmsDMS,.]+:\s+)?(?:[a-z]+=\S+\s+)*)?(.*?)\s*:\)/e', "geomaps2('$1','$2')");
-
-//Markup('geobox','fulltext','/\(:geobox\s+(.*?)\s*:\)/e', "geobox('$1')");
-
 SDV($GeoBoxDefaultFormat,'dm');
+
 SDVA($GeoBoxLinks, array(
-'maps.google.com'=>'http://maps.google.com/?q=$N%20$E',
-'mapy.cz'=>'http://www.mapy.cz/?query=Loc:$N%20$E',
+ 'maps.google.com'=>'http://maps.google.com/?q=$N%20$E',
+ 'mapy.cz'=>'http://www.mapy.cz/?query=Loc:$N%20$E',
 //'atlas.cz'=>'http://amapy.atlas.cz/?q=$Ndi°$Nmi\'$Ns%22$LAT;$Edi°$Emi\'$Es%22$LON',
-'geocaching.com/maps'=>'http://www.geocaching.com/map/default.aspx?lat=$N&lng=$E',
-'geocaching.com/near'=>'http://www.geocaching.com/seek/nearest.aspx?lat=$N&lng=$E&f=1'
+ 'geocaching.com/maps'=>'http://www.geocaching.com/map/default.aspx?lat=$N&amp;lng=$E',
+ 'geocaching.com/near'=>'http://www.geocaching.com/seek/nearest.aspx?lat=$N&amp;lng=$E&amp;f=1'
 ));
 
 function geobox_asint($m, $index) 
@@ -44,7 +41,7 @@ function geobox_asint($m, $index)
   return $res;
 }
 
-function parse_coords($coords)
+function geobox_parse_coords($coords)
 {
     $re_num = "\d+(?:[.,]\d*)?";
     $re_coord="
@@ -104,12 +101,12 @@ function geobox_floor0($foo)
 
 function geobox_sign($foo) 
 {
-    if($foo < 0) { return "-"; } 
-    else { return ""; }
+    return ($foo < 0) ? "-" : "";
 }
-function geobox_atan2($y, $x) 
+
+function geobox_atan2($y, $x)
 {
-    if ($y == 0) { 
+    if ($y == 0) {
       return ($x >= 0) ? 0 : pi();
     }
     return 2 * atan((sqrt($x*$x+$y*$y)-$x)/$y);
@@ -117,8 +114,7 @@ function geobox_atan2($y, $x)
     
 
 
-// FIXME:: N = (NSig*Ndi)°Nmi'Ns''  = (NSig*Ndi)°Nm
-function convert_coords($c)
+function geobox_convert_coords($c)
 {
     $c['LAT'] = ($c[0] > 0) ? "N" : "S";
     $c['LON'] = ($c[1] > 0) ? "E" : "W";
@@ -132,8 +128,6 @@ function convert_coords($c)
     $c['S'] = sprintf("%'08.5f",-$c[0]);
     $c['Nd'] = sprintf("%'08.5f",abs($c[0]));
     $c['Ed'] = sprintf("%'08.5f",abs($c[1]));
-
-    //FIXME: negative numbers - do not return negative min, sec
 
     // convert to [Ndi]°[Nmi]'[Ns]" and  [Ndi]°[Nm]'
     $c['Ndi'] = sprintf("%'02.0f",floor($c['Nd']));
@@ -160,7 +154,7 @@ function convert_coords($c)
  * parameter (e.g.: dist=10), 
  * full parameter value is also returned (e.g.: distance=10).  
  */ 
-function parse_params($param)
+function geobox_parse_params($param)
 {
   $known_params = array('format', 'azimuth', 'distance');
   
@@ -184,7 +178,7 @@ function parse_params($param)
   return $params;
 }
 
-function build_link($link, $c) 
+function geobox_build_link($link, $c) 
 {
    return preg_replace('/\\$([A-Za-z]+)/e', '$c[\'$1\']', $link);
 }
@@ -193,39 +187,35 @@ function geobox_maps($param, $coords_param)
 {
     global $GeoBoxDefaultFormat, $GeoBoxLinks;
 
-    $c = parse_coords($coords_param);
+    $c = geobox_parse_coords($coords_param);
     
     if (empty($c['result'])) {
 	     return "[Invalid \"$coords_param\"]";
     }
     
-    $params = parse_params($param);
+    $params = geobox_parse_params($param);
     $cformat = $params['format'];
     
 	  if (!empty($params['azimuth']) || !empty($params['distance'])) { 
   	  if (is_numeric($params['azimuth']) && is_numeric($params['distance'])) { 
-         $c = coordinateProjection($c[0], $c[1], $params['azimuth'], $params['distance']);
+         $c = geobox_projection($c[0], $c[1], $params['azimuth'], $params['distance']);
       } else {
   	     return "[Invalid azimuth \"${params['azimuth']}\" or distance \"${params['distance']}\"]";
       }
     }
-	$c = convert_coords($c);
-
-	// FIXME - sign OR NS/EW
-	//$COORDS="${c['NSig']}${c['Ndi']}°${c['Nm']} ${c['ESig']}${c['Edi']}°${c['Em']}";
-
+	$c = geobox_convert_coords($c);
 
 	if (empty($cformat)) { 
 		$cformat = $GeoBoxDefaultFormat; 
 	}
 	if (strpos($cformat, "s") !== false) {
-		$COORDS=build_link('$NSig$Ndi&#176;$Nmi\'$Ns" $ESig$Edi&#176;$Emi\'$Es"', $c);// DMS
+		$COORDS=geobox_build_link('$NSig$Ndi&#176;$Nmi\'$Ns" $ESig$Edi&#176;$Emi\'$Es"', $c);// DMS
 	}
 	else if (strpos($cformat, "m") !== false) {
-		$COORDS=build_link('$NSig$Ndi&#176;$Nm\' $ESig$Edi&#176;$Em\'', $c);// DM
+		$COORDS=geobox_build_link('$NSig$Ndi&#176;$Nm\' $ESig$Edi&#176;$Em\'', $c);// DM
 	}
 	else {
-		$COORDS=build_link('$NSig$Nd $ESig$Ed', $c);//
+		$COORDS=geobox_build_link('$NSig$Nd&#176; $ESig$Ed&#176;', $c);//
 	}
 
   $result = "$COORDS";
@@ -233,7 +223,7 @@ function geobox_maps($param, $coords_param)
   if (is_array($GeoBoxLinks) && !empty($GeoBoxLinks)) {
     $result .= " - ";
     foreach ($GeoBoxLinks as $t=>$l) {
-      $l = build_link($l, $c);
+      $l = geobox_build_link($l, $c);
       $result .= " [[$l | $t]]";
     }
   }
@@ -245,7 +235,7 @@ function geobox_maps($param, $coords_param)
  *  Calculates coordinates of point given by starting coordinates, azimuth and distance (meters).
  *  All angles are in degrees.  
  */ 
-function coordinateProjection($latitude_deg, $longtitude_deg, $azimuth_deg, $distance) {
+function geobox_projection($latitude_deg, $longtitude_deg, $azimuth_deg, $distance) {
 
     //source: geocaching_tool2.xls
     $ro =  pi() / 180.0;
@@ -275,17 +265,3 @@ function coordinateProjection($latitude_deg, $longtitude_deg, $azimuth_deg, $dis
 }
 
 
-//function geobox($param)
-//{
-//  $c = coordinateProjection(50.06884, 14.32922, 108, 2341);
-//  return "${c[0]} ${c[1]}"; 
-//}
-
-
-//function geomaps2($param1, $param2)
-//{
-//  $p = parse_params($param1);
-//  #print_r($p);
-//  return "Params: \"$param1\"  \"$param2\"";
-//
-//}

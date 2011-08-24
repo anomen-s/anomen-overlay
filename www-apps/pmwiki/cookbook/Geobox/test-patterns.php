@@ -3,6 +3,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+
+<p>
+List of patterns which are quaranteed to work in all versions of geobox.
+</p>
+
 <?php
 
 function Markup($a=0, $b=0, $c=0, $d=0)
@@ -11,6 +16,7 @@ function Markup($a=0, $b=0, $c=0, $d=0)
 
 }
 function SDV(&$v,$x) { if (!isset($v)) $v=$x; }
+function SDVA(&$v,$x) { /*required for link list, not used here */ }
 
 define("PmWiki", "1");
 include("geobox.php");
@@ -29,7 +35,7 @@ $c[] = " 50.3°35.4'44''N 14.1°22'22''W";
 
 foreach($c as $coord) 
 {
- $r = parse_coords($coord);
+ $r = geobox_parse_coords($coord);
  echo "<div>Str: \"$coord\" ->  [${r[0]},${r[1]},${r['result']}] </div>\n";
 }
 
