@@ -60,6 +60,7 @@ For example, following line will produce coordinates @@ 50.00949 15.18703 @@:
 You can modify list of links be changing @@$GeoBoxLinks@@ array.
 
 : disable list :  @@$GeoBoxLinks = array();@@
+: remove link : @@unset($GeoBoxLinks['mapy.cz']);@@
 : add link :  @@SDVA($GeoBoxLinks,  array('title'=>'http://example.com/maps'));@@
 : replace list:  @@$GeoBoxLinks = array('title'=>'http://example.com/maps');@@
 
