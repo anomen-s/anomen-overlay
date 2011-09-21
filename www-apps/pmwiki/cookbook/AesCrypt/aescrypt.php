@@ -3,21 +3,20 @@
 /*
     AesCrypt
 
-    Copyright 2006 Anomen (ludek_h@seznam.cz)
+    Copyright 2011 Anomen (ludek_h@seznam.cz)
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2011-09-20';
+$RecipeInfo['AesCrypt']['Version'] = '2011-09-21';
 
 SDV($AesCryptKDF, 'sha256');
 SDV($AesCryptPlainToken, '(:encrypt ');
 SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
 SDV($AesCryptPadding, 8);
-
 
 $HTMLHeaderFmt['aescrypt'] = "
 
@@ -54,7 +53,7 @@ function aesClick() {
    while ((tpart.length % padding) > 0) {
        tpart = tpart.concat(' ');
    }
-   alert(tpart);
+
    tarr +=AesCtr.encrypt(tpart,tpass,256);
    tarr += ' ';
    tarr += markup_end;
@@ -88,14 +87,16 @@ function decAesClick(elem) {
 function registerAesEvent()
 {
   var formElement = document.getElementById('text').parentNode;
-  alert(formElement.nodeValue);
+  //alert(formElement.nodeValue);
+  
+  // TODO: add protection handler to save buttons
   
 }
 
 if ( document.addEventListener ) {
-//  window.addEventListener( 'load', registerAesEvent, false );
+  window.addEventListener( 'load', registerAesEvent, false );
 } else if ( document.attachEvent ) {
-//  window.attachEvent( 'onload', registerAesEvent );
+  window.attachEvent( 'onload', registerAesEvent );
 }
 
 // ]]>
@@ -103,16 +104,21 @@ if ( document.addEventListener ) {
 ";
 
 Markup('aescrypt',
-       'inline',
-       "/\\(:aes\\s+(.*?)\s*:\\)/se",
+       '_begin',
+       "/\\Q$AesCryptCipherToken\\E\\s*(.*?)\\s*\\Q$AesCryptEndToken\\E/se",
        "'\n'.'<a href=\"javascript:void (0);\" onClick=\"decAesClick(this);\"><span style=\"display:none;\">$1</span><span>[Decrypt]</span></a>'");
 
 if ($action == 'edit') {
- $GUIButtons['aescrypt'] = array(750, '', '', '',
-  '<a href=\"#\" onclick=\"aesClick(0);\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"Encrypt\" /></a>');
 
- $GUIButtons['aescryptDebug'] = array(1750, '', '', '',
-  '<a href=\"#\" onclick=\"registerAesEvent();\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"Encrypt\" /></a>');
-
+ if ($EnableGUIButtons) {
+  $GUIButtons['aescrypt'] = array(750, '', '', '',
+   '<a href=\"#\" onclick=\"aesClick(0);\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"Encrypt\" /></a>');
+ } else {
+  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='aesClick(0);'/>";
+ }
 }
+
+ // DEV
+ $GUIButtons['aescryptDebug'] = array(1750, '', '', '',
+  '<a href=\"#\" onclick=\"registerAesEvent();\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"dev\" /></a>');
 

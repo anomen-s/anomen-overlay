@@ -305,12 +305,8 @@ AesCtr.kdf_aes = function(password, nBits) {
   for (var i=0; i<nBytes; i++) {  // use 1st 16/24/32 chars of password for key
     pwBytes[i] = isNaN(password.charCodeAt(i)) ? 0 : password.charCodeAt(i);
   }
-  var key = Aes.cipher(pwBytes, Aes.keyExpansion(pwBytes));  // gives us 16-byte key
+  var key = Aes.Cipher(pwBytes, Aes.KeyExpansion(pwBytes));  // gives us 16-byte key
   return key.concat(key.slice(0, nBytes-16));  // expand key to 16/24/32 bytes long
-}
-
-AesCtr.kdf = function(password, nBits) {
-    return AesCtr.kdf_sha256(password, nBits);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */

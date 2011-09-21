@@ -54,6 +54,9 @@ public class PmWikiTest extends TestCase {
         assertEquals("abc",
                 AesCrypto.decryptFromBase64RawKey("1ohjTsnJycmALuk=", keyData));
 
+        assertEquals(" Encrypt this text ",
+                AesCrypto.decryptFromBase64RawKey("jvJ5Tnl5eXnpdK89gmpkiWxjkmi73OoGc72C", keyData));
+
 
     }
 }
