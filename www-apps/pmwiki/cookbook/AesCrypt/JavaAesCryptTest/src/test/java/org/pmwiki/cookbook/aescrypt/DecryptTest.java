@@ -41,7 +41,14 @@ public class DecryptTest extends TestCase {
                 AesCrypto.decryptFromBase64("AAAAAAAAAABHtF/GUuR5r+R8gBpKzVQv3FT2osanEmZD1DvoR3m3sQ==", password));
 
         assertEquals("abcdef ",
-                AesCrypto.decryptFromBase64("AC13Tnd3d3emp8VsKzQR", password));
+                AesCrypto.decryptFromBase64("xkh3TvX19fUW25PPKKx/", password));
+
+        assertEquals("abcdef ",
+                AesCrypto.decryptFromBase64("NEl3Tvr6+vp0hD2JVD8P", "test1234"));
+
+        assertEquals("zkou\u0161kaZ1234 ",
+                AesCrypto.decryptFromBase64("bkp3Tubm5uZY2VAhREboPH5pf0T8dg==", "Heslo1234!$%"));
+
 
         assertEquals("AAAAAAAAAADcVPaixqcSZkPUO+hHebex",
                 AesCrypto.encryptToBase64("qrstuvwxyz012345", password, AesCrypto.ONE_NONCE));

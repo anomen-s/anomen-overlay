@@ -184,16 +184,7 @@ AesCtr.encrypt = function(plaintext, password, nBits) {
   password = Utf8.encode(password);
   //var t = new Date();  // timer
 	
-  // use AES itself to encrypt password to get cipher key (using plain password as source for key 
-  // expansion) - gives us well encrypted key
-  //var nBytes = nBits/8;  // no bytes in key
-  //var pwBytes = new Array(nBytes);
-  //for (var i=0; i<nBytes; i++) {
-  //  pwBytes[i] = isNaN(password.charCodeAt(i)) ? 0 : password.charCodeAt(i);
-  //}
- //ar key = Aes.Cipher(pwBytes, Aes.KeyExpansion(pwBytes));  // gives us 16-byte key
-  //y = key.concat(key.slice(0, nBytes-16));  // expand key to 16/24/32 bytes long
-  var key = AesCtr.kdf(password);
+  var key = AesCtr.kdf(password, nBits);
 
   // initialise counter block (NIST SP800-38A §B.2): millisecond time-stamp for nonce in 1st 8 bytes,
   // block counter in 2nd 8 bytes
@@ -256,15 +247,7 @@ AesCtr.decrypt = function(ciphertext, password, nBits) {
   password = Utf8.encode(password);
   //var t = new Date();  // timer
   
-  // use AES to encrypt password (mirroring encrypt routine)
-  //var nBytes = nBits/8;  // no bytes in key
-  //var pwBytes = new Array(nBytes);
-  //for (var i=0; i<nBytes; i++) {
-  //  pwBytes[i] = isNaN(password.charCodeAt(i)) ? 0 : password.charCodeAt(i);
-  //}
-  //var key = Aes.Cipher(pwBytes, Aes.KeyExpansion(pwBytes));
-  //key = key.concat(key.slice(0, nBytes-16));  // expand key to 16/24/32 bytes long
-  var key = AesCtr.kdf(password);
+  var key = AesCtr.kdf(password, nBits);
   //alert('len:'+ key.lrngth);
   //alert('key:'+key);
   // recover nonce from 1st 8 bytes of ciphertext
@@ -308,9 +291,26 @@ AesCtr.decrypt = function(ciphertext, password, nBits) {
   return plaintext;
 }
 
-AesCtr.kdf = function(password) {
+
+AesCtr.kdf_sha256 = function(password, nBits) {
    var hash = Sha256.hash(password);
    return hash;
+}
+
+AesCtr.kdf_aes = function(password, nBits) {
+  // use AES itself to encrypt password to get cipher key (using plain password as source for key 
+  // expansion) - gives us well encrypted key (though hashed key might be preferred for prod'n use)
+  var nBytes = nBits/8;  // no bytes in key (16/24/32)
+  var pwBytes = new Array(nBytes);
+  for (var i=0; i<nBytes; i++) {  // use 1st 16/24/32 chars of password for key
+    pwBytes[i] = isNaN(password.charCodeAt(i)) ? 0 : password.charCodeAt(i);
+  }
+  var key = Aes.cipher(pwBytes, Aes.keyExpansion(pwBytes));  // gives us 16-byte key
+  return key.concat(key.slice(0, nBytes-16));  // expand key to 16/24/32 bytes long
+}
+
+AesCtr.kdf = function(password, nBits) {
+    return AesCtr.kdf_sha256(password, nBits);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
