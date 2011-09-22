@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2011-09-21';
+$RecipeInfo['AesCrypt']['Version'] = '2011-09-22';
 
 SDV($AesCryptKDF, 'sha256');
 SDV($AesCryptPlainToken, '(:encrypt ');
@@ -20,8 +20,7 @@ SDV($AesCryptPadding, 8);
 
 $HTMLHeaderFmt['aescrypt'] = "
 
-<script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/sha256.js\"></script>
-<script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/aes.js\"></script>
+<script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/aescrypt.js\"></script>
 <script type=\"text/javascript\">
 // <![CDATA[
 
@@ -76,7 +75,7 @@ function decAesClick(elem) {
     }
     var aesDecrypt = node.childNodes[0].nodeValue;
     var res = AesCtr.decrypt(aesDecrypt,prompt('Decrypt key','TopSecret'),256);
-    res = res.replace(/^\s\s*/, '').replace(/\s\s*\$/, '');
+    res = res.replace(/^\\s\\s*/, '').replace(/\\s\\s*\$/, '');
     node.childNodes[0].nodeValue = res;
     node.style.display='inline';
     nodeDec.style.visibility='hidden';
