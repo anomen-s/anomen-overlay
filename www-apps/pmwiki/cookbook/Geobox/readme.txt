@@ -33,7 +33,15 @@ Use geobox markup
 to create link list:
  ''49°43.996' 014°27.665'' [[http://www.mapy.cz/?query=Loc:49.73327%2014.46108 | mapy.cz]] [[http://maps.google.com/?q=49.73327%2014.46108|gmaps]] [[http://www.geocaching.com/map/default.aspx?lat=49.73327&lng=14.46108|geocaching.com/maps]] [[http://www.geocaching.com/seek/nearest.aspx?lat=49.73327&lng=14.46108&f=1|geocaching.com/near]]
 
-!!!Coordinate format
+!!! Coordinate input format
+*Coordinates consists of latitude and logitude values separated by space character(s).
+* Values can pre prefixed or postfixed with N or S for lat. and E or W for lon.
+* Decimal dot or coma can be used.
+* several characters can be used as degree sign (''U+002A ASTERISK'', ''U+00B0 DEGREE SIGN'', ''U+00BA MASCULINE ORDINAL INDICATOR', ''U+02DA RING ABOVE'').
+* all three formats are recognised (degrees only and mixed formats with arcmin or arcmin+arcsec)
+* degree sign is mandatory only for mixed formats (to separate degrees and arcminutess)
+
+!!!Coordinate display format
 You can change format of displayed coordinates by using ''format'' paremater.
 
 Possible values and meanings are:
