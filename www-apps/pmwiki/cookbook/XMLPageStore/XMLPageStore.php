@@ -3,13 +3,13 @@
 /*
     XMLPageStore
 
-    Copyright 2006 Anomen (ludek_h@seznam.cz)
+    Copyright 2011 Anomen (ludek_h@seznam.cz)
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 */
-$RecipeInfo['XMLPageStore']['Version'] = '2011-05-18';
+$RecipeInfo['XMLPageStore']['Version'] = '2011-09-15';
 
 SDV($EnablePageStoreXML,false);
 
@@ -23,9 +23,8 @@ class XMLPageStore extends PageStore {
     xml_parser_set_option($p,XML_OPTION_CASE_FOLDING, false);
     xml_parser_set_option($p,XML_OPTION_TARGET_ENCODING, $Charset);
 
-#    bug? http://bugs.php.net/bug.php?id=33240
+#    bug http://bugs.php.net/bug.php?id=33240
 #    xml_parser_set_option($p,XML_OPTION_SKIP_WHITE, true);
-
 
     xml_parse_into_struct($p, $data, $vals, $index);
     xml_parser_free($p);
@@ -57,8 +56,9 @@ class XMLPageStore extends PageStore {
     $pagefile = $this->pagefile($pagename);
     if ($pagefile && ($fp=@fopen($pagefile, "r"))) {
       while (!feof($fp)) {
-        $line = fgets($fp, 4096);
-        if (substr($line,0,5) == "<?xml") {
+        $line = fgets($fp, 512);
+        $isXML = (substr($line,0,5) == "<?xml") || (substr(ltrim($line),0,5) == "<page");
+        if ($isXML) {
     	    fseek($fp, 0, SEEK_SET);
 	    $pagefilesize = filesize($pagefile);
     	    $data = fread($fp, $pagefilesize);
@@ -137,4 +137,3 @@ class XMLPageStore extends PageStore {
 
 }
 
-?>
