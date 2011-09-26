@@ -1,0 +1,11 @@
+version=pmwiki-2.1.26 ordered=1 urlencoded=1
+agent=Opera/8.50 (Windows NT 5.0; U; en)
+author=
+csum=
+ctime=1165023270
+host=195.113.16.172
+name=Site.NumberOfArticles
+rev=6
+targets=
+text=(:if name {$SiteGroup}.NumberOfArticles:)%0aThis page updates number of pages counter.%0aTo display number of pages in your own page use markup:%0a @@(:@@@@numberofarticles:)@@%0a%0a%0a-> %25green font-style:italic%25 Current Number of pages is: (:if:)(:numberofarticles refresh:)%0a
+time=1166131325
