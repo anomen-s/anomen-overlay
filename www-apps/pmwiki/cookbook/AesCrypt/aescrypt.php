@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2011-09-22';
+$RecipeInfo['AesCrypt']['Version'] = '2011-10-04';
 
 SDV($AesCryptKDF, 'sha256');
 SDV($AesCryptPlainToken, '(:encrypt ');
@@ -18,14 +18,36 @@ SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
 SDV($AesCryptPadding, 8);
 
-$HTMLHeaderFmt['aescrypt'] = "
 
+$HTMLHeaderFmt['aescrypt_common'] = "
 <script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/aescrypt.js\"></script>
 <script type=\"text/javascript\">
 // <![CDATA[
 
 AesCtr.kdf = AesCtr.kdf_$AesCryptKDF;
 
+function decAesClick(elem) {
+    var node = elem.childNodes[0];
+    var nodeDec = elem.childNodes[1];
+    if (nodeDec.style.visibility=='hidden') {
+        return;
+    }
+    var aesDecrypt = node.childNodes[0].nodeValue;
+    var res = AesCtr.decrypt(aesDecrypt,prompt('Decrypt key','TopSecret'),256);
+    res = res.replace(/^\\s\\s*/, '').replace(/\\s\\s*\$/, '');
+    node.childNodes[0].nodeValue = res;
+    node.style.display='inline';
+    nodeDec.style.visibility='hidden';
+    nodeDec.style.display='none';
+}
+// ]]>
+</script>
+";
+
+if ($action == 'edit') {
+$HTMLHeaderFmt['aescrypt_edit'] = "
+<script type=\"text/javascript\">
+// <![CDATA[
 
 function aesClick() {
 
@@ -66,28 +88,21 @@ function aesClick() {
   textField.value = tarr;
 }
 
-
-function decAesClick(elem) {
-    var node = elem.childNodes[0];
-    var nodeDec = elem.childNodes[1];
-    if (nodeDec.style.visibility=='hidden') {
-        return;
-    }
-    var aesDecrypt = node.childNodes[0].nodeValue;
-    var res = AesCtr.decrypt(aesDecrypt,prompt('Decrypt key','TopSecret'),256);
-    res = res.replace(/^\\s\\s*/, '').replace(/\\s\\s*\$/, '');
-    node.childNodes[0].nodeValue = res;
-    node.style.display='inline';
-    nodeDec.style.visibility='hidden';
-    nodeDec.style.display='none';
-}
-
-
 function registerAesEvent()
 {
   var formElement = document.getElementById('text').parentNode;
   //alert(formElement.nodeValue);
-  
+/*
+  var inputs = document.getElementsByTagName('input');
+  var button;
+  for (var i=0; i < inputs.length; i++)
+  {
+     if ((inputs[i].getAttribute('type') == 'submit') && (inputs[i].getAttribute('name') == name))
+     {
+        button = inputs[i];
+     }
+  }
+  */
   // TODO: add protection handler to save buttons
   
 }
@@ -101,6 +116,7 @@ if ( document.addEventListener ) {
 // ]]>
 </script>
 ";
+}
 
 Markup('aescrypt',
        '_begin',
@@ -109,7 +125,7 @@ Markup('aescrypt',
 
 if ($action == 'edit') {
 
- if ($EnableGUIButtons) {
+ if (IsEnabled($EnableGUIButtons)) {
   $GUIButtons['aescrypt'] = array(750, '', '', '',
    '<a href=\"#\" onclick=\"aesClick(0);\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"Encrypt\" /></a>');
  } else {
@@ -118,6 +134,6 @@ if ($action == 'edit') {
 }
 
  // DEV
- $GUIButtons['aescryptDebug'] = array(1750, '', '', '',
-  '<a href=\"#\" onclick=\"registerAesEvent();\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"dev\" /></a>');
+// $GUIButtons['aescryptDebug'] = array(1750, '', '', '',
+//  '<a href=\"#\" onclick=\"registerAesEvent();\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"dev\" /></a>');
 

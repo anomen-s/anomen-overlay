@@ -395,7 +395,7 @@ AesCtr.encrypt = function(plaintext, password, nBits) {
   var nonceMs = nonce%1000;
   // encode nonce with seconds in 1st 4 bytes, and (repeated) ms part filling 2nd 4 bytes
   for (var i=0; i<4; i++) counterBlock[i] = (nonceSec >>> i*8) & 0xff;
-  for (var i=0; i<4; i++) counterBlock[i+4] = nonceMs & 0xff; 
+  for (var i=0; i<4; i++) counterBlock[i+4] = (nonceMs >>> i) & 0xff; 
   // and convert it to a string to go on the front of the ciphertext
   var ctrTxt = '';
   for (var i=0; i<8; i++) ctrTxt += String.fromCharCode(counterBlock[i]);
@@ -494,7 +494,7 @@ AesCtr.decrypt = function(ciphertext, password, nBits) {
 
 AesCtr.kdf_sha256 = function(password, nBits) {
    var hash = Sha256.hash(password);
-   return hash;
+   return hash.slice(0, nBits/8);
 }
 
 AesCtr.kdf_aes = function(password, nBits) {

@@ -10,18 +10,20 @@ This version fixes several problems:
 * doesn't require $EnableGUIButtons
 * disabled decrypting of already decrypted text
 * created alternative implementation - see Java testing application
-* padding plaintext with spaces to conceal exact length of input data (password)
-* added protection against unintentional submit of plaintext - not yet
-* add support for PBKDF2 - not yet
+* padding plaintext with spaces to conceal exact length of input data (e.q. password)
+* add possibility to decrypt text with different password - to be considered...
+* ''added protection against unintentional submit of plaintext - not yet''
+* ''add support for PBKDF2 - not yet''
+* ''add "Encrypt selection" mode - not yet''
 
 !!!! Agorithm description
 * plaintext is padded with spaces to achieve length of multiple of $AesCryptPadding
-* random 64bit nonce is extended to 128bit by appending 64bit counter (zeroes)
+* pseudo-random 64bit nonce is extended to 128bit by appending 64bit counter (zeroes)
 * key derivation algorithm (configurable by $AesCryptKDF)
 ** sha256 (SHA-256 hash of password)
 ** aes (encrypt password with AES, compatible with original aescrypt-0.1 recipe)
-** pbkdf2 (not yet implemented)
-* plaintext is encripted using AES-256 in CTR mode
+** ''pbkdf2 (not yet implemented)''
+* plaintext is encrypted using AES-256 in CTR mode
 * output is Base64-encoded concatenation of upper 64 bits of nonce and ciphertext
 
 
@@ -43,7 +45,7 @@ and pres Encrypt button. Line in page is replaced with text similar to:
 [@ (:aes 5QN7Th0dHR2LVA/UjXTDWQ== :) @]
 
 !!!Backward compatibility
-Default settings are not compatible with aescrytp-0.1.
+Default settings are not compatible with aescrypt-0.1.
 To replace aescrypt-0.1 without losing already encrypted data use this code:
 [@
 $AesCryptKDF='aes';
