@@ -77,6 +77,7 @@ In link address you can use these variables (prefixed by @@$@@ sign):
 : N  : latitude
 : S : -latitude
 : Nd : latitude (absolute value)
+: Ni : latitude (integer part only)
 : Ndi : latitude (absolute value, integer part only)
 : NSig : sign for N (empty for north, - for south)
 : Nm : minutes of N (absolute value)
@@ -88,6 +89,7 @@ In link address you can use these variables (prefixed by @@$@@ sign):
 : E : longitude - ''all values analogical to latitude''
 : W :
 : Ed :
+: Ei :
 : Edi :
 : ESig :
 : Em :

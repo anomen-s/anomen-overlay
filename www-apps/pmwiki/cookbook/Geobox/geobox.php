@@ -16,7 +16,7 @@
 */
 
 
-$RecipeInfo['Geobox']['Version'] = '2011-08-24';
+$RecipeInfo['Geobox']['Version'] = '2011-10-05';
 
 
 Markup('geo','fulltext','/\(:geo\s+((?:[dmsDMS,.]+:\s+)?(?:[a-z]+=\S+\s+)*)?(.*?)\s*:\)/e',
@@ -27,7 +27,6 @@ SDV($GeoBoxDefaultFormat,'dm');
 SDVA($GeoBoxLinks, array(
  'maps.google.com'=>'http://maps.google.com/?q=$N%20$E',
  'mapy.cz'=>'http://www.mapy.cz/?query=Loc:$N%20$E',
-//'atlas.cz'=>'http://amapy.atlas.cz/?q=$Ndi°$Nmi\'$Ns%22$LAT;$Edi°$Emi\'$Es%22$LON',
  'geocaching.com/maps'=>'http://www.geocaching.com/map/default.aspx?lat=$N&amp;lng=$E',
  'geocaching.com/near'=>'http://www.geocaching.com/seek/nearest.aspx?lat=$N&amp;lng=$E&amp;f=1'
 ));
@@ -41,25 +40,43 @@ function geobox_asint($m, $index)
   return $res;
 }
 
+function geobox_p()
+{
+    global $Charset;
+    if (strtolower($Charset) == 'utf-8') {
+        $pat[0] = '°|˚|º|\*';
+        $pat[1] = '\'|’';
+        $pat[2] = '\'\'|\"|“|”|’’|';
+    } else {
+        $pat[10] = chr(0xB0) . '|\*';
+        $pat[11] = '\'';
+        $pat[12] = '\'\'|\"|';
+    }
+    return $pat;
+}
 function geobox_parse_coords($coords)
 {
+    $pat = geobox_p();
+    $p0 = $pat[0];
+    $p1 = $pat[1];
+    $p2 = $pat[2];
     $re_num = "\d+(?:[.,]\d*)?";
     $re_coord="
 	    ([-+]?${re_num})
 	    \s*
-	    (?:°|˚|º|\*||
+	    (?:$p0||
 		(?:
-		    (?:°|˚|º|\*)
+		    (?:$p0)
 		    \s*
 		    (${re_num})
 		    \s*
-		    (?:'|’| |
+		    (?:$p1| |
 			(?:
-			    (?:'|’)
+			    (?:$p1)
 			    \s*
 			    (${re_num})
 			    \s*
-			    (?:''|\"|“|”|’’|)
+			    (?:$p2)
 			)
 		    )
 		)
@@ -131,6 +148,7 @@ function geobox_convert_coords($c)
 
     // convert to [Ndi]°[Nmi]'[Ns]" and  [Ndi]°[Nm]'
     $c['Ndi'] = sprintf("%'02.0f",floor($c['Nd']));
+    $c['Ni']  = $c['NSig'] . $c['Ndi'];
     $c['Nm']  = sprintf("%'06.3f",($c['Nd']-$c['Ndi'])*60);
     $c['Nmi'] = sprintf("%'02.0f",floor($c['Nm']));
     $s = ($c['Nd']*60);
@@ -138,6 +156,7 @@ function geobox_convert_coords($c)
     $c['Nsi'] = sprintf("%'02.0f",floor($c['Ns']));
 
     $c['Edi'] = sprintf("%'03.0f",floor($c['Ed']));
+    $c['Ei']  = $c['ESig'] . $c['Edi'];
     $c['Em']  = sprintf("%'06.3f",($c['Ed']-$c['Edi'])*60);
     $c['Emi'] = sprintf("%'02.0f",floor($c['Em']));
     $s = ($c['Ed']*60);
