@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['SortPageLines']['Version'] = '2011-08-24';
+$RecipeInfo['SortPageLines']['Version'] = '2011-10-13';
 
 if ($action == 'edit') {
 
@@ -47,12 +47,14 @@ function sortPage(order) {
 </script>
 ';
 
-
-$GUIButtons['sortpageAsc'] = array(750, '', '', '',
- '<input type=\"button\" name=\"sortPageButtonAsc\" value=\"$[Sort lines ASC]\" onClick=\"sortPage(0);\" />');
-
-$GUIButtons['sortpageDesc'] = array(751, '', '', '',
- '<input type=\"button\" name=\"sortPageButtonDesc\" value=\"$[Sort lines DESC]\" onClick=\"sortPage(1);\" />');
-
+ if (IsEnabled($EnableGUIButtons)) {
+    $GUIButtons['sortpageAsc'] = array(750, '', '', '',
+	'<input type=\"button\" name=\"sortPageButtonAsc\" value=\"$[Sort lines ASC]\" onClick=\"sortPage(0);\" />');
+    $GUIButtons['sortpageDesc'] = array(751, '', '', '',
+	'<input type=\"button\" name=\"sortPageButtonDesc\" value=\"$[Sort lines DESC]\" onClick=\"sortPage(1);\" />');
+ } else {
+    $MessagesFmt[] = "<input type='button' name='sortPageButtonAsc' value='$[Sort lines ASC]' onClick='sortPage(0);'/>";
+    $MessagesFmt[] = "<input type='button' name='sortPageButtonDesc' value='$[Sort lines DESC]' onClick='sortPage(1);'/>";
+ }
 }
 

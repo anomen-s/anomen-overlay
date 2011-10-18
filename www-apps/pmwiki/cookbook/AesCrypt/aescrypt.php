@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2011-10-04';
+$RecipeInfo['AesCrypt']['Version'] = '2011-10-12';
 
 SDV($AesCryptKDF, 'sha256');
 SDV($AesCryptPlainToken, '(:encrypt ');
@@ -90,9 +90,11 @@ function aesClick() {
 
 function registerAesEvent()
 {
+  // TODO: add protection handler to save buttons
+/*
   var formElement = document.getElementById('text').parentNode;
   //alert(formElement.nodeValue);
-/*
+
   var inputs = document.getElementsByTagName('input');
   var button;
   for (var i=0; i < inputs.length; i++)
@@ -103,7 +105,6 @@ function registerAesEvent()
      }
   }
   */
-  // TODO: add protection handler to save buttons
   
 }
 
@@ -121,7 +122,7 @@ if ( document.addEventListener ) {
 Markup('aescrypt',
        '_begin',
        "/\\Q$AesCryptCipherToken\\E\\s*(.*?)\\s*\\Q$AesCryptEndToken\\E/se",
-       "'\n'.'<a href=\"javascript:void (0);\" onClick=\"decAesClick(this);\"><span style=\"display:none;\">$1</span><span>[Decrypt]</span></a>'");
+       "'\n'.'<a href=\"javascript:void (0);\" onClick=\"decAesClick(this);\"><span style=\"white-space:pre;display:none;\">$1</span><span>[Decrypt]</span></a>'");
 
 if ($action == 'edit') {
 
