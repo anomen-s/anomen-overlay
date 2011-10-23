@@ -1,11 +1,12 @@
 >>recipeinfo<<
 Summary: Count pages in wiki
-Version: 2010-06-12
+Version: 2011-10-13
 Prerequisites:
-Status:
+Status: Stable
 Maintainer: [[profiles/Anomen]]
 Categories: [[!Includes]]
-(:if exists {$Name}-Talk:)Discussion: [[{$Name}-Talk]](:if:)
+Users: {$Users} ([[{$FullName}-Users|view]] / [[{$FullName}-Users?action=edit|edit]])
+Discussion: [[{$Name}-Talk]]
 >><<
 
 !!Description
@@ -50,6 +51,5 @@ Optional alternative:  create a new page with a name like "ThisRecipe-Talk" (e.g
 : git repository : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/CachedNumberOfArticles
 
 !! Contributors
-* [[~Anomen]] March 09, 2007, at 04:37 PM
+* [[~Anomen]]
 
-!! Bug Report

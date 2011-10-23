@@ -1,12 +1,12 @@
 >>recipeinfo<<
 Summary: Create links to various map sites from provided gps coordinates.
-Version: 2011-08-24
+Version: 2011-10-05
 Prerequisites: 
 Status: 
 Maintainer: [[~Anomen]]
 Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users|Edit]])
 Categories: [[Links]]
-(:if exists {$Name}-Talk:)Discussion: [[{$Name}-Talk]](:ifend:)
+Discussion: [[{$Name}-Talk]]
 >><<
 !! Questions answered by this recipe
 How to automatically create links for given gps coordinates to various map sites.
@@ -119,6 +119,7 @@ In link address you can use these variables (prefixed by @@$@@ sign):
 !! Change log / Release notes
 * 2010-06-12 - added to PmWiki Cookbook
 * 2011-08-22 - point projection, configurable link list and various improvements
+* 2011-10-05 - utf8 handling, various fixes
 
 [[#seealso]]
 !! See also
@@ -135,14 +136,5 @@ In link address you can use these variables (prefixed by @@$@@ sign):
   
 [[#comments]]
 !! Comments
->>comment<<
-This space is for User-contributed commentary and notes.
-Please include your name and a date (eg 2007-05-19) along with your comment.
-Optional alternative:  create a new page with a name like "ThisRecipe-Talk" (e.g. PmCalendar-Talk).
->><< 
-(:if exists {$Name}-Talk:)See discussion at [[{$Name}-Talk]](:ifend:)
->>faq display=none<<
-
-Q:
-A:
+See discussion at [[{$Name}-Talk]].
 

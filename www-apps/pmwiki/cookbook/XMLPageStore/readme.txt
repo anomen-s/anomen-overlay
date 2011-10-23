@@ -1,6 +1,6 @@
 >>recipeinfo<<
 Summary: Store pages as XML files
-Version: 2011-04-21
+Version: 2011-09-15
 Prerequisites: 
 Status: Beta
 Maintainer:  [[~Anomen]]
@@ -18,14 +18,12 @@ Advantages:
 
 [[#desc]]
 !! Description
-The Attach:XMLPageStore.php script stores pmwiki pages into xml files in the ''wiki.d/'' directory.  
-
-The recipe is still under development, so use direct link to git repository:
-[[http://repo.or.cz/w/anomen-overlay.git/blob_plain/HEAD:/www-apps/pmwiki/cookbook/XMLPageStore/XMLPageStore.php | XMLPageStore.php]] 
+The Attach:XMLPageStore.php script stores pmwiki pages into xml files in the ''wiki.d/'' directory.
 
 [[#install]]
 !! Installation
-To use this script, simply place it in your ''cookbook'' directory and add the following lines to ''local/config.php'':
+To use this script, simply place it in your ''cookbook'' directory
+and add the following lines to ''local/config.php'':
 
 [@
   $EnablePageStoreXML = 1;
@@ -50,13 +48,12 @@ Use @@$EnablePageStoreXML@@ variable to enable/disable writing xml files.
 
 [[#relnotes]]
 !! Change log / Release notes
-* 2011-04-22 15:53 - added to PmWiki Cookbook
+* 2011-04-22 - added to PmWiki Cookbook
+* 2011-09-15 - minor fixes
 
 [[#seealso]]
 !! See also
 : git repo : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/XMLPageStore
-
-* [[Category/CustomPageStore]] category
 
 [[#contributors]]
 !! Contributors
