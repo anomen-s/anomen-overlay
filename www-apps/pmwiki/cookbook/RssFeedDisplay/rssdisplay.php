@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('PmWiki')) exit();
 /*
      http://www.brambring.nl
 

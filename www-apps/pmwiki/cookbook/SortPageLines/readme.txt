@@ -4,9 +4,9 @@ Version: 2011-08-24
 Prerequisites: 
 Status: 
 Maintainer: [[~Anomen]]
-Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users|Edit]])
+Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users?action=edit|Edit]])
 Categories: [[Links]]
-(:if exists {$Name}-Talk:)Discussion: [[{$Name}-Talk]](:ifend:)
+Discussion: [[{$Name}-Talk]]
 >><<
 !! Questions answered by this recipe
 How to alphabetically sort lines in page.

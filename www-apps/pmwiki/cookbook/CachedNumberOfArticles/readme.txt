@@ -5,7 +5,7 @@ Prerequisites:
 Status: Stable
 Maintainer: [[profiles/Anomen]]
 Categories: [[!Includes]]
-Users: {$Users} ([[{$FullName}-Users|view]] / [[{$FullName}-Users?action=edit|edit]])
+Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users?action=edit|Edit]])
 Discussion: [[{$Name}-Talk]]
 >><<
 

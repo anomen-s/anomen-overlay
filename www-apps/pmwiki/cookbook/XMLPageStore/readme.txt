@@ -5,7 +5,7 @@ Prerequisites:
 Status: Beta
 Maintainer:  [[~Anomen]]
 Categories: [[!Administration]], [[!CustomPageStore]]
-Users: {$Users} ([[{$FullName}-Users|view]] / [[{$FullName}-Users?action=edit|edit]])
+Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users?action=edit|Edit]])
 Discussion: [[{$Name}-Talk]]
 >><<
 !! Questions answered by this recipe

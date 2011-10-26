@@ -4,7 +4,7 @@ Version: 2011-10-05
 Prerequisites: 
 Status: 
 Maintainer: [[~Anomen]]
-Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users|Edit]])
+Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users?action=edit|Edit]])
 Categories: [[Links]]
 Discussion: [[{$Name}-Talk]]
 >><<
