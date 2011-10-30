@@ -5,6 +5,8 @@
 
 package org.pmwiki.cookbook.aescrypt;
 
+import java.security.SecureRandom;
+import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -26,6 +28,16 @@ public class AesCrypto {
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
     };
 
+    public static byte[] randomNonce() {
+
+        Random r = new SecureRandom();
+        byte[] nonce = new byte[16];
+        for (int i = 0; i < 8; i++) {
+            nonce[i] = (byte) r.nextInt();
+        }
+        return nonce;
+    }
+    
     public static byte[] encrypt (String plaintext, String password, byte[] nonce) throws Exception
     {
         return encrypt(plaintext, DigestUtils.sha256(password), nonce);
