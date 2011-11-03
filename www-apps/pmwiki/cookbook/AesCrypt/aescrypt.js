@@ -385,7 +385,6 @@ AesCtr.encrypt = function(plaintext, password, nBits) {
   password = Utf8.encode(password);
   //var t = new Date();  // timer
 	
-  var key = AesCtr.kdf(password, nBits);
 
   // initialise counter block (NIST SP800-38A §B.2): millisecond time-stamp for nonce in 1st 8 bytes,
   // block counter in 2nd 8 bytes
@@ -399,6 +398,8 @@ AesCtr.encrypt = function(plaintext, password, nBits) {
   // and convert it to a string to go on the front of the ciphertext
   var ctrTxt = '';
   for (var i=0; i<8; i++) ctrTxt += String.fromCharCode(counterBlock[i]);
+
+  var key = AesCtr.kdf(password, nBits, ctrTxt);
 
   // generate key schedule - an expansion of the key into distinct Key Rounds for each round
   var keySchedule = Aes.KeyExpansion(key);
@@ -448,13 +449,13 @@ AesCtr.decrypt = function(ciphertext, password, nBits) {
   password = Utf8.encode(password);
   //var t = new Date();  // timer
   
-  var key = AesCtr.kdf(password, nBits);
-
   // recover nonce from 1st 8 bytes of ciphertext
   var counterBlock = new Array(8);
   ctrTxt = ciphertext.slice(0, 8);
   for (var i=0; i<8; i++) counterBlock[i] = ctrTxt.charCodeAt(i);
   
+  var key = AesCtr.kdf(password, nBits, ctrTxt);
+
   // generate key schedule
   var keySchedule = Aes.KeyExpansion(key);
 
@@ -492,12 +493,26 @@ AesCtr.decrypt = function(ciphertext, password, nBits) {
 }
 
 
-AesCtr.kdf_sha256 = function(password, nBits) {
+AesCtr.kdf_sha256 = function(password, nBits, nonce) {
    var hash = Sha256.hash(password);
    return hash.slice(0, nBits/8);
 }
 
-AesCtr.kdf_aes = function(password, nBits) {
+AesCtr.kdf_sha256_dup = function(password, nBits, nonce) {
+   var buffer = '';
+   var nBytes = nBits/8;
+   for (int i = 0; i < nBytes ; i++) {
+     buffer = buffer.concat(i);
+     buffer = buffer.concat(password.charAt(i % password.length));
+     buffer = buffer.concat(password);
+     buffer = buffer.concat(nonce);
+   }
+   alert(buffer);
+   var hash = Sha256.hash(buffer);
+   return hash.slice(0, nBytes);
+}
+
+AesCtr.kdf_aes = function(password, nBits, nonce) {
   // use AES itself to encrypt password to get cipher key (using plain password as source for key 
   // expansion) - gives us well encrypted key (though hashed key might be preferred for prod'n use)
   var nBytes = nBits/8;  // no bytes in key (16/24/32)
