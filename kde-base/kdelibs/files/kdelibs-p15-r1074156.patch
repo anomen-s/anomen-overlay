@@ -1,0 +1,5370 @@
+Changes between KDE 3.5.10 tag as modified by kdelibs-3.5-patchset-15.tar.bz2
+and KDE 3.5 branch r1074156. Only looking at subdirectory kdelibs here.
+Logs since r849627 of the branch but this might be wrong.
+
+r849884 | coolo
+updated packages
+  M kdeui/Makefile.am
+  M kdeui/kdepackages.h
+r854560 | skilling
+Fixing a few old errors
+  M kdoctools/customization/pt-BR/user.entities
+r858854 | mueller (= kdelibs-3.5.10-post-r858853.diff in Gentoo patchset 15)
+prefer the glibc header of inotify support over the linux header, as the latter is broken with newer kernels
+  M kio/kio/configure.in.in
+  M kio/kio/kdirwatch.cpp
+r858971 | mueller (= kdelibs-3.5.10-post-r858853.diff in Gentoo patchset 15)
+fix configure again
+  M kio/kio/configure.in.in
+r859451 | mueller
+fix build for older glibc's again
+  M kio/kio/kdirwatch.cpp
+r859452 | mueller
+perform the uid check on a file that exists even with Linux 2.4
+  M kinit/start_kdeinit.c
+r874968 | orlovich
+Merged revision 874965: Fix crash when fixed-layout tables (wow, someone actually uses those?) specify all % width...
+  M khtml/rendering/table_layout.cpp
+r886258 | neundorf
+ -sync partly with cmake.xml from trunk, i.e. add also all the new cmake commands and keywords, but don't change the...
+  M kate/data/cmake.xml
+r971511 | winterz
+Fix a crash that can happen when using KDatePicker on quitting Kontact. patch by Marc Mutz CCMAIL: mutz@kde.org
+  M kdeui/kdatetbl.cpp
+r975371 | dfaure
+gcc-4.4 fix from http://cvs.pld-linux.org/cgi-bin/cvsweb.cgi/packages/kdelibs/kdelibs-gcc44.patch Not that I care...
+  M kioslave/ftp/ftp.cc
+r987597 | tmcguire
+Fix passwords with '!' in them here as well.
+  M kdecore/kstringhandler.cpp
+r1002164 | fabo
+backport CVE-2009-1725 fix
+  M khtml/html/htmltokenizer.cpp
+r1017229 | lunakl
+managed topmenus should not have a strut, otherwise they can affect other windows, I have no idea why I left this...
+  M kdeui/kmenubar.cpp
+r1018214 | winterz
+add so apidox for kdelibs/kdecore are created.
+  A kdecore/Mainpage.dox
+r1021970 | winterz
+backport necessary stuff from trunk for API generation using a modern doxygen.sh
+  A doc/common/Doxyfile.global
+  M doc/common/README.Doxygen
+  A doc/common/block_title_bottom.png
+  A doc/common/block_title_mid.png
+  A doc/common/block_title_top.png
+  M doc/common/doxygen.css
+  M doc/common/fdl-license
+  M doc/common/fdl-license.html
+  M doc/common/fdl-notice.html
+  A doc/common/flat.css
+  M doc/common/footer.html
+  M doc/common/header.html
+  M doc/common/kde-default.css
+  A doc/common/kde.css
+  M doc/common/mainfooter.html
+  M doc/common/mainheader.html
+  A doc/common/print.css
+  A doc/common/tabs.css
+  A doc/common/top-kde.jpg
+  A doc/common/top-left.jpg
+  A doc/common/top-right.jpg
+  A doc/common/top-right.png
+  A doc/common/top.jpg
+r1022000 | winterz
+whoopsie, forgot to change the release to 3.5
+  M doc/common/header.html
+  M doc/common/mainheader.html
+r1033549 | winterz
+copy and slightly modify some missing Mainpage.dox from trunk to help us generate some more API dox for the KDE3...
+  A dnssd/Mainpage.dox
+  A kate/Mainpage.dox
+  A kconf_update/Mainpage.dox
+  A kded/Mainpage.dox
+  A kdesu/Mainpage.dox
+  A kdoctools/Mainpage.dox
+  A khtml/Mainpage.dox
+  A kimgio/Mainpage.dox
+  A kinit/Mainpage.dox
+  A kjs/Mainpage.dox
+  A knewstuff/Mainpage.dox
+  A kparts/Mainpage.dox
+  A kutils/Mainpage.dox
+r1042270 | winterz
+add home and business post office box fields approved by tokoe
+  M kabc/scripts/entrylist
+  M kabc/scripts/field.src.cpp
+r1052104 | mueller
+fix array overrun (CVE-2009-0689)
+  M kjs/dtoa.cpp
+r1057062 | tmcguire
+Support writing empty directories to ZIP files.
+  M kio/kio/kzip.cpp
+  M kio/kio/kzip.h
+r1057078 | tmcguire
+Don't assert here, just ignore the entry. This is used for empty directories in ZIP files.
+  M kio/kio/karchive.cpp
+r1057086 | tmcguire
+Use the correct permissions (S_IFDIR) so that KZip doesn't assert when opening the archive. ...
+  M kio/kio/kzip.cpp
+r1065517 | tmcguire
+Backport r978827 by pino from trunk to the 3.5 branch:
+  M kio/kio/kzip.cpp
+r1074156 | mueller
+fix build with gcc 4.5
+  M kate/part/katehighlight.cpp
+
+
+Index: kate/part/katehighlight.cpp
+===================================================================
+--- kdelibs/kate/part/katehighlight.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kate/part/katehighlight.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -3225,7 +3225,7 @@
+   list.append(charAttribute);
+ 
+   KateAttribute* string = new KateAttribute();
+-  string->setTextColor(QColor::QColor("#D00"));
++  string->setTextColor(QColor("#D00"));
+   string->setSelectedTextColor(Qt::red);
+   list.append(string);
+ 
+@@ -3242,9 +3242,9 @@
+ 
+   KateAttribute* alert = new KateAttribute();
+   alert->setTextColor(Qt::black);
+-  alert->setSelectedTextColor( QColor::QColor("#FCC") );
++  alert->setSelectedTextColor( QColor("#FCC") );
+   alert->setBold(true);
+-  alert->setBGColor( QColor::QColor("#FCC") );
++  alert->setBGColor( QColor("#FCC") );
+   list.append(alert);
+ 
+   KateAttribute* functionAttribute = new KateAttribute();
+Index: kate/data/cmake.xml
+===================================================================
+--- kdelibs/kate/data/cmake.xml	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kate/data/cmake.xml	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,13 +1,34 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE language SYSTEM "language.dtd">
+-<!-- Author: Alexander Neundorf <neundorf@kde.org> //-->
+-<!-- cmake 2.0.3 syntax highlighting -->
+-<!-- dsKeyword, dsDataType, dsDecVal, dsBaseN, dsFloat, dsChar, dsString, dsComment, dsOthers, new in KDE 3.3: dsAlert, dsFunction, dsRegionMarker, dsError -->
+-<language name="CMake" version="1.03" kateversion="2.4" section="Other" extensions="CMakeLists.txt;*.cmake;" mimetype="">
++<!--
++  This file is part of KDE's kate project.
++
++  Copyright 2004 Alexander Neundorf (neundorf@kde.org)
++  Copyright 2005 Dominik Haumann (dhdev@gmx.de)
++  Copyright 2007,2008 Matthew Woehlke (mw_triad@users.sourceforge.net)
++
++ **********************************************************************
++ * This library is free software; you can redistribute it and/or      *
++ * modify it under the terms of the GNU Lesser General Public         *
++ * License as published by the Free Software Foundation; either       *
++ * version 2 of the License, or (at your option) any later version.   *
++ *                                                                    *
++ * This library is distributed in the hope that it will be useful,    *
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of     *
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  *
++ * Lesser General Public License for more details.                    *
++ *                                                                    *
++ * You should have received a copy of the GNU Lesser General Public   *
++ * License along with this library; if not, write to the              *
++ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,   *
++ * Boston, MA  02110-1301, USA.                                       *
++ **********************************************************************
++ -->
++<!-- generated for "cmake version 2.6-patch 2" -->
++<language name="CMake" version="1.06" kateversion="2.4" section="Other" extensions="CMakeLists.txt;*.cmake;" mimetype="" author="Alexander Neundorf (neundorf@kde.org)" license="LGPL">
+   <highlighting>
+ 
+     <list name = "commands">
+-      <item> ABSTRACT_FILES </item>
+       <item> ADD_CUSTOM_COMMAND </item>
+       <item> ADD_CUSTOM_TARGET </item>
+       <item> ADD_DEFINITIONS </item>
+@@ -17,18 +38,26 @@
+       <item> ADD_SUBDIRECTORY </item>
+       <item> ADD_TEST </item>
+       <item> AUX_SOURCE_DIRECTORY </item>
++      <item> BREAK </item>
+       <item> BUILD_COMMAND </item>
+       <item> BUILD_NAME </item>
+       <item> CMAKE_MINIMUM_REQUIRED </item>
++      <item> CMAKE_POLICY </item>
+       <item> CONFIGURE_FILE </item>
+       <item> CREATE_TEST_SOURCELIST </item>
++      <item> DEFINE_PROPERTY </item>
+       <item> ELSE </item>
+       <item> ELSEIF </item>
++      <item> ENABLE_LANGUAGE </item>
+       <item> ENABLE_TESTING </item>
+       <item> ENDFOREACH </item>
++      <item> ENDFUNCTION </item>
+       <item> ENDIF </item>
+       <item> ENDMACRO </item>
++      <item> ENDWHILE </item>
++      <item> EXECUTE_PROCESS </item>
+       <item> EXEC_PROGRAM </item>
++      <item> EXPORT </item>
+       <item> EXPORT_LIBRARY_DEPENDENCIES </item>
+       <item> FILE </item>
+       <item> FIND_FILE </item>
+@@ -38,11 +67,14 @@
+       <item> FIND_PROGRAM </item>
+       <item> FLTK_WRAP_UI  </item>
+       <item> FOREACH </item>
++      <item> FUNCTION </item>
+       <item> GET_CMAKE_PROPERTY </item>
+       <item> GET_DIRECTORY_PROPERTY </item>
+       <item> GET_FILENAME_COMPONENT </item>
++      <item> GET_PROPERTY </item>
+       <item> GET_SOURCE_FILE_PROPERTY </item>
+       <item> GET_TARGET_PROPERTY </item>
++      <item> GET_TEST_PROPERTY </item>
+       <item> IF </item>
+       <item> INCLUDE </item>
+       <item> INCLUDE_DIRECTORIES </item>
+@@ -61,6 +93,7 @@
+       <item> MACRO </item>
+       <item> MAKE_DIRECTORY </item>
+       <item> MARK_AS_ADVANCED </item>
++      <item> MATH </item>
+       <item> MESSAGE </item>
+       <item> OPTION </item>
+       <item> OUTPUT_REQUIRED_FILES </item>
+@@ -69,14 +102,14 @@
+       <item> QT_WRAP_UI </item>
+       <item> REMOVE </item>
+       <item> REMOVE_DEFINITIONS </item>
++      <item> RETURN </item>
+       <item> SEPARATE_ARGUMENTS </item>
+       <item> SET </item>
+       <item> SET_DIRECTORY_PROPERTIES </item>
++      <item> SET_PROPERTY </item>
+       <item> SET_SOURCE_FILES_PROPERTIES </item>
+       <item> SET_TARGET_PROPERTIES </item>
+       <item> SITE_NAME </item>
+-      <item> SOURCE_FILES </item>
+-      <item> SOURCE_FILES_REMOVE </item>
+       <item> SOURCE_GROUP </item>
+       <item> STRING </item>
+       <item> SUBDIRS </item>
+@@ -84,14 +117,14 @@
+       <item> TARGET_LINK_LIBRARIES </item>
+       <item> TRY_COMPILE </item>
+       <item> TRY_RUN </item>
+-      <item> USE_MANGLED_MESA </item>
++      <item> UNSET </item>
+       <item> UTILITY_SOURCE </item>
+       <item> VARIABLE_REQUIRES </item>
++      <item> VARIABLE_WATCH </item>
+       <item> VTK_MAKE_INSTANTIATOR </item>
+       <item> VTK_WRAP_JAVA </item>
+       <item> VTK_WRAP_PYTHON </item>
+       <item> VTK_WRAP_TCL </item>
+-      <item> WRAP_EXCLUDE_FILES </item>
+       <item> WRITE_FILE </item>
+     </list>
+ 
+@@ -106,10 +139,13 @@
+       <item> ARGS </item>
+       <item> ASCII </item>
+       <item> BEFORE </item>
++      <item> BRIEF_DOCS </item>
++      <item> BUNDLE </item>
+       <item> CACHE </item>
+       <item> CACHE_VARIABLES </item>
+       <item> CLEAR </item>
+       <item> CMAKE_FLAGS </item>
++      <item> CMAKE_FIND_ROOT_PATH_BOTH </item>
+       <item> CODE </item>
+       <item> COMMAND </item>
+       <item> COMMANDS </item>
+@@ -118,45 +154,62 @@
+       <item> COMPARE </item>
+       <item> COMPILE_FLAGS </item>
+       <item> COMPONENT </item>
++      <item> COMPONENTS </item>
+       <item> CONFIGURATIONS </item>
++      <item> CONFIGURE </item>
+       <item> COPYONLY </item>
+       <item> DEFINED </item>
+       <item> DEFINE_SYMBOL </item>
++      <item> DEFINITION </item>
+       <item> DEPENDS </item>
+       <item> DESTINATION </item>
++      <item> DIRECTORY </item>
+       <item> DIRECTORY_PERMISSIONS </item>
+       <item> DOC </item>
++      <item> DOWNLOAD </item>
+       <item> EQUAL </item>
+       <item> ESCAPE_QUOTES </item>
++      <item> EXACT </item>
+       <item> EXCLUDE </item>
+       <item> EXCLUDE_FROM_ALL </item>
+       <item> EXISTS </item>
+-      <item> EXPORT_MACRO </item>
++      <item> EXPORT </item>
++      <item> EXPR </item>
+       <item> EXT </item>
+       <item> EXTRA_INCLUDE </item>
+       <item> FATAL_ERROR </item>
+       <item> FILE </item>
+       <item> FILES </item>
+       <item> FILE_PERMISSIONS </item>
++      <item> FILES_MATCHING </item>
+       <item> FORCE </item>
+-      <item> FUNCTION </item>
++      <item> FRAMEWORK </item>
++      <item> FULL_DOCS </item>
+       <item> GENERATED </item>
++      <item> GET </item>
+       <item> GLOB </item>
+       <item> GLOB_RECURSE </item>
++      <item> GLOBAL </item>
+       <item> GREATER </item>
+       <item> GROUP_SIZE </item>
+       <item> HEADER_FILE_ONLY </item>
+       <item> HEADER_LOCATION </item>
++      <item> HINTS </item>
+       <item> IMMEDIATE </item>
+       <item> INCLUDES </item>
+       <item> INCLUDE_DIRECTORIES </item>
+       <item> INCLUDE_INTERNALS </item>
+       <item> INCLUDE_REGULAR_EXPRESSION </item>
++      <item> INHERITED </item>
+       <item> INTERNAL </item>
++      <item> IS_ABSOLUTE </item>
++      <item> IS_NEWER_THAN </item>
++      <item> LENGTH </item>
+       <item> LESS </item>
+       <item> LIBRARY </item>
+       <item> LINK_DIRECTORIES </item>
+       <item> LINK_FLAGS </item>
++      <item> LINK_INTERFACE_LIBRARIES </item>
+       <item> LOCATION </item>
+       <item> MACOSX_BUNDLE </item>
+       <item> MACROS </item>
+@@ -167,19 +220,33 @@
+       <item> MATCHES </item>
+       <item> MODULE </item>
+       <item> NAME </item>
++      <item> NAMELINK_ONLY </item>
++      <item> NAMELINK_SKIP </item>
++      <item> NAMES </item>
+       <item> NAME_WE </item>
+       <item> NOT </item>
+       <item> NOTEQUAL </item>
++      <item> NO_CMAKE_PATH </item>
++      <item> NO_CMAKE_ENVIRONMENT_PATH </item>
++      <item> NO_CMAKE_FIND_ROOT_PATH </item>
++      <item> NO_DEFAULT_PATH </item>
++      <item> NO_MODULE </item>
+       <item> NO_SYSTEM_PATH </item>
++      <item> NO_SYSTEM_ENVIRONMENT_PATH </item>
+       <item> OBJECT_DEPENDS </item>
++      <item> ONLY_CMAKE_FIND_ROOT_PATH </item>
+       <item> OPTIONAL </item>
+       <item> OR </item>
+       <item> OUTPUT </item>
+       <item> OUTPUT_VARIABLE </item>
++      <item> PARENT_SCOPE </item>
+       <item> PATH </item>
+       <item> PATHS </item>
++      <item> PATH_SUFFIXES </item>
+       <item> PATTERN </item>
+       <item> PERMISSIONS </item>
++      <item> POLICY </item>
++      <item> POP </item>
+       <item> POST_BUILD </item>
+       <item> POST_INSTALL_SCRIPT </item>
+       <item> PREFIX </item>
+@@ -187,40 +254,60 @@
+       <item> PRE_BUILD </item>
+       <item> PRE_INSTALL_SCRIPT </item>
+       <item> PRE_LINK </item>
++      <item> PRIVATE_HEADER </item>
+       <item> PROGRAM </item>
+       <item> PROGRAMS </item>
+       <item> PROGRAM_ARGS </item>
+       <item> PROPERTIES </item>
++      <item> PUBLIC_HEADER </item>
++      <item> PUSH </item>
+       <item> QUIET </item>
++      <item> RANDOM </item>
+       <item> RANGE </item>
+       <item> READ </item>
+       <item> REGEX </item>
+       <item> REGULAR_EXPRESSION </item>
++      <item> RELATIVE_PATH </item>
++      <item> REMOVE </item>
++      <item> REMOVE_RECURSE </item>
+       <item> RENAME </item>
+       <item> REPLACE </item>
+       <item> REQUIRED </item>
++      <item> RESOURCE </item>
+       <item> RETURN_VALUE </item>
+       <item> RUNTIME </item>
+       <item> RUNTIME_DIRECTORY </item>
+       <item> SCRIPT </item>
+       <item> SEND_ERROR </item>
+       <item> SHARED </item>
++      <item> SOURCE </item>
+       <item> SOURCES </item>
+       <item> STATIC </item>
+       <item> STATUS </item>
++      <item> STRIP </item>
++      <item> STRINGS </item>
+       <item> STREQUAL </item>
+       <item> STRGREATER </item>
+       <item> STRLESS </item>
+       <item> SUFFIX </item>
++      <item> SUBSTRING </item>
+       <item> TARGET </item>
+       <item> TARGETS </item>
++      <item> TIMEOUT </item>
+       <item> TOLOWER </item>
+       <item> TOUPPER </item>
++      <item> TO_CMAKE_PATH </item>
++      <item> TO_NATIVE_PATH </item>
+       <item> USE_SOURCE_PERMISSIONS </item>
+       <item> VAR </item>
++      <item> VARIABLE </item>
+       <item> VARIABLES </item>
+       <item> VERSION </item>
++      <item> VERSION_LESS </item>
++      <item> VERSION_EQUAL </item>
++      <item> VERSION_GREATER </item>
+       <item> WIN32 </item>
++      <item> WORKING_DIRECTORY </item>
+       <item> WRAP_EXCLUDE </item>
+       <item> WRITE </item>
+     </list>
+Index: kate/Mainpage.dox
+===================================================================
+--- kdelibs/kate/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kate/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,36 @@
++/** @mainpage Kate Editor Component
++
++The Kate Editor Component (also called Kate Part) implements the
++KTextEditor interfaces. Thus, all Kate Part classes are internal
++and never appear in public interfaces.
++
++If you wish to have a text editor component in your application,
++use the KTextEditor interfaces.
++
++@authors
++Christoph Cullmann \<cullmann@kde.org\><br>
++Joseph Wenninger \<jowenn@kde.org\><br>
++Anders Lund \<anders@alweb.dk\><br>
++Hamish Rodda \<rodda@kde.org\><br>
++Waldo Bastian \<bastian@kde.org\><br>
++Charles Samuels \<charles@kde.org\><br>
++Michael Bartl \<michael.bartl1@chello.at\><br>
++Matt Newell \<newellm@proaxis.com\><br>
++Michael McCallum \<gholam@xtra.co.nz\><br>
++John Firebaugh \<jfirebaugh@kde.org\><br>
++Nadeem Hasan \<nhasan@nadmm.com\><br>
++Jochen Wilhelmy \<digisnap@cs.tu-berlin.de\><br>
++Glen Parker \<glenebob@nwlink.com\><br>
++Michael Koch \<koch@kde.org\><br>
++Dominik Haumann \<dhdev@gmx.de\>
++
++@maintainers
++Christoph Cullmann \<cullmann@kde.org\>
++
++@licenses
++@lgpl
++
++*/
++// DOXYGEN_REFERENCES = kdecore kio kdeui kparts interfaces/kdocument interfaces/ktexteditor kjs
++// DOXYGEN_SET_PROJECT_NAME = Kate
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kconf_update/Mainpage.dox
+===================================================================
+--- kdelibs/kconf_update/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kconf_update/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,31 @@
++/** @mainpage ./kconf_update
++
++kconf_update is a tool designed to update config files. Over time applications
++sometimes need to rearrange the way configuration options are stored. Since
++such an update shouldn't influence the configuration options that the user
++has selected, the application must take care that the options stored in the
++old way will still be honored.
++
++What used to happen is that the application looks up both the old and the
++new configuration option and then decides which one to use. This method has 
++several drawbacks:
++- The application may need to read more configuration files than strictly
++  needed, resulting in a slower startup.
++- The application becomes bigger with code that will only be used once.
++
++kconf_update addresses these problems by offering a framework to update 
++configuration files without adding code to the application itself.
++
++See the <a href="http://websvn.kde.org/trunk/KDE/kdelibs/kconf_update/README.kconf_update?view=markup">README file</a> for more information.
++
++@authors
++Waldo Bastian \<bastian@kde.org\>
++
++@maintainers
++[Unknown/None]
++
++@licenses
++@lgpl
++
++*/
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: doc/common/tabs.css
+===================================================================
+--- kdelibs/doc/common/tabs.css	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/doc/common/tabs.css	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,102 @@
++/* tabs styles, based on http://www.alistapart.com/articles/slidingdoors */
++
++DIV.tabs
++{
++   float            : left;
++   width            : 100%;
++   background       : url("tab_b.gif") repeat-x bottom;
++   margin-bottom    : 4px;
++}
++
++DIV.tabs UL
++{
++   margin           : 0px;
++   padding-left     : 10px;
++   list-style       : none;
++}
++
++DIV.tabs LI, DIV.tabs FORM
++{
++   display          : inline;
++   margin           : 0px;
++   padding          : 0px;
++}
++
++DIV.tabs FORM
++{
++   float            : right;
++}
++
++DIV.tabs A
++{
++   float            : left;
++   background       : url("tab_r.gif") no-repeat right top;
++   border-bottom    : 1px solid #84B0C7;
++   font-size        : x-small;
++   font-weight      : bold;
++   text-decoration  : none;
++}
++
++DIV.tabs A:hover
++{
++   background-position: 100% -150px;
++}
++
++DIV.tabs A:link, DIV.tabs A:visited,
++DIV.tabs A:active, DIV.tabs A:hover
++{
++       color: #1A419D;
++}
++
++DIV.tabs SPAN
++{
++   float            : left;
++   display          : block;
++   background       : url("tab_l.gif") no-repeat left top;
++   padding          : 5px 9px;
++   white-space      : nowrap;
++}
++
++DIV.tabs INPUT
++{
++   float            : right;
++   display          : inline;
++   font-size        : 1em;
++}
++
++DIV.tabs TD
++{
++   font-size        : x-small;
++   font-weight      : bold;
++   text-decoration  : none;
++}
++
++
++
++/* Commented Backslash Hack hides rule from IE5-Mac \*/
++DIV.tabs SPAN {float : none;}
++/* End IE5-Mac hack */
++
++DIV.tabs A:hover SPAN
++{
++   background-position: 0% -150px;
++}
++
++DIV.tabs LI#current A
++{
++   background-position: 100% -150px;
++   border-width     : 0px;
++}
++
++DIV.tabs LI#current SPAN
++{
++   background-position: 0% -150px;
++   padding-bottom   : 6px;
++}
++
++DIV.nav
++{
++   background       : none;
++   border           : none;
++   border-bottom    : 1px solid #84B0C7;
++}
+Index: doc/common/fdl-license
+===================================================================
+--- kdelibs/doc/common/fdl-license	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/fdl-license	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,8 +1,9 @@
+ 		GNU Free Documentation License
+-		   Version 1.1, March 2000
++		  Version 1.2, November 2002
+ 
+- Copyright (C) 2000  Free Software Foundation, Inc.
+-     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++
++ Copyright (C) 2000,2001,2002  Free Software Foundation, Inc.
++     51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  Everyone is permitted to copy and distribute verbatim copies
+  of this license document, but changing it is not allowed.
+ 
+@@ -10,12 +11,12 @@
+ 0. PREAMBLE
+ 
+ The purpose of this License is to make a manual, textbook, or other
+-written document "free" in the sense of freedom: to assure everyone
+-the effective freedom to copy and redistribute it, with or without
+-modifying it, either commercially or noncommercially.  Secondarily,
+-this License preserves for the author and publisher a way to get
+-credit for their work, while not being considered responsible for
+-modifications made by others.
++functional and useful document "free" in the sense of freedom: to
++assure everyone the effective freedom to copy and redistribute it,
++with or without modifying it, either commercially or noncommercially.
++Secondarily, this License preserves for the author and publisher a way
++to get credit for their work, while not being considered responsible
++for modifications made by others.
+ 
+ This License is a kind of "copyleft", which means that derivative
+ works of the document must themselves be free in the same sense.  It
+@@ -33,11 +34,15 @@
+ 
+ 1. APPLICABILITY AND DEFINITIONS
+ 
+-This License applies to any manual or other work that contains a
+-notice placed by the copyright holder saying it can be distributed
+-under the terms of this License.  The "Document", below, refers to any
+-such manual or work.  Any member of the public is a licensee, and is
+-addressed as "you".
++This License applies to any manual or other work, in any medium, that
++contains a notice placed by the copyright holder saying it can be
++distributed under the terms of this License.  Such a notice grants a
++world-wide, royalty-free license, unlimited in duration, to use that
++work under the conditions stated herein.  The "Document", below,
++refers to any such manual or work.  Any member of the public is a
++licensee, and is addressed as "you".  You accept the license if you
++copy, modify or distribute the work in a way requiring permission
++under copyright law.
+ 
+ A "Modified Version" of the Document means any work containing the
+ Document or a portion of it, either copied verbatim, or with
+@@ -47,7 +52,7 @@
+ the Document that deals exclusively with the relationship of the
+ publishers or authors of the Document to the Document's overall subject
+ (or to related matters) and contains nothing that could fall directly
+-within that overall subject.  (For example, if the Document is in part a
++within that overall subject.  (Thus, if the Document is in part a
+ textbook of mathematics, a Secondary Section may not explain any
+ mathematics.)  The relationship could be a matter of historical
+ connection with the subject or with related matters, or of legal,
+@@ -56,33 +61,40 @@
+ 
+ The "Invariant Sections" are certain Secondary Sections whose titles
+ are designated, as being those of Invariant Sections, in the notice
+-that says that the Document is released under this License.
++that says that the Document is released under this License.  If a
++section does not fit the above definition of Secondary then it is not
++allowed to be designated as Invariant.  The Document may contain zero
++Invariant Sections.  If the Document does not identify any Invariant
++Sections then there are none.
+ 
+ The "Cover Texts" are certain short passages of text that are listed,
+ as Front-Cover Texts or Back-Cover Texts, in the notice that says that
+-the Document is released under this License.
++the Document is released under this License.  A Front-Cover Text may
++be at most 5 words, and a Back-Cover Text may be at most 25 words.
+ 
+ A "Transparent" copy of the Document means a machine-readable copy,
+ represented in a format whose specification is available to the
+-general public, whose contents can be viewed and edited directly and
++general public, that is suitable for revising the document
+ straightforwardly with generic text editors or (for images composed of
+ pixels) generic paint programs or (for drawings) some widely available
+ drawing editor, and that is suitable for input to text formatters or
+ for automatic translation to a variety of formats suitable for input
+ to text formatters.  A copy made in an otherwise Transparent file
+-format whose markup has been designed to thwart or discourage
+-subsequent modification by readers is not Transparent.  A copy that is
+-not "Transparent" is called "Opaque".
++format whose markup, or absence of markup, has been arranged to thwart
++or discourage subsequent modification by readers is not Transparent.
++An image format is not Transparent if used for any substantial amount
++of text.  A copy that is not "Transparent" is called "Opaque".
+ 
+ Examples of suitable formats for Transparent copies include plain
+ ASCII without markup, Texinfo input format, LaTeX input format, SGML
+ or XML using a publicly available DTD, and standard-conforming simple
+-HTML designed for human modification.  Opaque formats include
+-PostScript, PDF, proprietary formats that can be read and edited only
+-by proprietary word processors, SGML or XML for which the DTD and/or
++HTML, PostScript or PDF designed for human modification.  Examples of
++transparent image formats include PNG, XCF and JPG.  Opaque formats
++include proprietary formats that can be read and edited only by
++proprietary word processors, SGML or XML for which the DTD and/or
+ processing tools are not generally available, and the
+-machine-generated HTML produced by some word processors for output
+-purposes only.
++machine-generated HTML, PostScript or PDF produced by some word
++processors for output purposes only.
+ 
+ The "Title Page" means, for a printed book, the title page itself,
+ plus such following pages as are needed to hold, legibly, the material
+@@ -91,7 +103,22 @@
+ the text near the most prominent appearance of the work's title,
+ preceding the beginning of the body of the text.
+ 
++A section "Entitled XYZ" means a named subunit of the Document whose
++title either is precisely XYZ or contains XYZ in parentheses following
++text that translates XYZ in another language.  (Here XYZ stands for a
++specific section name mentioned below, such as "Acknowledgements",
++"Dedications", "Endorsements", or "History".)  To "Preserve the Title"
++of such a section when you modify the Document means that it remains a
++section "Entitled XYZ" according to this definition.
+ 
++The Document may include Warranty Disclaimers next to the notice which
++states that this License applies to the Document.  These Warranty
++Disclaimers are considered to be included by reference in this
++License, but only as regards disclaiming warranties: any other
++implication that these Warranty Disclaimers may have is void and has
++no effect on the meaning of this License.
++
++
+ 2. VERBATIM COPYING
+ 
+ You may copy and distribute the Document in any medium, either
+@@ -110,9 +137,10 @@
+ 
+ 3. COPYING IN QUANTITY
+ 
+-If you publish printed copies of the Document numbering more than 100,
+-and the Document's license notice requires Cover Texts, you must enclose
+-the copies in covers that carry, clearly and legibly, all these Cover
++If you publish printed copies (or copies in media that commonly have
++printed covers) of the Document, numbering more than 100, and the
++Document's license notice requires Cover Texts, you must enclose the
++copies in covers that carry, clearly and legibly, all these Cover
+ Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+ the back cover.  Both covers must also clearly and legibly identify
+ you as the publisher of these copies.  The front cover must present
+@@ -130,16 +158,15 @@
+ If you publish or distribute Opaque copies of the Document numbering
+ more than 100, you must either include a machine-readable Transparent
+ copy along with each Opaque copy, or state in or with each Opaque copy
+-a publicly-accessible computer-network location containing a complete
+-Transparent copy of the Document, free of added material, which the
+-general network-using public has access to download anonymously at no
+-charge using public-standard network protocols.  If you use the latter
+-option, you must take reasonably prudent steps, when you begin
+-distribution of Opaque copies in quantity, to ensure that this
+-Transparent copy will remain thus accessible at the stated location
+-until at least one year after the last time you distribute an Opaque
+-copy (directly or through your agents or retailers) of that edition to
+-the public.
++a computer-network location from which the general network-using
++public has access to download using public-standard network protocols
++a complete Transparent copy of the Document, free of added material.
++If you use the latter option, you must take reasonably prudent steps,
++when you begin distribution of Opaque copies in quantity, to ensure
++that this Transparent copy will remain thus accessible at the stated
++location until at least one year after the last time you distribute an
++Opaque copy (directly or through your agents or retailers) of that
++edition to the public.
+ 
+ It is requested, but not required, that you contact the authors of the
+ Document well before redistributing any large number of copies, to give
+@@ -163,7 +190,8 @@
+ B. List on the Title Page, as authors, one or more persons or entities
+    responsible for authorship of the modifications in the Modified
+    Version, together with at least five of the principal authors of the
+-   Document (all of its principal authors, if it has less than five).
++   Document (all of its principal authors, if it has fewer than five),
++   unless they release you from this requirement.
+ C. State on the Title page the name of the publisher of the
+    Modified Version, as the publisher.
+ D. Preserve all the copyright notices of the Document.
+@@ -175,10 +203,10 @@
+ G. Preserve in that license notice the full lists of Invariant Sections
+    and required Cover Texts given in the Document's license notice.
+ H. Include an unaltered copy of this License.
+-I. Preserve the section entitled "History", and its title, and add to
+-   it an item stating at least the title, year, new authors, and
++I. Preserve the section Entitled "History", Preserve its Title, and add
++   to it an item stating at least the title, year, new authors, and
+    publisher of the Modified Version as given on the Title Page.  If
+-   there is no section entitled "History" in the Document, create one
++   there is no section Entitled "History" in the Document, create one
+    stating the title, year, authors, and publisher of the Document as
+    given on its Title Page, then add an item describing the Modified
+    Version as stated in the previous sentence.
+@@ -189,17 +217,18 @@
+    You may omit a network location for a work that was published at
+    least four years before the Document itself, or if the original
+    publisher of the version it refers to gives permission.
+-K. In any section entitled "Acknowledgements" or "Dedications",
+-   preserve the section's title, and preserve in the section all the
+-   substance and tone of each of the contributor acknowledgements
++K. For any section Entitled "Acknowledgements" or "Dedications",
++   Preserve the Title of the section, and preserve in the section all
++   the substance and tone of each of the contributor acknowledgements
+    and/or dedications given therein.
+ L. Preserve all the Invariant Sections of the Document,
+    unaltered in their text and in their titles.  Section numbers
+    or the equivalent are not considered part of the section titles.
+-M. Delete any section entitled "Endorsements".  Such a section
++M. Delete any section Entitled "Endorsements".  Such a section
+    may not be included in the Modified Version.
+-N. Do not retitle any existing section as "Endorsements"
++N. Do not retitle any existing section to be Entitled "Endorsements"
+    or to conflict in title with any Invariant Section.
++O. Preserve any Warranty Disclaimers.
+ 
+ If the Modified Version includes new front-matter sections or
+ appendices that qualify as Secondary Sections and contain no material
+@@ -208,7 +237,7 @@
+ list of Invariant Sections in the Modified Version's license notice.
+ These titles must be distinct from any other section titles.
+ 
+-You may add a section entitled "Endorsements", provided it contains
++You may add a section Entitled "Endorsements", provided it contains
+ nothing but endorsements of your Modified Version by various
+ parties--for example, statements of peer review or that the text has
+ been approved by an organization as the authoritative definition of a
+@@ -236,7 +265,7 @@
+ versions, provided that you include in the combination all of the
+ Invariant Sections of all of the original documents, unmodified, and
+ list them all as Invariant Sections of your combined work in its
+-license notice.
++license notice, and that you preserve all their Warranty Disclaimers.
+ 
+ The combined work need only contain one copy of this License, and
+ multiple identical Invariant Sections may be replaced with a single
+@@ -247,11 +276,11 @@
+ Make the same adjustment to the section titles in the list of
+ Invariant Sections in the license notice of the combined work.
+ 
+-In the combination, you must combine any sections entitled "History"
+-in the various original documents, forming one section entitled
+-"History"; likewise combine any sections entitled "Acknowledgements",
+-and any sections entitled "Dedications".  You must delete all sections
+-entitled "Endorsements."
++In the combination, you must combine any sections Entitled "History"
++in the various original documents, forming one section Entitled
++"History"; likewise combine any sections Entitled "Acknowledgements",
++and any sections Entitled "Dedications".  You must delete all sections
++Entitled "Endorsements".
+ 
+ 
+ 6. COLLECTIONS OF DOCUMENTS
+@@ -268,23 +297,24 @@
+ other respects regarding verbatim copying of that document.
+ 
+ 
+-
+ 7. AGGREGATION WITH INDEPENDENT WORKS
+ 
+ A compilation of the Document or its derivatives with other separate
+ and independent documents or works, in or on a volume of a storage or
+-distribution medium, does not as a whole count as a Modified Version
+-of the Document, provided no compilation copyright is claimed for the
+-compilation.  Such a compilation is called an "aggregate", and this
+-License does not apply to the other self-contained works thus compiled
+-with the Document, on account of their being thus compiled, if they
+-are not themselves derivative works of the Document.
++distribution medium, is called an "aggregate" if the copyright
++resulting from the compilation is not used to limit the legal rights
++of the compilation's users beyond what the individual works permit.
++When the Document is included in an aggregate, this License does not
++apply to the other works in the aggregate which are not themselves
++derivative works of the Document.
+ 
+ If the Cover Text requirement of section 3 is applicable to these
+-copies of the Document, then if the Document is less than one quarter
+-of the entire aggregate, the Document's Cover Texts may be placed on
+-covers that surround only the Document within the aggregate.
+-Otherwise they must appear on covers around the whole aggregate.
++copies of the Document, then if the Document is less than one half of
++the entire aggregate, the Document's Cover Texts may be placed on
++covers that bracket the Document within the aggregate, or the
++electronic equivalent of covers if the Document is in electronic form.
++Otherwise they must appear on printed covers that bracket the whole
++aggregate.
+ 
+ 
+ 8. TRANSLATION
+@@ -295,12 +325,19 @@
+ permission from their copyright holders, but you may include
+ translations of some or all Invariant Sections in addition to the
+ original versions of these Invariant Sections.  You may include a
+-translation of this License provided that you also include the
+-original English version of this License.  In case of a disagreement
+-between the translation and the original English version of this
+-License, the original English version will prevail.
++translation of this License, and all the license notices in the
++Document, and any Warranty Disclaimers, provided that you also include
++the original English version of this License and the original versions
++of those notices and disclaimers.  In case of a disagreement between
++the translation and the original version of this License or a notice
++or disclaimer, the original version will prevail.
+ 
++If a section in the Document is Entitled "Acknowledgements",
++"Dedications", or "History", the requirement (section 4) to Preserve
++its Title (section 1) will typically require changing the actual
++title.
+ 
++
+ 9. TERMINATION
+ 
+ You may not copy, modify, sublicense, or distribute the Document except
+@@ -317,8 +354,8 @@
+ The Free Software Foundation may publish new, revised versions
+ of the GNU Free Documentation License from time to time.  Such new
+ versions will be similar in spirit to the present version, but may
+-differ in detail to address new problems or concerns. See
+-http:///www.gnu.org/copyleft/.
++differ in detail to address new problems or concerns.  See
++http://www.gnu.org/copyleft/.
+ 
+ Each version of the License is given a distinguishing version number.
+ If the Document specifies that a particular numbered version of this
+@@ -336,20 +373,24 @@
+ the License in the document and put the following copyright and
+ license notices just after the title page:
+ 
+-      Copyright (c)  YEAR  YOUR NAME.
+-      Permission is granted to copy, distribute and/or modify this document
+-      under the terms of the GNU Free Documentation License, Version 1.1
+-      or any later version published by the Free Software Foundation;
+-      with the Invariant Sections being LIST THEIR TITLES, with the
+-      Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
+-      A copy of the license is included in the section entitled "GNU
+-      Free Documentation License".
++    Copyright (c)  YEAR  YOUR NAME.
++    Permission is granted to copy, distribute and/or modify this document
++    under the terms of the GNU Free Documentation License, Version 1.2
++    or any later version published by the Free Software Foundation;
++    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
++    A copy of the license is included in the section entitled "GNU
++    Free Documentation License".
+ 
+-If you have no Invariant Sections, write "with no Invariant Sections"
+-instead of saying which ones are invariant.  If you have no
+-Front-Cover Texts, write "no Front-Cover Texts" instead of
+-"Front-Cover Texts being LIST"; likewise for Back-Cover Texts.
++If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
++replace the "with...Texts." line with this:
+ 
++    with the Invariant Sections being LIST THEIR TITLES, with the
++    Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
++
++If you have Invariant Sections without Cover Texts, or some other
++combination of the three, merge those two alternatives to suit the
++situation.
++
+ If your document contains nontrivial examples of program code, we
+ recommend releasing these examples in parallel under your choice of
+ free software license, such as the GNU General Public License,
+Index: doc/common/header.html
+===================================================================
+--- kdelibs/doc/common/header.html	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/header.html	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,56 +1,67 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+-<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+ 
++<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <head>
+-  <title>$title ($projectname)</title>
++  <title>$title</title>
++
++<style type="text/css">
++  .cp-doNotDisplay { display: none; }
++  @media aural, braille, handheld, tty { .cp-doNotDisplay { display: inline; speak: normal; }}
++  .cp-edit { text-align: right; }
++  @media print, embossed { .cp-edit { display: none; }}
++</style>
++
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+-
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+-
+-  <meta http-equiv="pics-label" content='(pics-1.1 "http://www.icra.org/ratingsv02.html" comment "ICRAonline DE v2.0" l gen true for "http://www.kde.org"  r (nz 1 vz 1 lz 1 oz 1 cb 1) "http://www.rsac.org/ratingsv01.html" l gen true for "http://www.kde.org"  r (n 0 s 0 v 0 l 0))' />
+-
++  <link rel="meta" href="http://www.kde.org/labels.rdf" type="application/rdf+xml" title="ICRA labels" />
+   <meta name="trademark" content="KDE e.V." />
+   <meta name="description" content="K Desktop Environment Homepage, KDE.org" />
+   <meta name="MSSmartTagsPreventParsing" content="true" />
+   <meta name="robots" content="all" />
+-
+-  <link rel="shortcut icon" href="@topdir@/favicon.ico" />
+-
+-<link rel="stylesheet" media="screen" type="text/css" title="APIDOX" href="doxygen.css" />
+-
+-
+-
++  <meta name="no-email-collection" content="http://www.unspam.com/noemailcollection" />
++  <link rel="shortcut icon" href="@topdir@/favicon.ico" /><link rel="icon" href="@topdir@/favicon.ico" />
++  <link rel="stylesheet" type="text/css" href="@topdir@/doxygen.css" />
++  <link rel="stylesheet" type="text/css" href="@topdir@/tabs.css" />
++  <link rel="stylesheet" media="screen" type="text/css" title="KDE Colors" href="@topdir@/kde.css" />
++  <link rel="stylesheet" media="print, embossed" type="text/css" href="@topdir@/print.css" />
++  <link rel="stylesheet" media="screen, aural, handheld, tty, braille" type="text/css" title="Flat" href="@topdir@/flat.css" />
+ </head>
+ 
+ <body>
+ 
+-<div id="nav_header_top" align="right">
+-  <a href="#content" class="doNotDisplay" accesskey="2">Skip to main content ::</a>
++<ul class="cp-doNotDisplay">
++  <li><a href="#cp-content" accesskey="2">Skip to content</a></li>
++  <li><a href="#cp-menu" accesskey="5">Skip to link menu</a></li>
++</ul>
+ 
+-  <a href="@topdir@"><img id="nav_header_logo" alt="Home" align="left" src="@topdir@/kde_gear_64.png" border="0" /></a>
+-  <span class="doNotDisplay">::</span>
++<div id="container">
++<div id="header">
++  <div id="header_top"><div><div>
++    <img alt ="" src="@topdir@/top-kde.jpg"/>
++    KDE 3.5 API Reference  </div></div></div>
++  <div id="header_bottom">
++    <div id="location">
++      <ul>
++        <li><a href="http://api.kde.org">KDE API Reference</a></li>
++        <li><a href="@topdir@/index.html">@topname@</a></li>
++      </ul>
++    </div>
+ 
+-  <div id="nav_header_title" align="left">KDE API Reference</div>
+-
+-
+-</div>
+-
+-<div id="nav_header_bottom" align="right">
+-  <span class="doNotDisplay">:: <a href="#navigation" accesskey="5">Skip to Link Menu</a><br/></span>
+-  <div id="nav_header_bottom_right" style="text-align: left;">
+-/ <a href="@topdir@">API Reference</a>
+-<!-- pmenu $projectname -->
++    <div id="menu">
++<ul><li><a href="http://kde.org/family/">Sitemap</a></li>
++<li><a href="http://kde.org/contact/">Contact Us</a></li>
++</ul>    </div>
+   </div>
+ </div>
++<!-- End page header -->
++    <div id="body_wrapper">
++      <div id="body">
++        <!-- begin main content -->
++        <div id="right">
++          <div class="content">
++          <div id="main">
++            <div class="clearer">&nbsp;</div>
++<h2><a name="content"></a>$projectname</h2>
+ 
+-
+-<table id="main" border="0" cellpadding="0" cellspacing="0" width="100%">
+-<tr>
+-      <td valign="top" class="menuheader" height="0"></td>
+-
+-  <td id="contentcolumn" valign="top" rowspan="2" >
+-    <div id="content" style="padding-top: 0px;"><div style="width:100%; margin: 0px; padding: 0px;">
+-    <a name="content"></a>
+-
+-
++<!-- BC -->
+Index: doc/common/top-left.jpg
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/top-left.jpg
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/top-right.jpg
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/top-right.jpg
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/mainfooter.html
+===================================================================
+--- kdelibs/doc/common/mainfooter.html	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/mainfooter.html	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,68 +1,72 @@
+-    </div></div>
+-
+-
+-      </td>
+-  </tr>
+-  <tr>
+-    <td valign="top" id="leftmenu" width="25%">
+-      <a name="navigation"></a>
+-<div class="menu_box"><h2>API Dox</h2>
+-<div class="nav_list">
+-<ul>
+-<!-- gmenu -->
+-</ul></div></div>
+-
+-
+-        </td>
+-</tr>
+-</table>
+-
+ <div class="copyrights">
+ This file is part of the documentation for $projectname $projectnumber.<br/>
+-Documentation copyright &copy; 1996-2005 the KDE developers.<br/>
++Documentation copyright &copy; @copyright@.<br/>
+ Generated on $datetime by
+ <a href="http://www.doxygen.org/index.html">doxygen</a> $doxygenversion written
+-by <a href="mailto:dimitri@stack.nl">Dimitri van Heesch</a>, &copy;&nbsp;1997-2003
++by <a href="mailto:dimitri@stack.nl">Dimitri van Heesch</a>, &copy;&nbsp;1997-2006
+ <p>
+-KDE's <a href="http://developer.kde.org/policies/documentationpolicy.html">Doxygen guidelines</a> are available online.
++KDE's <a href="http://techbase.kde.org/Policies/Library_Documentation_Policy">Doxygen guidelines</a> are available online.
+ Questions about the reference manuals should be sent to 
+-<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;groot&#64;kde&#46;or&#x67">Adriaan de Groot</a>
++<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;groo&#116;&#64;kde&#46;or&#x67;">Adriaan de Groot</a>
+ or 
+-<a href="&#109;a&#105;&#108;&#116;&#111;&#58;w&#105;nter&#116;&#64;kde&#46;or&#x67">Allen Winter</a>.
++<a href="&#109;a&#105;&#108;&#116;&#111;&#58;w&#105;n&#116;er&#64;kde&#46;or&#x67;">Allen Winter</a>.
++
+ </p>
+ </div>
++            </div>
++          </div>
++        </div>
++        <div id="left">
++          <div class="menu_box">
+ 
+-<div style="clear:both; height: 1px;">&nbsp;</div>
++<!-- menu -->
++<!-- cmenu.begin -->
++<h2>Class Picker</h2>
++<div style="text-align: center;">
++<form name="guideform">
++<select name="guidelinks" style="width:100%;" onChange="window.location=document.guideform.guidelinks.options[document.guideform.guidelinks.selectedIndex].value">
++<option value="annotated.html">Choose...</option>
++<!-- cmenu -->
++</select>
++</form>
++</div>
++<!-- cmenu.end -->
+ 
++<div class="menu_box">
++<a name="cp-menu" /><div class="menutitle"><div>
++<h2 id="cp-menu-project">@topname@</h2>
++<a href="#cp-skip-project" class="cp-doNotDisplay">Skip menu "$projectname"</a>
++</div></div>
++<div class="nav_list">
++<ul>
++<!-- gmenu -->
++</ul></div></div>
+ 
+-<span class="doNotDisplay">
+-  <a href="http://www.kde.org/" accesskey="8">KDE Home</a> |
+-  <a href="http://accessibility.kde.org/" accesskey="9">KDE Accessibility Home</a> |
+-  <a href="http://www.kde.org/media/accesskeys.php" accesskey="0">Description of Access Keys</a>
+-</span>
++          </div>
++        </div>
++        <div class="clearer"></div>
++      </div>
++      <div class="clearer"></div>
++    </div>
+ 
+ 
+-<div style="height: 8px"></div>
++    <div id="end_body"></div>
+ 
+-<div id="footer">
+-  <div id="footer_left">
+-    Maintained by <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;groot&#116;&#64;kde&#46;or&#x67>Adriaan de Groot</a>
+-    and
+-<a href="&#109;a&#105;&#108;&#116;&#111;&#58;w&#105;nter&#116;&#64;kde&#46;or&#x67">Allen Winter</a>.
+-<br/>
+-    KDE and K Desktop Environment are trademarks of <a href="http://www.kde.org/areas/kde-ev/" title="Homepage of the KDE non-profit Organization">KDE e.V.</a> |
+-    <a href="http://www.kde.org/contact/impressum.php">Legal</a>
++    <div id="footer"><div id="footer_text">
++    This website is maintained by <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;groo&#116;&#64;kde&#46;or&#x67;">Adriaan de Groot</a>
++and
++<a href="&#109;a&#105;&#108;&#116;&#111;&#58;w&#105;n&#116;er&#64;kde&#46;or&#x67;">Allen Winter</a>.<br />
++        KDE<sup>&#174;</sup> and <a href="@topdir@/kde_gear_black.png">the K Desktop Environment<sup>&#174;</sup> logo</a> are registered trademarks of <a href="http://ev.kde.org/" title="Homepage of the KDE non-profit Organization">KDE e.V.</a> |
++        <a href="http://www.kde.org/contact/impressum.php">Legal</a>
++    </div></div>
+   </div>
+-  <div id="footer_right"><img src="/media/images/footer_right.png" style="margin: 0px" alt="" /></div>
+-</div>
+ 
+ <!--
+ WARNING: DO NOT SEND MAIL TO THE FOLLOWING EMAIL ADDRESS! YOU WILL
+ BE BLOCKED INSTANTLY AND PERMANENTLY!
+-<a href="mailto:aaaatrap-425acc3b5374943f@kde.org">Block me</a>
++<a href="mailto:aaaatrap-45abe0e0c3bebc77@kde.org">Block me</a>
+ WARNING END
+ -->
+ 
+ </body>
+ </html>
+-
+Index: doc/common/block_title_mid.png
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/block_title_mid.png
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/Doxyfile.global
+===================================================================
+--- kdelibs/doc/common/Doxyfile.global	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/doc/common/Doxyfile.global	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,201 @@
++OUTPUT_LANGUAGE        = English
++USE_WINDOWS_ENCODING   = NO
++BRIEF_MEMBER_DESC      = NO
++REPEAT_BRIEF           = YES
++ABBREVIATE_BRIEF       = 
++ALWAYS_DETAILED_SEC    = YES
++INLINE_INHERITED_MEMB  = NO
++FULL_PATH_NAMES        = NO
++STRIP_FROM_PATH        = 
++SHORT_NAMES            = NO
++JAVADOC_AUTOBRIEF      = YES
++MULTILINE_CPP_IS_BRIEF = NO
++INHERIT_DOCS           = YES
++DISTRIBUTE_GROUP_DOC   = NO
++TAB_SIZE               = 4
++OPTIMIZE_OUTPUT_FOR_C  = NO
++OPTIMIZE_OUTPUT_JAVA   = NO
++SUBGROUPING            = YES
++EXTRACT_ALL            = YES
++EXTRACT_PRIVATE        = NO
++EXTRACT_STATIC         = YES
++EXTRACT_LOCAL_CLASSES  = NO
++HIDE_UNDOC_MEMBERS     = NO
++HIDE_UNDOC_CLASSES     = YES
++HIDE_FRIEND_COMPOUNDS  = YES
++HIDE_IN_BODY_DOCS      = NO
++INTERNAL_DOCS          = YES
++CASE_SENSE_NAMES       = YES
++HIDE_SCOPE_NAMES       = NO
++SHOW_INCLUDE_FILES     = YES
++INLINE_INFO            = YES
++SORT_BRIEF_DOCS        = YES
++SORT_BY_SCOPE_NAME     = NO
++GENERATE_TESTLIST      = NO
++GENERATE_BUGLIST       = YES
++GENERATE_DEPRECATEDLIST= YES
++ENABLED_SECTIONS       = 
++MAX_INITIALIZER_LINES  = 30
++SHOW_USED_FILES        = YES
++QUIET                  = NO
++WARNINGS               = YES
++WARN_IF_UNDOCUMENTED   = YES
++WARN_IF_DOC_ERROR      = YES
++WARN_FORMAT            = 
++WARN_LOGFILE           = 
++INPUT                  = 
++FILE_PATTERNS          = *.h \
++                         *.cpp \
++                         *.cc \
++                         *.hpp \
++                         *.dox \
++                         *.c++ \
++                         *.cxx \
++                         *.h++ \
++                         *.hh
++RECURSIVE              = YES
++EXCLUDE                = 
++EXCLUDE_SYMLINKS       = NO
++EXCLUDE_PATTERNS       = */.svn/* \
++                         */.git/* \
++                         */cmake/* \
++                         *.moc.* \
++                         moc* \
++                         *.all_cpp.* \
++                         *unload.* \
++                         */test/* \
++                         */tests/* \
++                         *_p.h *_p.cpp
++EXAMPLE_PATH           = 
++EXAMPLE_PATTERNS       = 
++EXAMPLE_RECURSIVE      = NO
++IMAGE_PATH             = 
++INPUT_FILTER           = 
++FILTER_SOURCE_FILES    = NO
++SOURCE_BROWSER         = YES
++INLINE_SOURCES         = NO
++STRIP_CODE_COMMENTS    = YES
++REFERENCED_BY_RELATION = YES
++REFERENCES_RELATION    = YES
++VERBATIM_HEADERS       = YES
++ALPHABETICAL_INDEX     = YES
++COLS_IN_ALPHA_INDEX    = 3
++HTML_OUTPUT            = 
++HTML_FILE_EXTENSION    = .html
++HTML_HEADER            = ../apidocs/common/header.html
++HTML_FOOTER            = ../apidocs/common/footer.html
++HTML_STYLESHEET        = ../apidocs/common/doxygen.css
++HTML_ALIGN_MEMBERS     = YES
++GENERATE_HTMLHELP      = NO
++CHM_FILE               = 
++HHC_LOCATION           = 
++GENERATE_CHI           = NO
++BINARY_TOC             = NO
++TOC_EXPAND             = NO
++DISABLE_INDEX          = YES
++ENUM_VALUES_PER_LINE   = 4
++GENERATE_TREEVIEW      = NO
++TREEVIEW_WIDTH         = 250
++GENERATE_LATEX         = NO
++LATEX_OUTPUT           = 
++LATEX_CMD_NAME         = latex
++MAKEINDEX_CMD_NAME     = makeindex
++COMPACT_LATEX          = NO
++PAPER_TYPE             = a4wide
++EXTRA_PACKAGES         = 
++LATEX_HEADER           = 
++PDF_HYPERLINKS         = NO
++USE_PDFLATEX           = NO
++LATEX_BATCHMODE        = NO
++LATEX_HIDE_INDICES     = NO
++GENERATE_RTF           = NO
++RTF_OUTPUT             = 
++COMPACT_RTF            = NO
++RTF_HYPERLINKS         = NO
++RTF_STYLESHEET_FILE    = 
++RTF_EXTENSIONS_FILE    = 
++GENERATE_MAN           = NO
++MAN_OUTPUT             = 
++MAN_EXTENSION          = .3
++MAN_LINKS              = YES
++GENERATE_XML           = NO
++XML_OUTPUT             = xml
++XML_SCHEMA             = 
++XML_DTD                = 
++XML_PROGRAMLISTING     = NO
++GENERATE_AUTOGEN_DEF   = NO
++GENERATE_PERLMOD       = NO
++PERLMOD_LATEX          = NO
++PERLMOD_PRETTY         = YES
++PERLMOD_MAKEVAR_PREFIX = 
++ENABLE_PREPROCESSING   = YES
++SEARCH_INCLUDES        = YES
++INCLUDE_PATH           = 
++INCLUDE_FILE_PATTERNS  = 
++EXPAND_AS_DEFINED      = 
++SKIP_FUNCTION_MACROS   = YES
++ALLEXTERNALS           = NO
++EXTERNAL_GROUPS        = NO
++PERL_PATH              = 
++CLASS_DIAGRAMS         = YES
++HIDE_UNDOC_RELATIONS   = NO
++HAVE_DOT               = YES
++UML_LOOK               = NO
++TEMPLATE_RELATIONS     = YES
++INCLUDE_GRAPH          = YES
++INCLUDED_BY_GRAPH      = YES
++CALL_GRAPH             = NO
++GRAPHICAL_HIERARCHY    = YES
++DOT_IMAGE_FORMAT       = png
++DOT_PATH               = 
++DOTFILE_DIRS           = 
++MAX_DOT_GRAPH_WIDTH    = 800
++MAX_DOT_GRAPH_HEIGHT   = 1024
++MAX_DOT_GRAPH_DEPTH    = 0
++GENERATE_LEGEND        = YES
++DOT_CLEANUP            = YES
++SEARCHENGINE           = NO
++
++### KDE Settings
++ALIASES = \
++	"intern=\par<b>Internal use only.</b>" \
++	"reimp=\par<b>Reimplemented from superclass.</b>" \
++	"obsolete=@deprecated" \
++	"feature=\xrefitem features \"Feature(s)\" \"Features\"" \
++	"unmaintained=\xrefitem unmaintained \"Unmaintained\" \"Unmaintained\"" \
++	"requirement=\xrefitem requirements \"Requirement(s)\" \"Requirements\"" \
++	"faq=\xrefitem FAQ \"F.A.Q.\" \"F.A.Q.\"" \
++	"authors=\xrefitem authors \"Author(s)\" \"Authors\"" \
++	"maintainers=\xrefitem maintainers \"Maintainer(s)\" \"Maintainers\"" \
++	"port4=\xrefitem port4 \"KDE 4 Porting Guide\" \"KDE 4 Porting Guide\"" \
++	"glossary=\xrefitem glossary \"KDE 4 Glossary\" \"KDE 4 Glossary\"" \
++	"acronym=\b "\
++	"licenses=\xrefitem licenses \"License(s)\" \"Licenses\"" \
++	"FIXME=\xrefitem fixme \"Fixme\" \"Fixme\"" \
++	"bc=\xrefitem bc \"Binary Compatible\" \"Binary Compatible\"" \
++	"threadsafe=\xrefitem threadsafe \"Threadsafe\" \"Threadsafe\"" \
++	"artistic=<a href=\"http://www.opensource.org/licenses/artistic-license.php\">Artistic</a>" \
++	"bsd=<a href=\"http://www.xfree86.org/3.3.6/COPYRIGHT2.html#5\">BSD</a>" \
++	"x11=<a href=\"http://www.xfree86.org/3.3.6/COPYRIGHT2.html#3\">X11</a>" \
++	"gpl=<a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html#SEC1\">GPLv2</a>" \
++	"lgpl=<a href=\"http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html#SEC1\">LGPLv2</a>" \
++	"qpl=<a href=\"http://www.trolltech.com/products/qt/licenses\">QPL</a>"
++
++HTML_ALIGN_MEMBERS     = YES
++REFERENCED_BY_RELATION = NO
++REFERENCES_RELATION    = NO
++VERBATIM_HEADERS       = NO
++SOURCE_BROWSER         = YES
++GENERATE_AUTOGEN_DEF   = NO
++DETAILS_AT_TOP         = YES
++SORT_MEMBER_DOCS       = YES
++SORT_MEMBERS_CTORS_1ST = YES
++GENERATE_TODOLIST      = YES
++IGNORE_PREFIX          = K
++CLASS_GRAPH            = YES
++COLLABORATION_GRAPH    = NO
++
++
++MACRO_EXPANSION = YES
++EXPAND_ONLY_PREDEF = YES
++
+
+Property changes on: doc/common/Doxyfile.global
+___________________________________________________________________
+Added: svn:keywords
+   + Author Date Id Revision
+
+Index: doc/common/print.css
+===================================================================
+--- kdelibs/doc/common/print.css	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/doc/common/print.css	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,455 @@
++/*
++** HTML elements
++*/
++
++body {
++    margin: 0;
++    padding: 0;
++    text-align: center;
++    font-size: 0.8em;
++    font-family: "Bitstream Vera Sans", "Lucida Grande", "Trebuchet MS", sans-serif;
++    color: #535353;
++    background: #ffffff;
++}
++
++
++/*
++** HTML Tags
++*/
++
++h1, h2, h3, h4
++{
++    padding: 0;
++    text-align: left;
++    font-weight: bold;
++    color: #f7800a;
++    background: transparent;
++}
++h1 {
++    margin: 0 0 0.3em 0;
++    font-size: 1.7em;
++}
++h2, h3, h4 {
++    margin: 1.3em 0 0 0.3em
++}
++
++h2 {
++    font-size: 1.5em;
++}
++
++h3 {
++    font-size: 1.4em;
++}
++
++h4 {
++    font-size: 1.3em;
++}
++
++h5 {
++    font-size: 1.2em;
++}
++
++a:link {
++    padding-bottom: 0;
++    text-decoration: none;
++    color: #0057ae;
++}
++
++a:visited {
++    padding-bottom: 0;
++    text-decoration: none;
++    color: #644A9B;
++}
++
++
++a[href]:hover {
++    text-decoration: underline;
++}
++
++hr {
++    margin: 0.3em 1em 0.3em 1em;
++    height: 1px;
++    border: #dddddd dashed;
++    border-width: 0 0 1px 0;
++}
++
++pre {
++    display: block;
++    margin: 0.3em;
++    padding: 0.3em;
++    font-size: 1em;
++    font-family: Courier, 'Courier New', 'Andale Mono', Monaco, monospace;
++    color: #000000;
++    background: #f9f9f9;
++    border: #2f6fab dashed;
++    border-width: 1px;
++    overflow: auto;
++    line-height: 1.1em;
++}
++
++input, textarea, select {
++    margin: 0.2em;
++    padding: 0.1em;
++    color: #888888;
++    background: #ffffff;
++    border: 1px solid;
++}
++
++blockquote {
++    margin: 0.3em;
++    padding-left: 2.5em;
++    background: transparent;
++}
++
++del {
++    color: #800000;
++    text-decoration: line-through;
++}
++
++dt {
++    font-weight: bold;
++    font-size: 1.05em;
++    color: #0057ae;
++}
++
++dd {
++    margin-left: 1em;
++}
++
++p {
++    margin-top: 0.5em;
++    margin-bottom: 0.9em;
++    text-align: justify;
++}
++fieldset {
++    border: #cccccc 1px solid;
++}
++
++li {
++    text-align: left;
++}
++
++fieldset {
++    margin-bottom: 1em;
++    padding: .5em;
++}
++
++form {
++    margin: 0;
++    padding: 0;
++}
++
++hr {
++    height: 1px;
++    border: #888888 1px solid;
++    background: #888888;
++    margin: 0.5em 0 0.5em 0 ;
++}
++
++img {
++    border: 0;
++}
++table {
++    border-collapse: collapse;
++    font-size: 1em;
++}
++th {
++    text-align: left;
++    padding-right: 1em;
++    border: #cccccc solid;
++    border-width: 0 0 3px 0;
++}
++
++
++/*
++** Header
++*/
++#header {
++    color: #535353;
++    background: #eeeeee;
++}
++
++#header_top {
++    margin: 0 auto;
++    padding: 0;
++    vertical-align: middle;
++    color: #ffffff;
++    background: url(top.jpg) repeat-x bottom;
++background-color: #0057ae;
++}
++
++#header_top div {
++    margin: 0 auto;
++    padding: 0;
++    background: url(top-left.jpg) no-repeat bottom left;
++}
++
++#header_top div div {
++    margin: 0 auto;
++    padding: 0;
++    vertical-align: middle;
++    text-align: left;
++    font-size: 1.7em;
++    font-weight: bold;
++    background: url(top-right.jpg) no-repeat bottom right;
++}
++
++#header_top div div img {
++    margin:8px 0px 9px 18px;
++    vertical-align: middle;
++}
++
++#header_bottom {
++    display: none;
++    margin: 0 auto;
++    padding: 0.1em 0em 0.3em 0;
++    vertical-align: middle;
++    text-align: right;
++    background: #eeeeee;
++}
++
++#location {
++    padding: 0 0 0 1.5em;
++    text-align: left;
++    line-height: normal;
++    font-size: 1.1em;
++    font-weight:bold;
++    float: left;
++}
++
++#location ul {
++    display: inline;
++    margin: 0;
++    padding: 0;
++    list-style: none;
++}
++
++#location ul li {
++    display: inline;
++    white-space : nowrap;
++    margin: 0;
++    padding: 0 1em 0 0;
++}
++
++#menu {
++    margin: 0 1.5em 0 0;
++    text-align: right;
++    line-height: normal;
++    font-size: 1.1em;
++    font-weight: bold;
++}
++
++#menu ul {
++    display: inline;
++    list-style: none;
++    margin: 0;
++    padding: 0;
++    text-align: right;
++}
++
++#menu ul li {
++    display: inline;
++    white-space : nowrap;
++    margin: 0;
++    padding: 0 0 0 1em;
++    text-align: right;
++}
++
++.here a:link, .here a:visited {
++    text-decoration:underline;
++}
++
++.here ul a:link, .here ul a:visited {
++    text-decoration:none;
++}
++
++#menu ul li a {
++    font-weight: bold;
++}
++
++
++/*
++** Content
++*/
++
++#content {
++}
++
++#main {
++    /* padding in px not ex because IE messes up 100% width tables otherwise */
++    padding: 0 10px 0 10px;
++    text-align: left;
++}
++
++div.nav {
++    display: none;
++}
++
++/* The project name (redundant as it is shown in the menu, too) */
++#main>div.clearer+h2 {
++    margin: 0;
++    padding: 0;
++    text-align: center;
++}
++
++/* The header on top of a page e.g. "MediaObject Class Reference" */
++#main>h1 {
++    text-align: center;
++    margin-bottom: 2em;
++}
++
++/* The group links below the page header */
++#main>h1>small {
++    font-size: 60%;
++}
++
++/* Section headers like "Detailed Description" */
++#main>h2 {
++    margin-left: 0;
++    margin-top: 1em;
++    margin-bottom: 1em;
++}
++
++/* The #include line */
++#main>h1+code {
++    font-size: 120%;
++    background: #F1F1F1;
++    border: 1px solid #E7E7E7;
++    padding: 2px;
++    display: block;
++}
++
++/* The version number (e.g. '4.0') on Mainpages - reduntant as it's already shown in the main title */
++#main>h1+p+h3 {
++    display: none;
++}
++
++#body_wrapper {
++    margin: 0 auto;
++    border: #dddddd solid;
++    border-width: 0 0 0 1px;
++}
++
++#body {
++    float: left;
++    margin: 0;
++    padding: 0;
++}
++
++#right {
++    float: right;
++    margin: 0;
++    padding: 0;
++}
++
++/* These are date cells on the front page. */
++td.cell_date {
++}
++
++#hotspot, .sideimage {
++    float: right;
++    margin: 1ex 1em;
++    clear: right;
++}
++
++.belowimage, h1, h2, h3, h4, h5 {
++    clear: right;
++}
++
++
++/*
++** Left Menu
++*/
++
++#left {
++    display: none;
++    float: left;
++    margin: 0;
++    padding: 0;
++    }
++
++.menu_box {
++    padding: 0.7em 0 0 0;
++}
++
++.menu_box ul {
++    text-align: left;
++}
++
++.menu_box li {
++    list-style-type: none;
++    text-align: left;
++    margin-left: 0.1em;
++}
++
++.menu_box ul ul {
++margin: 0;
++padding-left: 0;
++}
++
++.menu_box li li {
++margin-left: 1em;
++}
++
++.menu_box .active{
++    color: #cf4913;
++}
++
++.menutitle {
++    margin: 0.6em 0 1.2em 0;
++    padding:0;
++    color: #ffffff;
++    background: url(block_title_mid.png) repeat-y right;
++background-color: #0057ae;
++}
++.menutitle div {
++    margin: 0;
++    padding:0;
++    background: url(block_title_top.png) no-repeat top right;
++}
++.menutitle div h2 {
++    margin: 0;
++    padding: 0.2em 0 0.3em 1.3em;
++    line-height:1.2em;
++    font-size: 120%;
++    font-weight: normal;
++    color: #ffffff;
++    background: url(block_title_bottom.png) no-repeat bottom right;
++}
++
++.clearer {
++    clear: both;
++    height: 1px;
++}
++
++
++/*
++** Footer
++*/
++#footer {
++    display: none;
++        background: #eeeeee;
++}
++
++#footer_text {
++    margin: 0 auto;
++    padding: 1em 0 1em 3.5em;
++        text-align: left;
++    color: #000000;
++    background: #eeeeee;
++}
++
++#footer a:link, #footer a:visited {
++    color: #4d88c3;
++}
++
++#quicklinks {
++font-size: 1em;
++padding: 1em;
++text-align: center;
++margin-top: 0.5em;
++margin-left: 0.2em;
++margin-bottom: 0.5em;
++margin-right: 0.2em;
++}
++
+Index: doc/common/fdl-license.html
+===================================================================
+--- kdelibs/doc/common/fdl-license.html	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/fdl-license.html	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -12,342 +12,501 @@
+     <LINK REL="stylesheet" HREF="kde-default.css" TYPE="text/css">
+   </HEAD>
+   <BODY CLASS="license">
+-<H1>GNU Free Documentation License</H1>
+-		   Version 1.1, March 2000
++<h3>GNU Free Documentation License</h3>
++<p>
++  Version 1.2, November 2002
++</p>
+ 
+-<P>Copyright (C) 2000  Free Software Foundation, Inc.
+-     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA<BR>
+-Everyone is permitted to copy and distribute verbatim copies
+-of this license document, but changing it is not allowed.</P>
++<pre>
++  Copyright (C) 2000,2001,2002  Free Software Foundation, Inc.
++  51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++  Everyone is permitted to copy and distribute verbatim copies
++  of this license document, but changing it is not allowed.
++</pre>
+ 
+-<H2>0. Preamble</H2>
++<p>
++  <strong>0. PREAMBLE</strong>
++</p>
+ 
+-<P>The purpose of this License is to make a manual, textbook, or other
+-written document "free" in the sense of freedom: to assure everyone
+-the effective freedom to copy and redistribute it, with or without
+-modifying it, either commercially or noncommercially.  Secondarily,
+-this License preserves for the author and publisher a way to get
+-credit for their work, while not being considered responsible for
+-modifications made by others.</P>
++<p>
++  The purpose of this License is to make a manual, textbook, or other
++  functional and useful document "free" in the sense of freedom: to
++  assure everyone the effective freedom to copy and redistribute it,
++  with or without modifying it, either commercially or noncommercially.
++  Secondarily, this License preserves for the author and publisher a way
++  to get credit for their work, while not being considered responsible
++  for modifications made by others.
++</p>
+ 
+-<P>This License is a kind of "copyleft", which means that derivative
+-works of the document must themselves be free in the same sense.  It
+-complements the GNU General Public License, which is a copyleft
+-license designed for free software.</P>
++<p>
++  This License is a kind of "copyleft", which means that derivative
++  works of the document must themselves be free in the same sense.  It
++  complements the GNU General Public License, which is a copyleft
++  license designed for free software.
++</p>
+ 
+-<P>We have designed this License in order to use it for manuals for free
+-software, because free software needs free documentation: a free
+-program should come with manuals providing the same freedoms that the
+-software does.  But this License is not limited to software manuals;
+-it can be used for any textual work, regardless of subject matter or
+-whether it is published as a printed book.  We recommend this License
+-principally for works whose purpose is instruction or reference.</P>
++<p>
++  We have designed this License in order to use it for manuals for free
++  software, because free software needs free documentation: a free
++  program should come with manuals providing the same freedoms that the
++  software does.  But this License is not limited to software manuals;
++  it can be used for any textual work, regardless of subject matter or
++  whether it is published as a printed book.  We recommend this License
++  principally for works whose purpose is instruction or reference.
++</p>
+ 
+-<H2>1. Applicability And Definitions</H2>
++<p>
++  <strong>1. APPLICABILITY AND DEFINITIONS</strong>
++</p>
+ 
+-<P>This License applies to any manual or other work that contains a
+-notice placed by the copyright holder saying it can be distributed
+-under the terms of this License.  The "Document", below, refers to any
+-such manual or work.  Any member of the public is a licensee, and is
+-addressed as "you".</P>
++<p>
++  This License applies to any manual or other work, in any medium, that
++  contains a notice placed by the copyright holder saying it can be
++  distributed under the terms of this License.  Such a notice grants a
++  world-wide, royalty-free license, unlimited in duration, to use that
++  work under the conditions stated herein.  The "Document", below,
++  refers to any such manual or work.  Any member of the public is a
++  licensee, and is addressed as "you".  You accept the license if you
++  copy, modify or distribute the work in a way requiring permission
++  under copyright law.
++</p>
+ 
+-<P>A "Modified Version" of the Document means any work containing the
+-Document or a portion of it, either copied verbatim, or with
+-modifications and/or translated into another language.</P>
++<p>
++  A "Modified Version" of the Document means any work containing the
++  Document or a portion of it, either copied verbatim, or with
++  modifications and/or translated into another language.
++</p>
+ 
+-<P>A "Secondary Section" is a named appendix or a front-matter section of
+-the Document that deals exclusively with the relationship of the
+-publishers or authors of the Document to the Document's overall subject
+-(or to related matters) and contains nothing that could fall directly
+-within that overall subject.  (For example, if the Document is in part a
+-textbook of mathematics, a Secondary Section may not explain any
+-mathematics.)  The relationship could be a matter of historical
+-connection with the subject or with related matters, or of legal,
+-commercial, philosophical, ethical or political position regarding
+-them.</P>
++<p>
++  A "Secondary Section" is a named appendix or a front-matter section of
++  the Document that deals exclusively with the relationship of the
++  publishers or authors of the Document to the Document's overall subject
++  (or to related matters) and contains nothing that could fall directly
++  within that overall subject.  (Thus, if the Document is in part a
++  textbook of mathematics, a Secondary Section may not explain any
++  mathematics.)  The relationship could be a matter of historical
++  connection with the subject or with related matters, or of legal,
++  commercial, philosophical, ethical or political position regarding
++  them.
++</p>
+ 
+-<P>The "Invariant Sections" are certain Secondary Sections whose titles
+-are designated, as being those of Invariant Sections, in the notice
+-that says that the Document is released under this License.</P>
++<p>
++  The "Invariant Sections" are certain Secondary Sections whose titles
++  are designated, as being those of Invariant Sections, in the notice
++  that says that the Document is released under this License.  If a
++  section does not fit the above definition of Secondary then it is not
++  allowed to be designated as Invariant.  The Document may contain zero
++  Invariant Sections.  If the Document does not identify any Invariant
++  Sections then there are none.
++</p>
+ 
+-<P>The "Cover Texts" are certain short passages of text that are listed,
+-as Front-Cover Texts or Back-Cover Texts, in the notice that says that
+-the Document is released under this License.</P>
++<p>
++  The "Cover Texts" are certain short passages of text that are listed,
++  as Front-Cover Texts or Back-Cover Texts, in the notice that says that
++  the Document is released under this License.  A Front-Cover Text may
++  be at most 5 words, and a Back-Cover Text may be at most 25 words.
++</p>
+ 
+-<P>A "Transparent" copy of the Document means a machine-readable copy,
+-represented in a format whose specification is available to the
+-general public, whose contents can be viewed and edited directly and
+-straightforwardly with generic text editors or (for images composed of
+-pixels) generic paint programs or (for drawings) some widely available
+-drawing editor, and that is suitable for input to text formatters or
+-for automatic translation to a variety of formats suitable for input
+-to text formatters.  A copy made in an otherwise Transparent file
+-format whose markup has been designed to thwart or discourage
+-subsequent modification by readers is not Transparent.  A copy that is
+-not "Transparent" is called "Opaque".</P>
++<p>
++  A "Transparent" copy of the Document means a machine-readable copy,
++  represented in a format whose specification is available to the
++  general public, that is suitable for revising the document
++  straightforwardly with generic text editors or (for images composed of
++  pixels) generic paint programs or (for drawings) some widely available
++  drawing editor, and that is suitable for input to text formatters or
++  for automatic translation to a variety of formats suitable for input
++  to text formatters.  A copy made in an otherwise Transparent file
++  format whose markup, or absence of markup, has been arranged to thwart
++  or discourage subsequent modification by readers is not Transparent.
++  An image format is not Transparent if used for any substantial amount
++  of text.  A copy that is not "Transparent" is called "Opaque".
++</p>
+ 
+-<P>Examples of suitable formats for Transparent copies include plain
+-ASCII without markup, Texinfo input format, LaTeX input format, SGML
+-or XML using a publicly available DTD, and standard-conforming simple
+-HTML designed for human modification.  Opaque formats include
+-PostScript, PDF, proprietary formats that can be read and edited only
+-by proprietary word processors, SGML or XML for which the DTD and/or
+-processing tools are not generally available, and the
+-machine-generated HTML produced by some word processors for output
+-purposes only.</P>
++<p>
++  Examples of suitable formats for Transparent copies include plain
++  ASCII without markup, Texinfo input format, LaTeX input format, SGML
++  or XML using a publicly available DTD, and standard-conforming simple
++  HTML, PostScript or PDF designed for human modification.  Examples of
++  transparent image formats include PNG, XCF and JPG.  Opaque formats
++  include proprietary formats that can be read and edited only by
++  proprietary word processors, SGML or XML for which the DTD and/or
++  processing tools are not generally available, and the
++  machine-generated HTML, PostScript or PDF produced by some word
++  processors for output purposes only.
++</p>
+ 
+-<P>The "Title Page" means, for a printed book, the title page itself,
+-plus such following pages as are needed to hold, legibly, the material
+-this License requires to appear in the title page.  For works in
+-formats which do not have any title page as such, "Title Page" means
+-the text near the most prominent appearance of the work's title,
+-preceding the beginning of the body of the text.</P>
++<p>
++  The "Title Page" means, for a printed book, the title page itself,
++  plus such following pages as are needed to hold, legibly, the material
++  this License requires to appear in the title page.  For works in
++  formats which do not have any title page as such, "Title Page" means
++  the text near the most prominent appearance of the work's title,
++  preceding the beginning of the body of the text.
++</p>
+ 
+-<H2>2. Verbatim Copying</H2>
++<p>
++  A section "Entitled XYZ" means a named subunit of the Document whose
++  title either is precisely XYZ or contains XYZ in parentheses following
++  text that translates XYZ in another language.  (Here XYZ stands for a
++  specific section name mentioned below, such as "Acknowledgements",
++  "Dedications", "Endorsements", or "History".)  To "Preserve the Title"
++  of such a section when you modify the Document means that it remains a
++  section "Entitled XYZ" according to this definition.
++</p>
+ 
+-<P>You may copy and distribute the Document in any medium, either
+-commercially or noncommercially, provided that this License, the
+-copyright notices, and the license notice saying this License applies
+-to the Document are reproduced in all copies, and that you add no other
+-conditions whatsoever to those of this License.  You may not use
+-technical measures to obstruct or control the reading or further
+-copying of the copies you make or distribute.  However, you may accept
+-compensation in exchange for copies.  If you distribute a large enough
+-number of copies you must also follow the conditions in section 3.</P>
++<p>
++  The Document may include Warranty Disclaimers next to the notice which
++  states that this License applies to the Document.  These Warranty
++  Disclaimers are considered to be included by reference in this
++  License, but only as regards disclaiming warranties: any other
++  implication that these Warranty Disclaimers may have is void and has
++  no effect on the meaning of this License.
++</p>
+ 
+-<P>You may also lend copies, under the same conditions stated above, and
+-you may publicly display copies.</P>
++<p>
++  <strong>2. VERBATIM COPYING</strong>
++</p>
+ 
+-<H2>3. Copying In Quantity</H2>
++<p>
++  You may copy and distribute the Document in any medium, either
++  commercially or noncommercially, provided that this License, the
++  copyright notices, and the license notice saying this License applies
++  to the Document are reproduced in all copies, and that you add no other
++  conditions whatsoever to those of this License.  You may not use
++  technical measures to obstruct or control the reading or further
++  copying of the copies you make or distribute.  However, you may accept
++  compensation in exchange for copies.  If you distribute a large enough
++  number of copies you must also follow the conditions in section 3.
++</p>
+ 
+-<P>If you publish printed copies of the Document numbering more than 100,
+-and the Document's license notice requires Cover Texts, you must enclose
+-the copies in covers that carry, clearly and legibly, all these Cover
+-Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+-the back cover.  Both covers must also clearly and legibly identify
+-you as the publisher of these copies.  The front cover must present
+-the full title with all words of the title equally prominent and
+-visible.  You may add other material on the covers in addition.
+-Copying with changes limited to the covers, as long as they preserve
+-the title of the Document and satisfy these conditions, can be treated
+-as verbatim copying in other respects.</P>
++<p>
++  You may also lend copies, under the same conditions stated above, and
++  you may publicly display copies.
++</p>
+ 
+-<P>If the required texts for either cover are too voluminous to fit
+-legibly, you should put the first ones listed (as many as fit
+-reasonably) on the actual cover, and continue the rest onto adjacent
+-pages.</P>
++<p>
++  <strong>3. COPYING IN QUANTITY</strong>
++</p>
+ 
+-<P>If you publish or distribute Opaque copies of the Document numbering
+-more than 100, you must either include a machine-readable Transparent
+-copy along with each Opaque copy, or state in or with each Opaque copy
+-a publicly-accessible computer-network location containing a complete
+-Transparent copy of the Document, free of added material, which the
+-general network-using public has access to download anonymously at no
+-charge using public-standard network protocols.  If you use the latter
+-option, you must take reasonably prudent steps, when you begin
+-distribution of Opaque copies in quantity, to ensure that this
+-Transparent copy will remain thus accessible at the stated location
+-until at least one year after the last time you distribute an Opaque
+-copy (directly or through your agents or retailers) of that edition to
+-the public.</P>
++<p>
++  If you publish printed copies (or copies in media that commonly have
++  printed covers) of the Document, numbering more than 100, and the
++  Document's license notice requires Cover Texts, you must enclose the
++  copies in covers that carry, clearly and legibly, all these Cover
++  Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
++  the back cover.  Both covers must also clearly and legibly identify
++  you as the publisher of these copies.  The front cover must present
++  the full title with all words of the title equally prominent and
++  visible.  You may add other material on the covers in addition.
++  Copying with changes limited to the covers, as long as they preserve
++  the title of the Document and satisfy these conditions, can be treated
++  as verbatim copying in other respects.
++</p>
+ 
+-<P>It is requested, but not required, that you contact the authors of the
+-Document well before redistributing any large number of copies, to give
+-them a chance to provide you with an updated version of the Document.</P>
++<p>
++  If the required texts for either cover are too voluminous to fit
++  legibly, you should put the first ones listed (as many as fit
++  reasonably) on the actual cover, and continue the rest onto adjacent
++  pages.
++</p>
+ 
+-<H2>4. Modifications</H2>
++<p>
++  If you publish or distribute Opaque copies of the Document numbering
++  more than 100, you must either include a machine-readable Transparent
++  copy along with each Opaque copy, or state in or with each Opaque copy
++  a computer-network location from which the general network-using
++  public has access to download using public-standard network protocols
++  a complete Transparent copy of the Document, free of added material.
++  If you use the latter option, you must take reasonably prudent steps,
++  when you begin distribution of Opaque copies in quantity, to ensure
++  that this Transparent copy will remain thus accessible at the stated
++  location until at least one year after the last time you distribute an
++  Opaque copy (directly or through your agents or retailers) of that
++  edition to the public.
++</p>
+ 
+-<P>You may copy and distribute a Modified Version of the Document under
+-the conditions of sections 2 and 3 above, provided that you release
+-the Modified Version under precisely this License, with the Modified
+-Version filling the role of the Document, thus licensing distribution
+-and modification of the Modified Version to whoever possesses a copy
+-of it.  In addition, you must do these things in the Modified Version:</P>
++<p>
++  It is requested, but not required, that you contact the authors of the
++  Document well before redistributing any large number of copies, to give
++  them a chance to provide you with an updated version of the Document.
++</p>
+ 
+-<OL STYLE="list-style-type: upper-alpha;">
+-<LI>Use in the Title Page (and on the covers, if any) a title distinct
+-    from that of the Document, and from those of previous versions
+-    (which should, if there were any, be listed in the History section
+-    of the Document).  You may use the same title as a previous
+-    version if the original publisher of that version gives
+-    permission.</LI>
++<p>
++  <strong>4. MODIFICATIONS</strong>
++</p>
+ 
+-<LI>List on the Title Page, as authors, one or more persons or
+-    entities responsible for authorship of the modifications in the
+-    Modified Version, together with at least five of the principal
+-    authors of the Document (all of its principal authors, if it has
+-    less than five).</LI>
++<p>
++  You may copy and distribute a Modified Version of the Document under
++  the conditions of sections 2 and 3 above, provided that you release
++  the Modified Version under precisely this License, with the Modified
++  Version filling the role of the Document, thus licensing distribution
++  and modification of the Modified Version to whoever possesses a copy
++  of it.  In addition, you must do these things in the Modified Version:
++</p>
+ 
+-<LI>State on the Title page the name of the publisher of the Modified
+-    Version, as the publisher.</LI>
++<ul>
++  <li><strong>A.</strong> Use in the Title Page (and on the covers, if any) a title distinct
++  from that of the Document, and from those of previous versions
++  (which should, if there were any, be listed in the History section
++  of the Document).  You may use the same title as a previous version
++  if the original publisher of that version gives permission.</li>
++  <li><strong>B.</strong> List on the Title Page, as authors, one or more persons or entities
++  responsible for authorship of the modifications in the Modified
++  Version, together with at least five of the principal authors of the
++  Document (all of its principal authors, if it has fewer than five),
++  unless they release you from this requirement.</li>
++  <li><strong>C.</strong> State on the Title page the name of the publisher of the
++  Modified Version, as the publisher.</li>
++  <li><strong>D.</strong> Preserve all the copyright notices of the Document.</li>
++  <li><strong>E.</strong> Add an appropriate copyright notice for your modifications
++  adjacent to the other copyright notices.</li>
++  <li><strong>F.</strong> Include, immediately after the copyright notices, a license notice
++  giving the public permission to use the Modified Version under the
++  terms of this License, in the form shown in the Addendum below.</li>
++  <li><strong>G.</strong> Preserve in that license notice the full lists of Invariant Sections
++  and required Cover Texts given in the Document's license notice.</li>
++  <li><strong>H.</strong> Include an unaltered copy of this License.</li>
++  <li><strong>I.</strong> Preserve the section Entitled "History", Preserve its Title, and add
++  to it an item stating at least the title, year, new authors, and
++  publisher of the Modified Version as given on the Title Page.  If
++  there is no section Entitled "History" in the Document, create one
++  stating the title, year, authors, and publisher of the Document as
++  given on its Title Page, then add an item describing the Modified
++  Version as stated in the previous sentence.</li>
++  <li><strong>J.</strong> Preserve the network location, if any, given in the Document for
++  public access to a Transparent copy of the Document, and likewise
++  the network locations given in the Document for previous versions
++  it was based on.  These may be placed in the "History" section.
++  You may omit a network location for a work that was published at
++  least four years before the Document itself, or if the original
++  publisher of the version it refers to gives permission.</li>
++  <li><strong>K.</strong> For any section Entitled "Acknowledgements" or "Dedications",
++  Preserve the Title of the section, and preserve in the section all
++  the substance and tone of each of the contributor acknowledgements
++  and/or dedications given therein.</li>
++  <li><strong>L.</strong> Preserve all the Invariant Sections of the Document,
++  unaltered in their text and in their titles.  Section numbers
++  or the equivalent are not considered part of the section titles.</li>
++  <li><strong>M.</strong> Delete any section Entitled "Endorsements".  Such a section
++  may not be included in the Modified Version.</li>
++  <li><strong>N.</strong> Do not retitle any existing section to be Entitled "Endorsements"
++  or to conflict in title with any Invariant Section.</li>
++  <li><strong>O.</strong> Preserve any Warranty Disclaimers.</li>
++</ul>
+ 
+-<LI>Preserve all the copyright notices of the Document.</LI>
++<p>
++  If the Modified Version includes new front-matter sections or
++  appendices that qualify as Secondary Sections and contain no material
++  copied from the Document, you may at your option designate some or all
++  of these sections as invariant.  To do this, add their titles to the
++  list of Invariant Sections in the Modified Version's license notice.
++  These titles must be distinct from any other section titles.
++</p>
+ 
+-<LI>Add an appropriate copyright notice for your modifications
+-    adjacent to the other copyright notices.</LI>
++<p>
++  You may add a section Entitled "Endorsements", provided it contains
++  nothing but endorsements of your Modified Version by various
++  parties--for example, statements of peer review or that the text has
++  been approved by an organization as the authoritative definition of a
++  standard.
++</p>
+ 
+-<LI>Include, immediately after the copyright notices, a license notice
+-    giving the public permission to use the Modified Version under the
+-    terms of this License, in the form shown in the Addendum
+-    below.</LI>
++<p>
++  You may add a passage of up to five words as a Front-Cover Text, and a
++  passage of up to 25 words as a Back-Cover Text, to the end of the list
++  of Cover Texts in the Modified Version.  Only one passage of
++  Front-Cover Text and one of Back-Cover Text may be added by (or
++  through arrangements made by) any one entity.  If the Document already
++  includes a cover text for the same cover, previously added by you or
++  by arrangement made by the same entity you are acting on behalf of,
++  you may not add another; but you may replace the old one, on explicit
++  permission from the previous publisher that added the old one.
++</p>
+ 
+-<LI>Preserve in that license notice the full lists of Invariant
+-    Sections and required Cover Texts given in the Document's license
+-    notice.</LI>
++<p>
++  The author(s) and publisher(s) of the Document do not by this License
++  give permission to use their names for publicity for or to assert or
++  imply endorsement of any Modified Version.
++</p>
+ 
+-<LI>Include an unaltered copy of this License.</LI>
++<p>
++  <strong>5. COMBINING DOCUMENTS</strong>
++</p>
+ 
+-<LI>Preserve the section entitled "History", and its title, and add to
+-    it an item stating at least the title, year, new authors, and
+-    publisher of the Modified Version as given on the Title Page.  If
+-    there is no section entitled "History" in the Document, create one
+-    stating the title, year, authors, and publisher of the Document as
+-    given on its Title Page, then add an item describing the Modified
+-    Version as stated in the previous sentence.</LI>
++<p>
++  You may combine the Document with other documents released under this
++  License, under the terms defined in section 4 above for modified
++  versions, provided that you include in the combination all of the
++  Invariant Sections of all of the original documents, unmodified, and
++  list them all as Invariant Sections of your combined work in its
++  license notice, and that you preserve all their Warranty Disclaimers.
++</p>
+ 
+-<LI>Preserve the network location, if any, given in the Document for
+-    public access to a Transparent copy of the Document, and likewise
+-    the network locations given in the Document for previous versions
+-    it was based on.  These may be placed in the "History" section.
+-    You may omit a network location for a work that was published at
+-    least four years before the Document itself, or if the original
+-    publisher of the version it refers to gives permission.</LI>
+-    
+-<LI>In any section entitled "Acknowledgements" or "Dedications",
+-    preserve the section's title, and preserve in the section all the
+-    substance and tone of each of the contributor acknowledgements
+-    and/or dedications given therein.</LI>
++<p>
++  The combined work need only contain one copy of this License, and
++  multiple identical Invariant Sections may be replaced with a single
++  copy.  If there are multiple Invariant Sections with the same name but
++  different contents, make the title of each such section unique by
++  adding at the end of it, in parentheses, the name of the original
++  author or publisher of that section if known, or else a unique number.
++  Make the same adjustment to the section titles in the list of
++  Invariant Sections in the license notice of the combined work.
++</p>
+ 
+-<LI>Preserve all the Invariant Sections of the Document, unaltered in
+-    their text and in their titles.  Section numbers or the equivalent
+-    are not considered part of the section titles.</LI>
++<p>
++  In the combination, you must combine any sections Entitled "History"
++  in the various original documents, forming one section Entitled
++  "History"; likewise combine any sections Entitled "Acknowledgements",
++  and any sections Entitled "Dedications".  You must delete all sections
++  Entitled "Endorsements."
++</p>
+ 
+-<LI>Delete any section entitled "Endorsements".  Such a section may
+-    not be included in the Modified Version.</LI>
++<p>
++  <strong>6. COLLECTIONS OF DOCUMENTS</strong>
++</p>
+ 
+-<LI>Do not retitle any existing section as "Endorsements" or to
+-    conflict in title with any Invariant Section.</LI>
+-</OL>
++<p>
++  You may make a collection consisting of the Document and other documents
++  released under this License, and replace the individual copies of this
++  License in the various documents with a single copy that is included in
++  the collection, provided that you follow the rules of this License for
++  verbatim copying of each of the documents in all other respects.
++</p>
+ 
+-<P>If the Modified Version includes new front-matter sections or
+-appendices that qualify as Secondary Sections and contain no material
+-copied from the Document, you may at your option designate some or all
+-of these sections as invariant.  To do this, add their titles to the
+-list of Invariant Sections in the Modified Version's license notice.
+-These titles must be distinct from any other section titles.</P>
++<p>
++  You may extract a single document from such a collection, and distribute
++  it individually under this License, provided you insert a copy of this
++  License into the extracted document, and follow this License in all
++  other respects regarding verbatim copying of that document.
++</p>
+ 
+-<P>You may add a section entitled "Endorsements", provided it contains
+-nothing but endorsements of your Modified Version by various
+-parties--for example, statements of peer review or that the text has
+-been approved by an organization as the authoritative definition of a
+-standard.</P>
++<p>
++  <strong>7. AGGREGATION WITH INDEPENDENT WORKS</strong>
++</p>
+ 
+-<P>You may add a passage of up to five words as a Front-Cover Text, and a
+-passage of up to 25 words as a Back-Cover Text, to the end of the list
+-of Cover Texts in the Modified Version.  Only one passage of
+-Front-Cover Text and one of Back-Cover Text may be added by (or
+-through arrangements made by) any one entity.  If the Document already
+-includes a cover text for the same cover, previously added by you or
+-by arrangement made by the same entity you are acting on behalf of,
+-you may not add another; but you may replace the old one, on explicit
+-permission from the previous publisher that added the old one.</P>
++<p>
++  A compilation of the Document or its derivatives with other separate
++  and independent documents or works, in or on a volume of a storage or
++  distribution medium, is called an "aggregate" if the copyright
++  resulting from the compilation is not used to limit the legal rights
++  of the compilation's users beyond what the individual works permit.
++  When the Document is included in an aggregate, this License does not
++  apply to the other works in the aggregate which are not themselves
++  derivative works of the Document.
++</p>
+ 
+-<P>The author(s) and publisher(s) of the Document do not by this License
+-give permission to use their names for publicity for or to assert or
+-imply endorsement of any Modified Version.</P>
++<p>
++  If the Cover Text requirement of section 3 is applicable to these
++  copies of the Document, then if the Document is less than one half of
++  the entire aggregate, the Document's Cover Texts may be placed on
++  covers that bracket the Document within the aggregate, or the
++  electronic equivalent of covers if the Document is in electronic form.
++  Otherwise they must appear on printed covers that bracket the whole
++  aggregate.
++</p>
+ 
+-<H2>5. Combining Documents</H2>
++<p>
++  <strong>8. TRANSLATION</strong>
++</p>
+ 
+-<P>You may combine the Document with other documents released under this
+-License, under the terms defined in section 4 above for modified
+-versions, provided that you include in the combination all of the
+-Invariant Sections of all of the original documents, unmodified, and
+-list them all as Invariant Sections of your combined work in its
+-license notice.</P>
++<p>
++  Translation is considered a kind of modification, so you may
++  distribute translations of the Document under the terms of section 4.
++  Replacing Invariant Sections with translations requires special
++  permission from their copyright holders, but you may include
++  translations of some or all Invariant Sections in addition to the
++  original versions of these Invariant Sections.  You may include a
++  translation of this License, and all the license notices in the
++  Document, and any Warranty Disclaimers, provided that you also include
++  the original English version of this License and the original versions
++  of those notices and disclaimers.  In case of a disagreement between
++  the translation and the original version of this License or a notice
++  or disclaimer, the original version will prevail.
++</p>
+ 
+-<P>The combined work need only contain one copy of this License, and
+-multiple identical Invariant Sections may be replaced with a single
+-copy.  If there are multiple Invariant Sections with the same name but
+-different contents, make the title of each such section unique by
+-adding at the end of it, in parentheses, the name of the original
+-author or publisher of that section if known, or else a unique number.
+-Make the same adjustment to the section titles in the list of
+-Invariant Sections in the license notice of the combined work.</P>
++<p>
++  If a section in the Document is Entitled "Acknowledgements",
++  "Dedications", or "History", the requirement (section 4) to Preserve
++  its Title (section 1) will typically require changing the actual
++  title.
++</p>
+ 
+-<P>In the combination, you must combine any sections entitled "History"
+-in the various original documents, forming one section entitled
+-"History"; likewise combine any sections entitled "Acknowledgements",
+-and any sections entitled "Dedications".  You must delete all sections
+-entitled "Endorsements."</P>
++<p>
++  <strong>9. TERMINATION</strong>
++</p>
+ 
+-<H2>6. Collections Of Documents</H2>
++<p>
++  You may not copy, modify, sublicense, or distribute the Document except
++  as expressly provided for under this License.  Any other attempt to
++  copy, modify, sublicense or distribute the Document is void, and will
++  automatically terminate your rights under this License.  However,
++  parties who have received copies, or rights, from you under this
++  License will not have their licenses terminated so long as such
++  parties remain in full compliance.
++</p>
+ 
+-<P>You may make a collection consisting of the Document and other documents
+-released under this License, and replace the individual copies of this
+-License in the various documents with a single copy that is included in
+-the collection, provided that you follow the rules of this License for
+-verbatim copying of each of the documents in all other respects.</P>
++<p>
++  <strong>10. FUTURE REVISIONS OF THIS LICENSE</strong>
++</p>
+ 
+-<P>You may extract a single document from such a collection, and distribute
+-it individually under this License, provided you insert a copy of this
+-License into the extracted document, and follow this License in all
+-other respects regarding verbatim copying of that document.</P>
++<p>
++  The Free Software Foundation may publish new, revised versions
++  of the GNU Free Documentation License from time to time.  Such new
++  versions will be similar in spirit to the present version, but may
++  differ in detail to address new problems or concerns.  See
++  http://www.gnu.org/copyleft/.
++</p>
+ 
+-<H2>7. Aggregation With Independent Works</H2>
++<p>
++  Each version of the License is given a distinguishing version number.
++  If the Document specifies that a particular numbered version of this
++  License "or any later version" applies to it, you have the option of
++  following the terms and conditions either of that specified version or
++  of any later version that has been published (not as a draft) by the
++  Free Software Foundation.  If the Document does not specify a version
++  number of this License, you may choose any version ever published (not
++  as a draft) by the Free Software Foundation.
++</p>
+ 
+-<P>A compilation of the Document or its derivatives with other separate
+-and independent documents or works, in or on a volume of a storage or
+-distribution medium, does not as a whole count as a Modified Version
+-of the Document, provided no compilation copyright is claimed for the
+-compilation.  Such a compilation is called an "aggregate", and this
+-License does not apply to the other self-contained works thus compiled
+-with the Document, on account of their being thus compiled, if they
+-are not themselves derivative works of the Document.</P>
++<h3>How to use this License for your documents</h3>
+ 
+-<P>If the Cover Text requirement of section 3 is applicable to these
+-copies of the Document, then if the Document is less than one quarter
+-of the entire aggregate, the Document's Cover Texts may be placed on
+-covers that surround only the Document within the aggregate.
+-Otherwise they must appear on covers around the whole aggregate.</P>
++<p>
++  To use this License in a document you have written, include a copy of
++  the License in the document and put the following copyright and
++  license notices just after the title page:
++</p>
+ 
+-<H2>8. Translation</H2>
++<pre>
++  Copyright (c)  YEAR  YOUR NAME.
++  Permission is granted to copy, distribute and/or modify this document
++  under the terms of the GNU Free Documentation License, Version 1.2
++  or any later version published by the Free Software Foundation;
++  with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
++  Texts.  A copy of the license is included in the section entitled "GNU
++  Free Documentation License".
++</pre>
+ 
+-<P>Translation is considered a kind of modification, so you may
+-distribute translations of the Document under the terms of section 4.
+-Replacing Invariant Sections with translations requires special
+-permission from their copyright holders, but you may include
+-translations of some or all Invariant Sections in addition to the
+-original versions of these Invariant Sections.  You may include a
+-translation of this License provided that you also include the
+-original English version of this License.  In case of a disagreement
+-between the translation and the original English version of this
+-License, the original English version will prevail.</P>
++<p>
++  If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
++  replace the "with...Texts." line with this:
++</p>
+ 
+-<H2>9. Termination</H2>
++<pre>
++  with the Invariant Sections being LIST THEIR TITLES, with the
++  Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
++</pre>
+ 
+-<P>You may not copy, modify, sublicense, or distribute the Document except
+-as expressly provided for under this License.  Any other attempt to
+-copy, modify, sublicense or distribute the Document is void, and will
+-automatically terminate your rights under this License.  However,
+-parties who have received copies, or rights, from you under this
+-License will not have their licenses terminated so long as such
+-parties remain in full compliance.</P>
++<p>
++  If you have Invariant Sections without Cover Texts, or some other
++  combination of the three, merge those two alternatives to suit the
++  situation.
++</p>
+ 
+-<H2>10. Future Revisions Of This License</H2>
+-
+-<P>The Free Software Foundation may publish new, revised versions
+-of the GNU Free Documentation License from time to time.  Such new
+-versions will be similar in spirit to the present version, but may
+-differ in detail to address new problems or concerns. See
+-<A HREF="http:///www.gnu.org/copyleft/">http:///www.gnu.org/copyleft/</A>.</P>
+-
+-<P>Each version of the License is given a distinguishing version number.
+-If the Document specifies that a particular numbered version of this
+-License "or any later version" applies to it, you have the option of
+-following the terms and conditions either of that specified version or
+-of any later version that has been published (not as a draft) by the
+-Free Software Foundation.  If the Document does not specify a version
+-number of this License, you may choose any version ever published (not
+-as a draft) by the Free Software Foundation.</P>
++<p>
++  If your document contains nontrivial examples of program code, we
++  recommend releasing these examples in parallel under your choice of
++  free software license, such as the GNU General Public License,
++  to permit their use in free software.
++</p>
+   </BODY>
+ </HTML>
+Index: doc/common/kde.css
+===================================================================
+--- kdelibs/doc/common/kde.css	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/doc/common/kde.css	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,468 @@
++/*
++** HTML elements
++*/
++
++body {
++    margin: 0;
++    padding: 0;
++    text-align: center;
++    font-size: 0.8em;
++    font-family: "Bitstream Vera Sans", "Lucida Grande", "Trebuchet MS", sans-serif;
++    color: #535353;
++    background: #ffffff;
++}
++
++
++/*
++** HTML Tags
++*/
++
++h1, h2, h3, h4
++{
++    padding: 0;
++    text-align: left;
++    font-weight: bold;
++    color: #f7800a;
++    background: transparent;
++}
++h1 {
++    margin: 0 0 0.3em 0;
++    font-size: 1.7em;
++}
++h2, h3, h4 {
++    margin: 1.3em 0 0 0.3em
++}
++
++h2 {
++    font-size: 1.5em;
++}
++
++h3 {
++    font-size: 1.4em;
++}
++
++h4 {
++    font-size: 1.3em;
++}
++
++h5 {
++    font-size: 1.2em;
++}
++
++a:link {
++    padding-bottom: 0;
++    text-decoration: none;
++    color: #0057ae;
++}
++
++a:visited {
++    padding-bottom: 0;
++    text-decoration: none;
++    color: #644A9B;
++}
++
++
++a[href]:hover {
++    text-decoration: underline;
++}
++
++hr {
++    margin: 0.3em 1em 0.3em 1em;
++    height: 1px;
++    border: #dddddd dashed;
++    border-width: 0 0 1px 0;
++}
++
++pre {
++    display: block;
++    margin: 0.3em;
++    padding: 0.3em;
++    font-size: 1em;
++    font-family: Courier, 'Courier New', 'Andale Mono', Monaco, monospace;
++    color: #000000;
++    background: #f9f9f9;
++}
++
++input, textarea, select {
++    margin: 0.2em;
++    padding: 0.1em;
++    color: #888888;
++    background: #ffffff;
++    border: 1px solid;
++}
++
++blockquote {
++    margin: 0.3em;
++    padding-left: 2.5em;
++    background: transparent;
++}
++
++del {
++    color: #800000;
++    text-decoration: line-through;
++}
++
++dt {
++    font-weight: bold;
++    font-size: 1.05em;
++    color: #0057ae;
++}
++
++dd {
++    margin-left: 1em;
++}
++
++p {
++    margin-top: 0.5em;
++    margin-bottom: 0.9em;
++    text-align: justify;
++}
++fieldset {
++    border: #cccccc 1px solid;
++}
++
++li {
++    text-align: left;
++}
++
++fieldset {
++    margin-bottom: 1em;
++    padding: .5em;
++}
++
++form {
++    margin: 0;
++    padding: 0;
++}
++
++hr {
++    height: 1px;
++    border: #888888 1px solid;
++    background: #888888;
++    margin: 0.5em 0 0.5em 0 ;
++}
++
++img {
++    border: 0;
++}
++table {
++    border-collapse: collapse;
++    font-size: 1em;
++}
++th {
++    text-align: left;
++    padding-right: 1em;
++    border: #cccccc solid;
++    border-width: 0 0 3px 0;
++}
++
++
++/*
++** Header
++*/
++#header {
++    width: 100%;
++    color: #535353;
++    background: #eeeeee;
++}
++
++#header_top {
++    margin: 0 auto;
++    padding: 0;
++    width: 60em;
++    min-width: 770px;
++    max-width: 45em;
++    vertical-align: middle;
++    color: #ffffff;
++    background: url(top.jpg) repeat-x bottom;
++background-color: #0057ae;
++}
++
++#header_top div {
++    margin: 0 auto;
++    padding: 0;
++    background: url(top-left.jpg) no-repeat bottom left;
++}
++
++#header_top div div {
++    margin: 0 auto;
++    padding: 0;
++    vertical-align: middle;
++    text-align: left;
++    font-size: 1.7em;
++    font-weight: bold;
++    background: url(top-right.jpg) no-repeat bottom right;
++}
++
++#header_top div div img {
++    margin:8px 0px 9px 18px;
++    vertical-align: middle;
++}
++
++#header_bottom {
++    margin: 0 auto;
++    padding: 0.1em 0em 0.3em 0;
++    width: 60em;
++    min-width: 770px;
++    max-width: 45em;
++    vertical-align: middle;
++    text-align: right;
++    background: #eeeeee;
++}
++
++#location {
++    padding: 0 0 0 1.5em;
++    text-align: left;
++    line-height: normal;
++    font-size: 1.1em;
++    font-weight:bold;
++    float: left;
++}
++
++#location ul {
++    display: inline;
++    margin: 0;
++    padding: 0;
++    list-style: none;
++}
++
++#location ul li {
++    display: inline;
++    white-space : nowrap;
++    margin: 0;
++    padding: 0 1em 0 0;
++}
++
++#menu {
++    margin: 0 1.5em 0 0;
++    text-align: right;
++    line-height: normal;
++    font-size: 1.1em;
++    font-weight: bold;
++}
++
++#menu ul {
++    display: inline;
++    list-style: none;
++    margin: 0;
++    padding: 0;
++    text-align: right;
++}
++
++#menu ul li {
++    display: inline;
++    white-space : nowrap;
++    margin: 0;
++    padding: 0 0 0 1em;
++    text-align: right;
++}
++
++.here a:link, .here a:visited {
++    text-decoration:underline;
++}
++
++.here ul a:link, .here ul a:visited {
++    text-decoration:none;
++}
++
++#menu ul li a {
++    font-weight: bold;
++}
++
++
++/*
++** Content
++*/
++
++#content {
++    width: 100%;
++}
++
++#main {
++    /* padding in px not ex because IE messes up 100% width tables otherwise */
++    padding-left: 10px;
++    text-align: left;
++}
++
++div.nav {
++    display: none;
++}
++
++/* The project name (redundant as it is shown in the menu, too) */
++div.clearer+h2 {
++    display: none;
++}
++
++/* The header on top of a page e.g. "MediaObject Class Reference" */
++#main>h1 {
++    text-align: center;
++    margin-top: 1em;
++    margin-bottom: 2em;
++}
++
++/* The group links below the page header */
++#main>h1>small {
++    font-size: 60%;
++}
++
++/* Section headers like "Detailed Description" */
++#main>h2 {
++    margin-left: 0;
++    margin-top: 1em;
++    margin-bottom: 1em;
++}
++
++/* The #include line */
++#main>h1+code {
++    font-size: 120%;
++    background: #F1F1F1;
++    border: 1px solid #E7E7E7;
++    padding: 2px;
++    display: block;
++}
++
++/* The version number (e.g. '4.0') on Mainpages - reduntant as it's already shown in the main title */
++#main>h1+p+h3 {
++    display: none;
++}
++
++#body_wrapper {
++    margin: 0 auto;
++    width: 60em;
++    min-width: 770px;
++    max-width: 45em;
++    border: #dddddd solid;
++    border-width: 0 0 0 1px;
++}
++
++#body {
++    float: left;
++    margin: 0;
++    padding: 0;
++    min-height: 40em;
++    width: 60em;
++    min-width: 770px;
++    max-width: 45em;
++}
++
++#right {
++    float: right;
++    margin: 0;
++    padding: 0;
++    width: 73%;
++}
++
++/* These are date cells on the front page. */
++td.cell_date {
++    width: 8em;
++    min-width: 8em;
++}
++
++#hotspot, .sideimage {
++    float: right;
++    margin: 1ex 1em;
++    clear: right;
++}
++
++.belowimage, h1, h2, h3, h4, h5 {
++    clear: right;
++}
++
++
++/*
++** Left Menu
++*/
++
++#left {
++        float: left;
++    margin: 0;
++    padding: 0;
++    width: 25%;
++}
++
++.menu_box {
++    padding: 0.7em 0 0 0;
++}
++
++.menu_box ul {
++    text-align: left;
++}
++
++.menu_box li {
++    list-style-type: none;
++    text-align: left;
++    margin-left: 0.1em;
++}
++
++.menu_box ul ul {
++margin: 0;
++padding-left: 0;
++}
++
++.menu_box li li {
++margin-left: 1em;
++}
++
++.menu_box .active{
++    color: #cf4913;
++}
++
++.menutitle {
++    margin: 0.6em 0 1.2em 0;
++    padding:0;
++    color: #ffffff;
++    background: url(block_title_mid.png) repeat-y right;
++background-color: #0057ae;
++}
++.menutitle div {
++    margin: 0;
++    padding:0;
++    background: url(block_title_top.png) no-repeat top right;
++}
++.menutitle div h2 {
++    margin: 0;
++    padding: 0.2em 0 0.3em 1.3em;
++    line-height:1.2em;
++    font-size: 120%;
++    font-weight: normal;
++    color: #ffffff;
++    background: url(block_title_bottom.png) no-repeat bottom right;
++}
++
++.clearer {
++    clear: both;
++    height: 1px;
++}
++
++
++/*
++** Footer
++*/
++#footer {
++        width: 100%;
++    background: #eeeeee;
++}
++
++#footer_text {
++    margin: 0 auto;
++    padding: 1em 0 1em 3.5em;
++    width: 51.5em;
++    text-align: left;
++    color: #000000;
++    background: #eeeeee;
++}
++
++#footer a:link, #footer a:visited {
++    color: #4d88c3;
++}
++
++#quicklinks {
++font-size: 1em;
++padding: 1em;
++text-align: center;
++margin-top: 0.5em;
++margin-left: 0.2em;
++margin-bottom: 0.5em;
++margin-right: 0.2em;
++}
++
+Index: doc/common/block_title_top.png
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/block_title_top.png
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/mainheader.html
+===================================================================
+--- kdelibs/doc/common/mainheader.html	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/mainheader.html	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,70 +1,66 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+-<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+ 
++<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ <head>
+-  <title>$projectname</title>
+-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
++  <title>$title</title>
+ 
+-  <meta http-equiv="Content-Style-Type" content="text/css" />
++<style type="text/css">
++  .cp-doNotDisplay { display: none; }
++  @media aural, braille, handheld, tty { .cp-doNotDisplay { display: inline; speak: normal; }}
++  .cp-edit { text-align: right; }
++  @media print, embossed { .cp-edit { display: none; }}
++</style>
+ 
+-  <meta http-equiv="pics-label" content='(pics-1.1 "http://www.icra.org/ratingsv02.html" comment "ICRAonline DE v2.0" l gen true for "http://www.kde.org"  r (nz 1 vz 1 lz 1 oz 1 cb 1) "http://www.rsac.org/ratingsv01.html" l gen true for "http://www.kde.org"  r (n 0 s 0 v 0 l 0))' />
+-
++  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
++  <meta http-equiv="Content-Style-Type" content="text/css" />
++  <link rel="meta" href="http://www.kde.org/labels.rdf" type="application/rdf+xml" title="ICRA labels" />
+   <meta name="trademark" content="KDE e.V." />
+   <meta name="description" content="K Desktop Environment Homepage, KDE.org" />
+   <meta name="MSSmartTagsPreventParsing" content="true" />
+   <meta name="robots" content="all" />
+-
+-  <link rel="shortcut icon" href="@topdir@/favicon.ico" />
+-
+-<link rel="stylesheet" media="screen" type="text/css" title="APIDOX" href="doxygen.css" />
+-
+-
+-<style type="text/css">
+-<!--
+-hr { display: none; }
+-#content h2 { margin-left: 0px; }
+-table.mdTable { background-color: #f8f8f8; border: .2em solid #d7d7d7; }
+-td.mdRow { padding: 8px 20px; }
+-td.md { font-weight: bold; }
+-td.mdname1 { font-weight: bold; color: #602020; }
+-td.mdname { font-weight: bold; color: #602020;  }
+-
+-.copyrights { width: 80%; margin: 1ex 10%; color:#BCBCBC; }
+-.copyrights a { color: #9A9A9A; }
+-
+--->
+-</style>
+-
++  <meta name="no-email-collection" content="http://www.unspam.com/noemailcollection" />
++  <link rel="shortcut icon" href="@topdir@/favicon.ico" /><link rel="icon" href="@topdir@/favicon.ico" />
++  <link rel="stylesheet" type="text/css" href="@topdir@/doxygen.css" />
++  <link rel="stylesheet" type="text/css" href="@topdir@/tabs.css" />
++  <link rel="stylesheet" media="screen" type="text/css" title="KDE Colors" href="@topdir@/kde.css" />
++  <link rel="stylesheet" media="print, embossed" type="text/css" href="@topdir@/print.css" />
++  <link rel="stylesheet" media="screen, aural, handheld, tty, braille" type="text/css" title="Flat" href="@topdir@/flat.css" />
+ </head>
+ 
+ <body>
+ 
+-<div id="nav_header_top" align="right">
+-  <a href="#content" class="doNotDisplay" accesskey="2">Skip to main content ::</a>
++<ul class="cp-doNotDisplay">
++  <li><a href="#cp-content" accesskey="2">Skip to content</a></li>
++  <li><a href="#cp-menu" accesskey="5">Skip to link menu</a></li>
++</ul>
+ 
+-  <a href="@topdir@"><img id="nav_header_logo" alt="Home" align="left" src="@topdir@/kde_gear_64.png" border="0" /></a>
+-  <span class="doNotDisplay">::</span>
++<div id="container">
++<div id="header">
++  <div id="header_top"><div><div>
++    <img alt ="" src="@topdir@/top-kde.jpg"/>
++    KDE 3.5 API Reference  </div></div></div>
++  <div id="header_bottom">
++    <div id="location">
++      <ul>
++        <li><a href="http://api.kde.org">KDE API Reference</a></li>
++      </ul>
++    </div>
+ 
+-  <div id="nav_header_title" align="left">KDE API Reference</div>
+-
+-
+-</div>
+-
+-<div id="nav_header_bottom" align="right">
+-  <span class="doNotDisplay">:: <a href="#navigation" accesskey="5">Skip to Link Menu</a><br/></span>
+-  <div id="nav_header_bottom_right" style="text-align: left;">
+-/ <a href="@topdir@">API Reference</a>
++    <div id="menu">
++<ul><li><a href="http://kde.org/family/">Sitemap</a></li>
++<li><a href="http://kde.org/contact/">Contact Us</a></li>
++</ul>    </div>
+   </div>
+ </div>
++<!-- End page header -->
++    <div id="body_wrapper">
++      <div id="body">
++        <!-- begin main content -->
++        <div id="right">
++          <div class="content">
++          <div id="main">
++            <div class="clearer">&nbsp;</div>
++<h2><a name="content"></a>$projectname</h2>
+ 
+-
+-<table id="main" border="0" cellpadding="0" cellspacing="0" width="100%">
+-<tr>
+-      <td valign="top" class="menuheader" height="0"></td>
+-
+-  <td id="contentcolumn" valign="top" rowspan="2" >
+-    <div id="content"><div style="width:100%;">
+-    <a name="content"></a>
+-
+-
++<!-- BC -->
+Index: doc/common/README.Doxygen
+===================================================================
+--- kdelibs/doc/common/README.Doxygen	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/README.Doxygen	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -29,7 +29,7 @@
+ In a configured build directory, you can use "make apidox" to
+ generate the API dox for the module -- assuming it has any, of course.
+ Writing dox is beyond the scope of this README -- see the notes at
+-http://developer.kde.org/policies/documentationpolicy.html .
++http://techbase.kde.org/Policies/Library_Documentation_Policy .
+ You can generate dox by hand -- without even having a configured
+ build directory -- as explained below. There is also documentation
+ for the special tags you can enter in Makefile.am anywhere
+Index: doc/common/flat.css
+===================================================================
+--- kdelibs/doc/common/flat.css	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/doc/common/flat.css	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,446 @@
++/*
++** HTML elements
++*/
++
++body {
++    margin: 0;
++    padding: 0;
++    text-align: center;
++    font-size: 0.8em;
++    font-family: "Bitstream Vera Sans", "Lucida Grande", "Trebuchet MS", sans-serif;
++    color: #535353;
++    background: #ffffff;
++}
++
++
++/*
++** HTML Tags
++*/
++
++h1, h2, h3, h4
++{
++    padding: 0;
++    text-align: left;
++    font-weight: bold;
++    color: #f7800a;
++    background: transparent;
++}
++h1 {
++    margin: 0 0 0.3em 0;
++    font-size: 1.7em;
++}
++h2, h3, h4 {
++    margin: 1.3em 0 0 0.3em
++}
++
++h2 {
++    font-size: 1.5em;
++}
++
++h3 {
++    font-size: 1.4em;
++}
++
++h4 {
++    font-size: 1.3em;
++}
++
++h5 {
++    font-size: 1.2em;
++}
++
++a:link {
++    padding-bottom: 0;
++    text-decoration: none;
++    color: #0057ae;
++}
++
++a:visited {
++    padding-bottom: 0;
++    text-decoration: none;
++    color: #644A9B;
++}
++
++
++a[href]:hover {
++    text-decoration: underline;
++}
++
++hr {
++    margin: 0.3em 1em 0.3em 1em;
++    height: 1px;
++    border: #dddddd dashed;
++    border-width: 0 0 1px 0;
++}
++
++pre {
++    display: block;
++    margin: 0.3em;
++    padding: 0.3em;
++    font-size: 1em;
++    font-family: Courier, 'Courier New', 'Andale Mono', Monaco, monospace;
++    color: #000000;
++    background: #f9f9f9;
++    border: #2f6fab dashed;
++    border-width: 1px;
++    overflow: auto;
++    line-height: 1.1em;
++}
++
++input, textarea, select {
++    margin: 0.2em;
++    padding: 0.1em;
++    color: #888888;
++    background: #ffffff;
++    border: 1px solid;
++}
++
++blockquote {
++    margin: 0.3em;
++    padding-left: 2.5em;
++    background: transparent;
++}
++
++del {
++    color: #800000;
++    text-decoration: line-through;
++}
++
++dt {
++    font-weight: bold;
++    font-size: 1.05em;
++    color: #0057ae;
++}
++
++dd {
++    margin-left: 1em;
++}
++
++p {
++    margin-top: 0.5em;
++    margin-bottom: 0.9em;
++    text-align: justify;
++}
++fieldset {
++    border: #cccccc 1px solid;
++}
++
++li {
++    text-align: left;
++}
++
++fieldset {
++    margin-bottom: 1em;
++    padding: .5em;
++}
++
++form {
++    margin: 0;
++    padding: 0;
++}
++
++hr {
++    height: 1px;
++    border: #888888 1px solid;
++    background: #888888;
++    margin: 0.5em 0 0.5em 0 ;
++}
++
++img {
++    border: 0;
++}
++table {
++    border-collapse: collapse;
++    font-size: 1em;
++}
++th {
++    text-align: left;
++    padding-right: 1em;
++    border: #cccccc solid;
++    border-width: 0 0 3px 0;
++}
++
++
++/*
++** Header
++*/
++#header {
++    color: #535353;
++    background: #eeeeee;
++}
++
++#header_top {
++    margin: 0 auto;
++    padding: 0;
++    vertical-align: middle;
++    color: #ffffff;
++    background: url(top.jpg) repeat-x bottom;
++background-color: #0057ae;
++}
++
++#header_top div {
++    margin: 0 auto;
++    padding: 0;
++    background: url(top-left.jpg) no-repeat bottom left;
++}
++
++#header_top div div {
++    margin: 0 auto;
++    padding: 0;
++    vertical-align: middle;
++    text-align: left;
++    font-size: 1.7em;
++    font-weight: bold;
++    background: url(top-right.jpg) no-repeat bottom right;
++}
++
++#header_top div div img {
++    margin:8px 0px 9px 18px;
++    vertical-align: middle;
++}
++
++#header_bottom {
++    margin: 0 auto;
++    padding: 0.1em 0em 0.3em 0;
++    vertical-align: middle;
++    text-align: right;
++    background: #eeeeee;
++}
++
++#location {
++    padding: 0 0 0 1.5em;
++    text-align: left;
++    line-height: normal;
++    font-size: 1.1em;
++    font-weight:bold;
++}
++
++#location ul {
++    display: inline;
++    margin: 0;
++    padding: 0;
++    list-style: none;
++}
++
++#location ul li {
++    display: inline;
++    white-space : nowrap;
++    margin: 0;
++    padding: 0 1em 0 0;
++}
++
++#menu {
++    margin: 0 1.5em 0 0;
++    text-align: right;
++    line-height: normal;
++    font-size: 1.1em;
++    font-weight: bold;
++}
++
++#menu ul {
++    display: inline;
++    list-style: none;
++    margin: 0;
++    padding: 0;
++    text-align: right;
++}
++
++#menu ul li {
++    display: inline;
++    white-space : nowrap;
++    margin: 0;
++    padding: 0 0 0 1em;
++    text-align: right;
++}
++
++.here a:link, .here a:visited {
++    text-decoration:underline;
++}
++
++.here ul a:link, .here ul a:visited {
++    text-decoration:none;
++}
++
++#menu ul li a {
++    font-weight: bold;
++}
++
++
++/*
++** Content
++*/
++
++#content {
++}
++
++#main {
++    /* padding in px not ex because IE messes up 100% width tables otherwise */
++    padding: 0 10px 0 10px;
++    text-align: left;
++}
++
++div.nav {
++    display: none;
++}
++
++/* The project name (redundant as it is shown in the menu, too) */
++div.clearer+h2 {
++    display: none;
++}
++
++/* The header on top of a page e.g. "MediaObject Class Reference" */
++#main>h1 {
++    text-align: center;
++    margin-top: 1em;
++    margin-bottom: 2em;
++}
++
++/* The group links below the page header */
++#main>h1>small {
++    font-size: 60%;
++}
++
++/* Section headers like "Detailed Description" */
++#main>h2 {
++    margin-left: 0;
++    margin-top: 1em;
++    margin-bottom: 1em;
++}
++
++/* The #include line */
++#main>h1+code {
++    font-size: 120%;
++    background: #F1F1F1;
++    border: 1px solid #E7E7E7;
++    padding: 2px;
++    display: block;
++}
++
++/* The version number (e.g. '4.0') on Mainpages - reduntant as it's already shown in the main title */
++#main>h1+p+h3 {
++    display: none;
++}
++
++#body_wrapper {
++    margin: 0 auto;
++    border: #dddddd solid;
++    border-width: 0 0 0 1px;
++}
++
++#body {
++    margin: 0;
++    padding: 0;
++}
++
++#right {
++    margin: 0;
++    padding: 0;
++}
++
++/* These are date cells on the front page. */
++td.cell_date {
++}
++
++#hotspot, .sideimage {
++    margin: 1ex 1em;
++    clear: right;
++}
++
++.belowimage, h1, h2, h3, h4, h5 {
++    clear: right;
++}
++
++
++/*
++** Left Menu
++*/
++
++#left {
++    margin: 0;
++    padding: 0;
++}
++
++.menu_box {
++    padding: 0.7em 0 0 0;
++}
++
++.menu_box ul {
++    text-align: left;
++}
++
++.menu_box li {
++    list-style-type: none;
++    text-align: left;
++    margin-left: 0.1em;
++}
++
++.menu_box ul ul {
++margin: 0;
++padding-left: 0;
++}
++
++.menu_box li li {
++margin-left: 1em;
++}
++
++.menu_box .active{
++    color: #cf4913;
++}
++
++.menutitle {
++    margin: 0.6em 0 1.2em 0;
++    padding:0;
++    color: #ffffff;
++    background: url(block_title_mid.png) repeat-y right;
++background-color: #0057ae;
++}
++.menutitle div {
++    margin: 0;
++    padding:0;
++    background: url(block_title_top.png) no-repeat top right;
++}
++.menutitle div h2 {
++    margin: 0;
++    padding: 0.2em 0 0.3em 1.3em;
++    line-height:1.2em;
++    font-size: 120%;
++    font-weight: normal;
++    color: #ffffff;
++    background: url(block_title_bottom.png) no-repeat bottom right;
++}
++
++.clearer {
++    clear: both;
++    height: 1px;
++}
++
++
++/*
++** Footer
++*/
++#footer {
++    background: #eeeeee;
++}
++
++#footer_text {
++    margin: 0 auto;
++    padding: 1em 0 1em 3.5em;
++    text-align: left;
++    color: #000000;
++    background: #eeeeee;
++}
++
++#footer a:link, #footer a:visited {
++    color: #4d88c3;
++}
++
++#quicklinks {
++font-size: 1em;
++padding: 1em;
++text-align: center;
++margin-top: 0.5em;
++margin-left: 0.2em;
++margin-bottom: 0.5em;
++margin-right: 0.2em;
++}
++
+Index: doc/common/top.jpg
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/top.jpg
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/top-kde.jpg
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/top-kde.jpg
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/fdl-notice.html
+===================================================================
+--- kdelibs/doc/common/fdl-notice.html	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/fdl-notice.html	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -6,7 +6,7 @@
+ <body>
+ 
+ <p>Permission is granted to copy, distribute and/or modify this document
+-under the terms of the GNU Free Documentation License, Version 1.1 or any
++under the terms of the GNU Free Documentation License, Version 1.2 or any
+ later version published by the Free Software Foundation; with no Invariant
+ Sections, with no Front-Cover Texts, and with no Back-Cover Texts.  A copy
+ of the license is included <a href="fdl-license.html">here</a>.</p>
+Index: doc/common/top-right.png
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/top-right.png
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/footer.html
+===================================================================
+--- kdelibs/doc/common/footer.html	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/footer.html	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,13 +1,12 @@
+-    </div></div>
+-
+-
+-      </td>
+-  </tr>
+-  <tr>
+-    <td valign="top" id="leftmenu" width="25%">
+-      <a name="navigation"></a>
+-      <div class="menu_box"><h2>$projectname</h2>
+-<div class="nav_list">
++            </div>
++          </div>
++        </div>
++        <div id="left">
++          <div class="menu_box">
++<a name="cp-menu" /><div class="menutitle"><div>
++<h2 id="cp-menu-project">$projectname</h2>
++<a href="#cp-skip-project" class="cp-doNotDisplay">Skip menu "$projectname"</a>
++</div></div>
+ <!-- menu -->
+ <!-- cmenu.begin -->
+ <h2>Class Picker</h2>
+@@ -20,46 +19,46 @@
+ </form>
+ </div>
+ <!-- cmenu.end -->
++
++<div class="menu_box">
++<a name="cp-menu" /><div class="menutitle"><div>
++<h2 id="cp-menu-project">@topname@</h2>
++<a href="#cp-skip-project" class="cp-doNotDisplay">Skip menu "@topname@"</a>
+ </div></div>
+-<div class="menu_box"><h2>API Dox</h2>
+ <div class="nav_list">
+ <ul>
+ <!-- gmenu -->
+ </ul></div></div>
+ 
++          </div>
++        </div>
++        <div class="clearer"></div>
++      </div>
++      <div class="clearer"></div>
++    </div>
+ 
+-        </td>
+-</tr>
+-</table>
+ 
+-<span class="doNotDisplay">
+-  <a href="http://www.kde.org/" accesskey="8">KDE Home</a> |
+-  <a href="http://accessibility.kde.org/" accesskey="9">KDE Accessibility Home</a> |
+-  <a href="http://www.kde.org/media/accesskeys.php" accesskey="0">Description of Access Keys</a>
+-</span>
++    <div id="end_body"></div>
+ 
+ 
+-<div style="height: 8px"></div>
++    <div id="footer"><div id="footer_text">
++    Generated for @topname@ by
++    <a href="http://www.doxygen.org/index.html">doxygen</a> $doxygenversion<br />
+ 
+-<div id="footer">
+-  <div id="footer_left">
+-    Maintained by <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;groo&#116;&#64;kde&#46;or&#x67;">Adriaan de Groot</a>
++    This website is maintained by <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;groo&#116;&#64;kde&#46;or&#x67;">Adriaan de Groot</a>
+ and
+-<a href="&#109;a&#105;&#108;&#116;&#111;&#58;w&#105;nter&#64;kde&#46;or&#x67">Allen Winter</a>.
+-<br/>
+-    KDE and K Desktop Environment are trademarks of <a href="http://www.kde.org/areas/kde-ev/" title="Homepage of the KDE non-profit Organization">KDE e.V.</a> |
+-    <a href="http://www.kde.org/contact/impressum.php">Legal</a>
++<a href="&#109;a&#105;&#108;&#116;&#111;&#58;w&#105;n&#116;er&#64;kde&#46;or&#x67;">Allen Winter</a>.<br />
++        KDE<sup>&#174;</sup> and <a href="@topdir@/kde_gear_black.png">the K Desktop Environment<sup>&#174;</sup> logo</a> are registered trademarks of <a href="http://ev.kde.org/" title="Homepage of the KDE non-profit Organization">KDE e.V.</a> |
++        <a href="http://www.kde.org/contact/impressum.php">Legal</a>
++    </div></div>
+   </div>
+-  <div id="footer_right"><img src="/media/images/footer_right.png" style="margin: 0px" alt="" /></div>
+-</div>
+ 
+ <!--
+ WARNING: DO NOT SEND MAIL TO THE FOLLOWING EMAIL ADDRESS! YOU WILL
+ BE BLOCKED INSTANTLY AND PERMANENTLY!
+-<a href="mailto:aaaatrap-425acc3b5374943f@kde.org">Block me</a>
++<a href="mailto:aaaatrap-45abe0e0c3bebc77@kde.org">Block me</a>
+ WARNING END
+ -->
+ 
+ </body>
+ </html>
+-
+Index: doc/common/block_title_bottom.png
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: doc/common/block_title_bottom.png
+___________________________________________________________________
+Added: svn:mime-type
+   + application/octet-stream
+
+Index: doc/common/doxygen.css
+===================================================================
+--- kdelibs/doc/common/doxygen.css	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/doxygen.css	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -1,416 +1,96 @@
+-/**
+- * based on code by Sebastian Faubel
+- * modified by Christoph Cullmann
+- */
+-
+-/* common (X)HTML formats */
+-
+-body {
+-font-size: 100%;
+-line-height: 1.2em; /* Note: it is inherited as is, not recalculated! */
+-background-color: white;
+-color: black;
+-font-family: sans-serif;
+-padding: 0;
+-margin: 0;
++#content td.memItemLeft {
++text-align: right;
+ }
+ 
+-table, td, th {
+-font-family: sans-serif;
+-padding: 0;
+-margin: 0;
+-text-align: left;
++.groupHeader {
++font-size: medium;
++color: #418ADE;
+ }
+ 
+-input, select {
+-font-size: 0.8em;
+-line-height: 1em;
+-}
++hr { display: none; }
++#content h2 { margin-left: 0px; }
+ 
+-optgroup {
+-font-style: normal;
++table.memname {
++empty-cells: show;
++background-color: #f8f8f8;
++outline: .2em solid #d7d7d7;
++margin-top: 3em;
++margin-bottom: 1em;
+ }
+ 
+-a:link {
+-color: #0000C0;
+-text-decoration: none;
++td.memname {
++white-space: nowrap;
++font-weight: bold;
+ }
+ 
+-a:visited {
+-color: #800080;
+-text-decoration: none;
+-}
+-
+-a:hover {
+-text-decoration: underline;
+-}
+-
+-/* navigation header, this is the combined area with logo and section links */
+-
+-#nav_header_top {
+-	position: absolute;
+-	z-index: 5;
+-
+-	top: 0px;
+-	left: 0px;
+-	right: 0px;
+-	width: 100%;
+-	height: 52px;
+-
+-	text-align: right;
+-
+-  background-color: #418ade;
+-	border-bottom: 1px solid #000000;
+-}
+-
+-#nav_header_bottom {
+-	margin-top: 52px;
+-	padding: 6px 6px 6px 84px;
+-	background-color: #dfe7f3;
+-	border-bottom: 1px solid #000000;
+-	height: 1em;
+-}
+-
+-#nav_header_logo {
+-	float: left;
+-	margin-top: 10px;
+-	margin-left: 10px;
+-	border: 0px;
+-	z-index: 10;
+-}
+-
+-#nav_header_logo a img {
+-	width: 64px;
+-	height: 64px;
+-}
+-
+-/* title text */
+-#nav_header_title {
+-	position: absolute;
+-	top: 12px;
+-	left: 86px;
+-	border: 0px;
+-	font-size: 32px;
+-	font-weight: bold;
+-	color: white;
+-	white-space: nowrap;
+-
+-	line-height: 36px;
+-}
+-
+-/* location combo */
+-#nav_header_location {
+-	position: absolute;
+-	top: 12px;
+-	right: 8px;
+-	border: 0px;
+-	color: #444;
+-	vertical-align: middle;
+-	white-space: nowrap;
+-
+-	font-size: 14px;
+-}
+-
+-/* location URL */
+-#nav_header_bottom_left {
+-  float:left;
+-  text-align: left;
+-  vertical-align: middle;
+-
+-  font-size: 0.8em;
+-  line-height: 1.1em;
+-}
+-
+-/* place for the links to contact, sitemap, ... s*/
+-#nav_header_bottom_right {
+-  text-align: right;
+-  vertical-align: middle;
+-
+-  font-size: 0.8em;
+-  line-height: 1.1em;
+-}
+-
+-#nav_header_bottom a:link, #nav_header_bottom a:visited {
+-  text-decoration: none;
+-}
+-
+-#nav_header_bottom a:hover {
+-  text-decoration: underline;
+-}
+-
+-.nav_list ul {
+-margin: 0px;
+-padding: 0em;
+-}
+-
+-.nav_list ul li {
+-list-style-type: none;
+-position: relative;
+-left: -2em;
+-padding: 0px;
+-}
+-
+-/* main color definitions */
+-
+-.invisible {
+-display: none;
+-}
+-
+-.menuheader {
+-height: 0;
+-line-height: 0;
+-margin: 0;
+-padding: 0;
+-font-size: 0;
+-background-color: #3E91EB;
+-}
+-
+-#leftmenu, #rightmenu {
+-width: 20%;
+-}
+-
+-#leftmenu h2, #rightmenu h2 {
+-font-size: 1em;
+-padding-left: 1em;
+-vertical-align: middle;
+-background-color: #418ade;
+-border-top: 0.3em solid #418ade;
+-border-bottom: 0.3em solid #418ade;
+-color: white;
+-margin-top: 0;
+-}
+-
+-#leftmenu ul, #rightmenu ul {
+-margin: 0;
+-padding-left: 0.5em;
+-padding-bottom: 1em;
+-}
+-
+-#leftmenu li, #rightmenu li {
+-font-size: 0.8em;
+-margin-left: 2em;
+-}
+-
+-#leftmenu ul ul, #rightmenu ul ul {
+-margin: 0;
+-padding-left: 0;
+-}
+-
+-#leftmenu li li, #rightmenu li li{
+-font-size: 0.8em;
+-margin-left: 1em;
+-}
+-
+-/**
+- * page footer
+- */
+-
+-/* background + border at top */
+-#footer {
+-  border-top: 1px solid #000000;
+-  background-image: url(/media/images/footer_bg.png);
+-  background-repeat: repeat-x;
+-  background: #418ADE;
+-  width: 100%;
+-  height: 100px;
+-  bottom:0px;
+-}
+-
+-/* right footer, contains the wave image */
+-#footer_right {
+-  float: right;
+-  right: 0px;
+-  text-align: right;
+-  z-index: 5;
+-}
+-
+-#footer_right img {
+-display: none;
+-}
+-
+-/* left footer, contains the text */
+-#footer_left {
+-  float: left;
+-  text-align: left;
+-  padding: 1em 1.5em 0em 1.5em;
+-  clear: both;
+-  z-index: 10;
+-}
+-
+-#header {
+-font-size: 0.8em;
+-height: 1.2em;
+-padding-left: 1em;
+-vertical-align: middle;
+-background-color: #418ade;
+-color: white;
+-margin: 0;
+-padding: 0;
+-border-top: 1px solid white;
+-border-bottom: 1px solid #206dcd;
+-}
+-
+-#headerpath {
+-text-align: left;
++.paramtype {
++white-space: nowrap;
+ font-weight: bold;
+-padding-left: 0.5em;
+ }
+ 
+-#headermenu {
+-text-align: right;
++.paramname {
++white-space: nowrap;
+ font-weight: bold;
+-padding-right: 0.5em;
+ }
+ 
+-#rightmenu h3 {
+-padding: 0.3em 1.3em;
+-font-size: 1em;
+-}
+-
+-/* classes */
+-
+-/* static IDs, ordered top to bottom */
+-
+-#location {
+-padding-right: 1em;
+-vertical-align: middle;
++.paramkey {
+ text-align: right;
+ }
+ 
+-#location i {
+-color: #036;
+-font-style: normal;
+-font-size: 0.8em;
+-}
+ 
+-#location form {
+-margin: 0;
++table.mdTable {
++background-color: #f8f8f8;
++outline: .2em solid #d7d7d7;
++width: 80%;
+ }
+ 
+-#location input, #location select {
+-margin: 2px;
+-}
++td.mdRow { padding: 8px 20px; }
++td.md { font-weight: bold; }
++td.mdname1 { font-weight: bold; color: #602020; }
++td.mdname { font-weight: bold; color: #602020;  }
+ 
+-#content {
+-background-color: white;
+-padding: 0.5em 0.7em 1.5em 0.7em;
+-background-color: white;
+-text-align: justify;
++div.bic {
++border: 2px solid #E72300;
++background: #F6CFDD;
++padding: 0.5ex 1em;
+ }
+ 
+-#content td, #content th {
+-font-family: sans-serif;
+-padding: 0.25em;
+-margin: 0;
+-text-align: left;
++div.memitem {
+ }
+ 
+-#content h4, #content h3, #content h2, #content h1 {
+-color: #418ade;
+-text-align: left;
+-line-height: 1em; /* without this lines stick in each other for headings */
++div.memproto {
++/*background: #F9F9F9;
++border: 1px solid #AAAAAA;*/
++font-weight: bold;
+ }
+ 
+-#quicklinks {
+-background-color: #E6F0F9;
+-font-size: 1em;
+-padding: 1em;
+-text-align: center;
+-margin-top: 1em;
+-margin-left: 0.5em;
+-margin-bottom: 0.5em;
+-margin-right: 0.5em;
++div.memproto td {
++white-space: nowrap;
++padding:0;
++margin:0;
+ }
+ 
+-#leftmenu, #rightmenu {
+-background-color: white;
+-color: #036;
++table.memname {
++border-spacing: 0;
++border-collapse:collapse;
+ }
+ 
+-.menu_box {
+-  border-top: 8px solid white;
+-
+-  border-right: 8px solid white;
+-  border-left: 8px solid white;
+-
+-  background-color: #dfe7f3;
++td.paramtype {
++font-family:monospace;
+ }
+ 
+-#search {
+-text-align: center;
+-padding: 0.2em 0.2em 0.2em 0.2em;
++div.memproto a.el {
++font-family:monospace;
+ }
+ 
+-#search label {
+-display: none;
++div.memproto a.elRef {
++font-family:monospace;
+ }
+ 
+-#search input, #search select {
+-width: 95%;
+-margin-bottom: 2px;
+-}
+-
+-#hotspot {
+-font-size: 0.8em;
+-line-height: 1em;
+-text-align: center;
+-padding: 0 0 0.8em 0;
+-}
+-
+-#rightmenu h3 {
+-margin-bottom: 0;
+-}
+-
+-.newsbox1 {
+-background-color: #E6F0F9;
+-margin-top: 1em;
+-margin-bottom: 0.5em;
+-}
+-
+-.newsbox2 {
+-background-color: white;
+-margin-top: 1em;
+-margin-bottom: 0.5em
+-}
+-
+-/* hidden stuff */
+-.doNotDisplay {
+-  display: none;
+-}
+-
+-/* common style for tables used in the page */
+-.table_box {
+-  background-color: #dfe7f3;
+-  border: 0;
+-  padding: 0;
+-  margin: 0;
+-  border-spacing: 0;
+-}
+-
+-.table_box th {
+-  background-color: #418ade;
+-  color: white;
+-}
+-
+-td.indexkey {
+-vertical-align: top;
+-background: #dfe7f3;
+-}
+-
+-#content td.memItemLeft {
+-text-align: right;
+-}
+-
+-.groupHeader {
+-font-size: large;
+-color: #418ADE;
+-}
+-
+-hr { display: none; }
+-#content h2 { margin-left: 0px; }
+-table.mdTable { background-color: #f8f8f8; border: .2em solid #d7d7d7; }
+-td.mdRow { padding: 8px 20px; }
+-td.md { font-weight: bold; }
+-td.mdname1 { font-weight: bold; color: #602020; }
+-td.mdname { font-weight: bold; color: #602020;  }
+-
++SPAN.keyword       { color: #008000 }
++SPAN.keywordtype   { color: #604020 }
++SPAN.keywordflow   { color: #e08000 }
++SPAN.comment       { color: #800000 }
++SPAN.preprocessor  { color: #806020 }
++SPAN.stringliteral { color: #002080 }
++SPAN.charliteral   { color: #008080 }
+Index: doc/common/kde-default.css
+===================================================================
+--- kdelibs/doc/common/kde-default.css	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/doc/common/kde-default.css	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -223,22 +223,22 @@
+ /* Visual cues for GUI elements etc in the text */
+ 
+ .guimenu, .guimenuitem, .guisubmenu { 
+-  background-color: rgb(240,240,240);
++  background-color: rgb(220,220,220);
+   color: rgb(0,0,0); /* should be inherit */
+ }
+ 
+ .guilabel, .interface, .guibutton { 
+-  background-color: rgb(240,240,240);
++  background-color: rgb(220,220,220);
+   color: rgb(0,0,0); /* should be inherit */
+ }
+ 
+ .shortcut { 
+-  background-color: rgb(240,240,240);
++  background-color: rgb(220,220,220);
+   color: rgb(0,0,0); /* should be inherit */
+ }
+ 
+ .shortcut .keycap { 
+-  background-color: rgb(240,240,240);
++  background-color: rgb(220,220,220);
+   color: rgb(0,0,0); /* should be inherit */
+ }
+ 
+@@ -247,7 +247,7 @@
+ }
+ 
+ .accel { 
+-  background-color: rgb(240,240,240);
++  background-color: rgb(220,220,220);
+   color: rgb(0,0,0); 
+   text-decoration: underline;
+ }
+@@ -270,7 +270,7 @@
+ }
+ 
+ .screen, .programlisting { 
+-  background-color: rgb(240,240,240);
++  background-color: rgb(220,220,220);
+   color: rgb(0,0,0); /* should be inherit */
+   border-style: dotted;
+   border-color: rgb(0,0,0);
+Index: kioslave/ftp/ftp.cc
+===================================================================
+--- kdelibs/kioslave/ftp/ftp.cc	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kioslave/ftp/ftp.cc	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -876,7 +876,7 @@
+   // The usual answer is '227 Entering Passive Mode. (160,39,200,55,6,245)'
+   // but anonftpd gives '227 =160,39,200,55,6,245'
+   int i[6];
+-  char *start = strchr(ftpResponse(3), '(');
++  const char *start = strchr(ftpResponse(3), '(');
+   if ( !start )
+     start = strchr(ftpResponse(3), '=');
+   if ( !start ||
+@@ -931,7 +931,7 @@
+     return ERR_INTERNAL;
+   }
+ 
+-  char *start = strchr(ftpResponse(3), '|');
++  const char *start = strchr(ftpResponse(3), '|');
+   if ( !start || sscanf(start, "|||%d|", &portnum) != 1)
+     return ERR_INTERNAL;
+ 
+Index: kinit/start_kdeinit.c
+===================================================================
+--- kdelibs/kinit/start_kdeinit.c	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kinit/start_kdeinit.c	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -44,7 +44,7 @@
+ {
+    char buf[ 1024 ];
+    int procfile;
+-   sprintf( buf, "/proc/%d/oom_adj", pid );
++   sprintf( buf, "/proc/%d/stat", pid );
+    if( !enable ) {
+        /* Be paranoid and check that the pid we got from the pipe
+           belongs to this user. */
+@@ -52,6 +52,7 @@
+        if( lstat( buf, &st ) < 0 || st.st_uid != getuid())
+            return 0;
+    }
++   sprintf( buf, "/proc/%d/oom_adj", pid );
+    procfile = open( buf, O_WRONLY );
+    if( procfile >= 0 ) {
+       if( enable )
+Index: kinit/Mainpage.dox
+===================================================================
+--- kdelibs/kinit/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kinit/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,29 @@
++/** @mainpage KDE Initialization Routines
++
++kdeinit is a process launcher somewhat similar to the
++famous init used for booting UNIX.
++<p>
++It launches processes by forking and then loading a
++dynamic library which should contain a 'main(...)'
++function.  This both increases the startup speed and
++reduces the memory consumption of KDE applications.
++
++kdeinit_wrapper, kshell and kwrapper provide methods
++of starting programs via kdeinit.
++
++@authors
++Waldo Bastian \<bastian@kde.org\><br>
++Process title changing code taken from the ProFTPD Project, adapted by Alex Merry
++
++@maintainers
++[Unknown/None]
++
++@licenses
++@gpl<br>
++Most code is @lgpl
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore
++// DOXYGEN_SET_PROJECT_NAME = KInit
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kimgio/Mainpage.dox
+===================================================================
+--- kdelibs/kimgio/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kimgio/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,29 @@
++/** @mainpage ImageFormat Plugins
++
++Provides imageformat plugins for Qt so that it can read more image file types.
++
++@authors
++Sirtaj Singh Kang \<taj@kde.org><br>
++Dirk Schoenberger<br>
++Torben Weis \<weis@kde.org><br>
++Thomas Tanghus \<tanghus@kde.org><br>
++Antonio Larossa \<larossa@kde.org\><br>
++Sven Wiegand \<SWiegand@tfh-berlin.de><br>
++Dominik Seichter \<domseichter@web.de><br>
++Nadeem Hasan \<nhasan@kde.org><br>
++Melchior Franz \<mfranz@kde.org><br>
++Allen Barnett \<allen@lignumcomputing.com><br>
++Ignacio Castaño \<castano@ludicon.com><br>
++Christoph Hormann \<chris_hormann@gmx.de><br>
++Michael Ritzert \<kde@ritzert.de>
++
++@maintainers
++[Unknown/None]
++
++@licenses
++@lgpl
++
++*/
++
++// DOXYGEN_SET_PROJECT_NAME = KImgIO
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kio/kio/kzip.h
+===================================================================
+--- kdelibs/kio/kio/kzip.h	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kio/kio/kzip.h	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -191,10 +191,7 @@
+     /// Closes the archive
+     virtual bool closeArchive();
+ 
+-    /**
+-     * @internal Not needed for zip
+-     */
+-    virtual bool writeDir( const QString& name, const QString& user, const QString& group) { Q_UNUSED(name); Q_UNUSED(user); Q_UNUSED(group); return true; }
++    virtual bool writeDir(const QString& name, const QString& user, const QString& group);
+     // TODO(BIC) uncomment and make virtual for KDE 4.
+ //    bool writeDir( const QString& name, const QString& user, const QString& group,
+ //                        mode_t perm, time_t atime, time_t mtime, time_t ctime );
+Index: kio/kio/karchive.cpp
+===================================================================
+--- kdelibs/kio/kio/karchive.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kio/kio/karchive.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -588,7 +588,9 @@
+ 
+ void KArchiveDirectory::addEntry( KArchiveEntry* entry )
+ {
+-  Q_ASSERT( !entry->name().isEmpty() );
++  if( entry->name().isEmpty() )
++    return;
++
+   if( m_entries[ entry->name() ] ) {
+       kdWarning() << "KArchiveDirectory::addEntry: directory " << name()
+                   << " has entry " << entry->name() << " already" << endl;
+Index: kio/kio/kdirwatch.cpp
+===================================================================
+--- kdelibs/kio/kio/kdirwatch.cpp	 (.../tags/KDE/3.5.10)	(patchset 15)
++++ kdelibs/kio/kio/kdirwatch.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -87,7 +89,9 @@
+ {
+   return syscall (__NR_inotify_rm_watch, fd, wd);
+ }
++#endif
+ 
++#ifdef HAVE_INOTIFY
+ #ifndef  IN_ONLYDIR
+ #define  IN_ONLYDIR 0x01000000 
+ #endif
+@@ -99,7 +103,6 @@
+ #ifndef IN_MOVE_SELF
+ #define IN_MOVE_SELF 0x00000800
+ #endif
+-
+ #endif
+ 
+ #include <sys/utsname.h>
+Index: kio/kio/kzip.cpp
+===================================================================
+--- kdelibs/kio/kio/kzip.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kio/kio/kzip.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -954,8 +954,8 @@
+         buffer[ 26 ] = char(mysize >> 16);
+         buffer[ 27 ] = char(mysize >> 24);
+ 
+-        buffer[ 28 ] = char(it.current()->path().length()); // filename length
+-        buffer[ 29 ] = char(it.current()->path().length() >> 8);
++        buffer[ 28 ] = char(path.length()); // filename length
++        buffer[ 29 ] = char(path.length() >> 8);
+ 
+ 	buffer[ 30 ] = char(extra_field_len);
+ 	buffer[ 31 ] = char(extra_field_len >> 8);
+@@ -1051,6 +1051,20 @@
+     return true;
+ }
+ 
++bool KZip::writeDir(const QString& name, const QString& user, const QString& group)
++{
++    // Zip files have no explicit directories, they are implicitly created during extraction time
++    // when file entries have paths in them.
++    // However, to support empty directories, we must create a dummy file entry which ends with '/'.
++    QString dirName = name;
++    if (!name.endsWith("/"))
++        dirName = dirName.append('/');
++
++    mode_t perm = 040755;
++    time_t the_time = time(0);
++    return writeFile(dirName, user, group, 0, perm, the_time, the_time, the_time, 0);
++}
++
+ // Doesn't need to be reimplemented anymore. Remove for KDE-4.0
+ bool KZip::writeFile( const QString& name, const QString& user, const QString& group, uint size, const char* data )
+ {
+@@ -1114,7 +1128,7 @@
+     }
+ 
+     // delete entries in the filelist with the same filename as the one we want
+-    // to save, so that we don�t have duplicate file entries when viewing the zip
++    // to save, so that we don�t have duplicate file entries when viewing the zip
+     // with konqi...
+     // CAUTION: the old file itself is still in the zip and won't be removed !!!
+     QPtrListIterator<KZipFileEntry> it( d->m_fileList );
+@@ -1280,9 +1294,10 @@
+     if ( d->m_extraField == ModificationTime )
+         extra_field_len = 17;	// value also used in doneWriting()
+ 
++    const QCString encodedName = QFile::encodeName(d->m_currentFile->path());
+     int csize = device()->at() -
+         d->m_currentFile->headerStart() - 30 -
+-		d->m_currentFile->path().length() - extra_field_len;
++        encodedName.length() - extra_field_len;
+     d->m_currentFile->setCompressedSize(csize);
+     //kdDebug(7040) << "usize: " << d->m_currentFile->size() << endl;
+     //kdDebug(7040) << "csize: " << d->m_currentFile->compressedSize() << endl;
+Index: kabc/scripts/field.src.cpp
+===================================================================
+--- kdelibs/kabc/scripts/field.src.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kabc/scripts/field.src.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -36,7 +36,7 @@
+                const QString &app = QString::null )
+       : mFieldId( fieldId ), mCategory( category ), mLabel( label ),
+         mKey( key ), mApp( app ) {}
+-  
++
+     enum FieldId
+     {
+       CustomField,
+@@ -45,11 +45,11 @@
+ 
+     int fieldId() { return mFieldId; }
+     int category() { return mCategory; }
+-    
++
+     QString label() { return mLabel; }
+     QString key() { return mKey; }
+     QString app() { return mApp; }
+-    
++
+   private:
+     int mFieldId;
+     int mCategory;
+@@ -184,6 +184,8 @@
+       return a.phoneNumber( PhoneNumber::Pager ).number();
+     case FieldImpl::HomeAddressStreet:
+       return a.address( Address::Home ).street();
++    case FieldImpl::HomeAddressPostOfficeBox:
++      return a.address( Address::Home ).postOfficeBox();
+     case FieldImpl::HomeAddressLocality:
+       return a.address( Address::Home ).locality();
+     case FieldImpl::HomeAddressRegion:
+@@ -196,6 +198,8 @@
+       return a.address( Address::Home ).label();
+     case FieldImpl::BusinessAddressStreet:
+       return a.address( Address::Work ).street();
++    case FieldImpl::BusinessAddressPostOfficeBox:
++      return a.address( Address::Work ).postOfficeBox();
+     case FieldImpl::BusinessAddressLocality:
+       return a.address( Address::Work ).locality();
+     case FieldImpl::BusinessAddressRegion:
+@@ -266,6 +270,13 @@
+         a.insertAddress( address );
+         return true;
+       }
++    case FieldImpl::HomeAddressPostOfficeBox:
++      {
++        KABC::Address address = a.address( Address::Home );
++        address.setPostOfficeBox( value );
++        a.insertAddress( address );
++        return true;
++      }
+     case FieldImpl::HomeAddressLocality:
+       {
+         KABC::Address address = a.address( Address::Home );
+@@ -308,6 +319,13 @@
+         a.insertAddress( address );
+         return true;
+       }
++    case FieldImpl::BusinessAddressPostOfficeBox:
++      {
++        KABC::Address address = a.address( Address::Work );
++        address.setPostOfficeBox( value );
++        a.insertAddress( address );
++        return true;
++      }
+     case FieldImpl::BusinessAddressLocality:
+       {
+         KABC::Address address = a.address( Address::Work );
+@@ -438,7 +456,7 @@
+                         const Field::List &fields )
+ {
+   QValueList<int> fieldIds;
+-  
++
+   int custom = 0;
+   Field::List::ConstIterator it;
+   for( it = fields.begin(); it != fields.end(); ++it ) {
+@@ -452,7 +470,7 @@
+                        QString::number( custom++ ), customEntry );
+     }
+   }
+-  
++
+   cfg->writeEntry( identifier, fieldIds );
+ }
+ 
+@@ -460,7 +478,7 @@
+ {
+   KConfig *cfg = KGlobal::config();
+   KConfigGroupSaver( cfg, "KABCFields" );
+- 
++
+   return restoreFields( cfg, identifier );
+ }
+ 
+@@ -485,7 +503,7 @@
+     }
+     fields.append( new Field( f ) );
+   }
+-  
++
+   return fields;
+ }
+ 
+@@ -496,7 +514,7 @@
+   if ( !sameId ) return false;
+ 
+   if ( mImpl->fieldId() != FieldImpl::CustomField ) return true;
+-  
++
+   return mImpl->key() == field->mImpl->key();
+ }
+ 
+Index: kabc/scripts/entrylist
+===================================================================
+--- kdelibs/kabc/scripts/entrylist	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kabc/scripts/entrylist	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -29,6 +29,7 @@
+ 
+ #Address address
+ LF,home address street,,QString,homeAddressStreet,Address|Personal
++LF,home address post office box,,QString,homeAddressPostOfficeBox,Address|Personal
+ LF,home address city,,QString,homeAddressLocality,Address|Personal
+ LF,home address state,,QString,homeAddressRegion,Address|Personal
+ LF,home address zip code,,QString,homeAddressPostalCode,Address|Personal
+@@ -36,6 +37,7 @@
+ LF,home address label,,QString,homeAddressLabel,Address|Personal
+ 
+ LF,business address street,,QString,businessAddressStreet,Address|Organization
++LF,business address post office box,,QString,businessAddressPostOfficeBox,Address|Organization
+ LF,business address city,,QString,businessAddressLocality,Address|Organization
+ LF,business address state,,QString,businessAddressRegion,Address|Organization
+ LF,business address zip code,,QString,businessAddressPostalCode,Address|Organization
+Index: kdesu/Mainpage.dox
+===================================================================
+--- kdelibs/kdesu/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kdesu/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,21 @@
++/** @mainpage Console-mode authentication
++
++libkdesu provides functionality for building GUI front ends for
++(password asking) console mode programs. For example, kdesu and
++kdessh use it to interface with su and ssh respectively.
++
++@authors
++Geert Jansen \<jansen@kde.org\>
++
++@maintainers
++Adriaan de Groot \<groot@kde.org\>
++
++@licenses
++@lgpl
++
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore
++// DOXYGEN_SET_PROJECT_NAME = KDEsu
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kutils/Mainpage.dox
+===================================================================
+--- kdelibs/kutils/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kutils/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,24 @@
++/** @mainpage Some random bits and pieces
++
++Some utility classes for KSettings, KCModule and KPlugin.
++
++@authors
++Matthias Kretz \<kretz@kde.org\><br>
++Rafael Fernández López \<ereslibre@kde.org\><br>
++Matthias Elter \<elter@kde.org\><br>
++Daniel Molkentin \<molkentin@kde.org\><br>
++Frans Englich \<frans.englich@telia.com\><br>
++Tobias Koenig \<tokoe@kde.org\><br>
++Matthias Hoelzer-Kluepfel \<hoelzer@kde.org\>
++
++@maintainers
++[Unknown/None]
++
++@licenses
++@lgpl
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore kdeui kio
++// DOXYGEN_SET_PROJECT_NAME = KUtils
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kdecore/kstringhandler.cpp
+===================================================================
+--- kdelibs/kdecore/kstringhandler.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kdecore/kstringhandler.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -558,7 +558,7 @@
+   QString result;
+   const QChar *unicode = str.unicode();
+   for ( uint i = 0; i < str.length(); ++i )
+-    result += ( unicode[ i ].unicode() < 0x21 ) ? unicode[ i ] :
++    result += ( unicode[ i ].unicode() <= 0x21 ) ? unicode[ i ] :
+         QChar( 0x1001F - unicode[ i ].unicode() );
+ 
+   return result;
+Index: kdecore/Mainpage.dox
+===================================================================
+--- kdelibs/kdecore/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kdecore/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,44 @@
++/** \mainpage The KDE Core Library
++
++All KDE programs use this library to provide basic functionality such
++as the configuration system, IPC, internationalization and locale
++support, site-independent access to the filesystem and a large number
++of other (but no less important) things.
++<p>
++All KDE applications should link to the kdecore library. Also, using a
++KApplication derived class instead of QApplication is almost
++mandatory if you expect your application to behave nicely within the
++KDE environment.
++
++If you are unsure where to start, have a look at the
++<a href="http://techbase.kde.org/Development/Tutorials">tutorials on
++TechBase</a> to get you going.
++
++If you know what you are looking for, you should be able to find it in
++the <a href="annotated.html">class list</a> or the
++<a href="modules.html">modules list</a>.
++
++@authors
++Various: see copyrights on individual files for more information
++
++@maintainers
++See the
++<a href="http://websvn.kde.org/trunk/KDE/kdelibs/kdecore/MAINTAINERS?view=markup">MAINTAINERS</a>
++file.
++
++@licenses
++Library: @lgpl<br>
++Some helper utilities: @gpl
++
++*/
++
++/**
++
++\defgroup KDEMacros KDE Macros
++
++*/
++
++// DOXYGEN_EXCLUDE = malloc kde_file.h
++// DOXYGEN_SET_INPUT += @topdir@/kdemacros.h.cmake
++// DOXYGEN_SET_PROJECT_NAME = KDECore
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: knewstuff/Mainpage.dox
+===================================================================
+--- kdelibs/knewstuff/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/knewstuff/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,35 @@
++/** \mainpage Collaborative Data Sharing in KDE Applications
++
++The \b KNewStuff2 library adds data sharing capabilities to %KDE
++applications.  Technically, it implements the
++<a href="http://ghns.freedesktop.org/">GHNS</a> and
++DXS specifications. The library consists of three parts: the data management core
++and GHNS protocol implementation, the DXS web service handler, and the user interface
++classes like dialogs and buttons.
++
++Application authors should not use all of the classes directly, which are installed
++only for the purpose of implementing functionality on top of \b KNewStuff2; instead,
++the high-level KNS::Engine class provides everything an application needs.
++Both upload and download scenarios are handled by the engine. There are only two
++preparation steps necessary before this class can be used: the setup of a GHNS repository,
++and the creation of a <b>*.knsrc</b> file which will determine all aspects of the
++application's \b KNewStuff2 usage.
++
++All of the related information such as <b>*.knsrc</b> files, repositories and security
++can be found in the <a href="http://techbase.kde.org/Development/Tutorials/K_Hot_New_Stuff2">KNewStuff2 tutorial</a>.
++
++@authors
++Josef Spillner \<spillner@kde.org\>
++Jeremy Whiting \<jeremy@scitools.com\>
++
++@maintainers
++Jeremy Whiting \<jeremy@scitools.com\>
++
++@licenses
++@lgpl
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore kdeui kio
++// DOXYGEN_SET_PROJECT_NAME = KNewStuff
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: khtml/Mainpage.dox
+===================================================================
+--- kdelibs/khtml/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/khtml/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,46 @@
++/** @mainpage KDE HTML Parser and Widget
++
++If you want a fully-fledged HTML browser widget in your application,
++you can use KHTMLPart to do so.
++
++@code
++KUrl url = "http://www.kde.org";
++KHTMLPart *w = new KHTMLPart();
++w->openUrl(url);
++w->view()->resize(500, 400);
++w->show();
++@endcode
++
++For more information, see the documentation for KHTMLPart.
++
++Note that using KHTMLPart may introduce security vulnerabilities
++and unnecessary bloat to your application.  Qt's text widgets are
++rich-text capable, and will interpret a limited subset of HTML.
++
++@authors
++Torben Weis \<weis@stud.uni-frankfurt.de\><br>
++Josip A. Gracin \<grac@fly.cc.fer.hr\><br>
++Martin Jones \<mjones@kde.org\><br>
++Waldo Bastian \<bastian@kde.org\><br>
++Lars Knoll \<knoll@kde.org\><br>
++Antti Koivisto \<koivisto@iki.fi\><br>
++Dirk Mueller \<mueller@kde.org\><br>
++Peter Kelly \<pmk@post.com\><br>
++George Staikos \<staikos@kde.org\><br>
++Allan Sandfeld Jensen \<kde@carewolf.com\><br>
++Germain Garand \<germain@ebooksfrance.org\><br>
++Maksim Orlovich \<maksim@kde.org\><br>
++KHTML has also heavily benefited from the work of Apple Computer, Inc.
++@maintainers
++Allan Sandfeld Jensen <br>
++Germain Garand<br>
++Maksim Orlovich
++
++@licenses
++@lgpl
++
++*/
++// DOXYGEN_REFERENCES = kdecore kdeui kio kparts kjs
++// DOXYGEN_EXCLUDE =  test*.* html rendering xml misc ecma css imload pics test 
++// DOXYGEN_SET_PROJECT_NAME = KHTML
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: khtml/html/htmltokenizer.cpp
+===================================================================
+--- kdelibs/khtml/html/htmltokenizer.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/khtml/html/htmltokenizer.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -736,7 +736,7 @@
+ #ifdef TOKEN_DEBUG
+                 kdDebug( 6036 ) << "unknown entity!" << endl;
+ #endif
+-                checkBuffer(10);
++                checkBuffer(11);
+                 // ignore the sequence, add it to the buffer as plaintext
+                 *dest++ = '&';
+                 for(unsigned int i = 0; i < cBufferPos; i++)
+Index: khtml/rendering/table_layout.cpp
+===================================================================
+--- kdelibs/khtml/rendering/table_layout.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/khtml/rendering/table_layout.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -297,7 +297,8 @@
+ #endif
+         for ( int i = 0; available > 0 && i < nEffCols; i++ ) {
+             if ( width[i].isPercent() ) {
+-                int w = base * width[i].value() / totalPercent;
++                // totalPercent may be 0 below if all %-width specifed are 0%. (#172557)
++                int w = totalPercent ? base * width[i].value() / totalPercent : 0;
+                 available -= w;
+                 calcWidth[i] = w;
+             }
+@@ -313,7 +314,8 @@
+ 
+         for ( int i = 0; available > 0 && i < nEffCols; i++ ) {
+             if ( width[i].isVariable() ) {
+-                int w = available / totalVariable;
++                // totalVariable may be 0 below if all the variable widths specified are 0.
++                int w = totalVariable ? available / totalVariable : 0;
+                 available -= w;
+                 calcWidth[i] = w;
+ 		totalVariable--;
+Index: kjs/Mainpage.dox
+===================================================================
+--- kdelibs/kjs/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kjs/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,30 @@
++/** @mainpage KDE JavaScript/EcmaScript Engine
++
++This library provides an ECMAScript compatible interpreter. The ECMA standard
++is based on well known scripting languages such as Netscape's JavaScript and
++Microsoft's JScript.
++
++@authors
++Harri Porten \<porten@kde.org\><br>
++Maks Orlovich \<maksim@kde.org\><br>
++Apple Computer, Inc.<br>
++Richard Moore \<rich@kde.org\><br>
++Daegeun Lee \<realking@mizi.com\><br>
++Marco Pinelli \<pinmc@libero.it\><br>
++Christian Kirsch \<ck@held.mind.de\>
++
++@maintainers
++Maks Orlovich \<maksim@kde.org\><br>
++Harri Porten \<porten@kde.org\>
++
++@licenses
++@lgpl
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore
++// DOXYGEN_SET_PROJECT_NAME = KJS
++// DOXYGEN_SET_EXCLUDE_PATTERNS += */wtf/* 
++// DOXYGEN_SET_EXCLUDE_PATTERNS += */kjs/*.cpp */kjs/*.h
++
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kjs/dtoa.cpp
+===================================================================
+--- kdelibs/kjs/dtoa.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kjs/dtoa.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -487,7 +487,7 @@
+ #define FREE_DTOA_LOCK(n)	/*nothing*/
+ #endif
+ 
+-#define Kmax 15
++#define Kmax (sizeof(size_t) << 3)
+ 
+  struct
+ Bigint {
+Index: kdoctools/customization/pt-BR/user.entities
+===================================================================
+--- kdelibs/kdoctools/customization/pt-BR/user.entities	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kdoctools/customization/pt-BR/user.entities	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -17,7 +17,7 @@
+ <!ENTITY Esc   "<keycap>Esc</keycap>">
+ <!ENTITY etc     "<abbrev>etc</abbrev>">
+ <!ENTITY ex     "<abbrev>por exemplo</abbrev>">
+-<!ENTITY FAQ     "Perguntas Mais Freqüentes (do inglês <acronym>FAQ</acronym>)">
++<!ENTITY FAQ     "Perguntas mais freqüentes (do inglês <acronym>FAQ</acronym>)">
+ <!ENTITY HTML	'<acronym>HTML</acronym>'>
+ <!ENTITY ie     "isto é">
+ <!ENTITY infocenter	"<application>Centro de Informações</application>">
+@@ -34,7 +34,7 @@
+ <!ENTITY LMB    "botão <mousebutton>esquerdo</mousebutton> do mouse">
+ <!ENTITY MMB    "botão do <mousebutton>meio</mousebutton> do mouse">
+ <!ENTITY OS "<acronym>Sistema Operacional</acronym>">
+-<!ENTITY RMB    "botão <mousebutton>direto</mousebutton> do mouse">
++<!ENTITY RMB    "botão <mousebutton>direito</mousebutton> do mouse">
+ <!ENTITY Shift   "<keycap>Shift</keycap>">
+ <!ENTITY systemtray "<application>bandeja do sistema</application>">
+ <!ENTITY Tab	"<keycap>Tab</keycap>">
+Index: kdoctools/Mainpage.dox
+===================================================================
+--- kdelibs/kdoctools/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kdoctools/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,26 @@
++/** @mainpage KDE Documentation Tools
++
++Provides a KIO slave for accessing application documentation for
++KDE and GNOME applications.
++
++@authors
++Eric Bischoff
++Claudiu Costin
++Frederik Fouvry
++David Rugge
++
++@maintainers
++[Unknown/None]
++
++@licenses
++Note: most of the files do not have licenses.
++This should be corrected.  The intention appears
++to be for the files to have a @bsd license, but
++this needs to be confirmed with the copyright
++holders.
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore kdeui kio
++// DOXYGEN_SET_PROJECT_NAME = KDocTools
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kparts/Mainpage.dox
+===================================================================
+--- kdelibs/kparts/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kparts/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,42 @@
++/** @mainpage Framework for KDE Graphical Components
++
++This library implements the framework for KDE parts, which are
++elaborate widgets with a user-interface defined in terms of actions
++(menu items, toolbar icons). See KParts::Part.
++
++The library also provides a framework for applications that want to
++use parts. Such applications need to inherit their main window
++from KParts::MainWindow and provide a so-called shell GUI, 
++which provides a basic skeleton GUI with part-independent functionality/actions.
++
++Some KParts applications won't be specific to a given part, but expect
++to be able to embed, for instance, all types of viewers out there. For this
++the basic functionality of any viewer has been implemented in 
++KParts::ReadOnlyPart, which viewer-like parts should inherit from.
++The same applies to KParts::ReadWritePart, which is for editor-like parts.
++
++You can add actions to an existing KParts app from "outside", defining
++the code for those actions in a shared library. This mechanism is
++obviously called plugins, and implemented by KParts::Plugin.
++
++For a complete, and very simple, example of how to use KParts to display
++any kind of file (i.e. making a generic viewer), see the documentation for
++KParts::ComponentFactory::createPartInstanceFromQuery.
++
++@authors
++Simon Hausmann \<hausmann@kde.org\><br>
++David Faure \<faure@kde.org\><br>
++Kurt Granroth \<granroth@kde.org\><br>
++Michael Koch \<koch@kde.org\>
++
++@maintainers
++[Unknown/None]
++
++@licenses
++@lgpl
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore kdeui kio
++// DOXYGEN_SET_PROJECT_NAME = KParts
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kded/Mainpage.dox
+===================================================================
+--- kdelibs/kded/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/kded/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,26 @@
++/** @mainpage The KDE Daemon
++
++KDED runs in the background and performs a number of small tasks.  Some
++of these tasks are built in, others are started on demand.
++<p>
++The chances are you are looking here because you want to write a
++KDED module.  For that, see KDEDModule in kdecore and the
++<a href="http://websvn.kde.org/trunk/KDE/kdelibs/kded/README.kded?view=markup">KDED
++README</a>.
++
++
++@authors
++David Faure \<dfaure@kde.org\><br>
++Waldo Bastian \<bastian@kde.org\>
++
++@maintainers
++[Unknown/None]
++
++@licenses
++@lgpl
++
++*/
++
++// DOXYGEN_REFERENCES = kdecore kdeui kio
++// DOXYGEN_SET_PROJECT_NAME = KDED
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+Index: kdeui/kdatetbl.cpp
+===================================================================
+--- kdelibs/kdeui/kdatetbl.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kdeui/kdatetbl.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -47,6 +47,7 @@
+ #include "kdatetbl.h"
+ #include "kpopupmenu.h"
+ #include <qdatetime.h>
++#include <qguardedptr.h>
+ #include <qstring.h>
+ #include <qpen.h>
+ #include <qpainter.h>
+@@ -310,7 +311,7 @@
+            painter->setPen(colorGroup().highlight());
+            painter->setBrush(colorGroup().highlight());
+ 	   }
+-	   else 
++	   else
+ 	   {
+ 	   painter->setPen(colorGroup().text());
+            painter->setBrush(colorGroup().text());
+@@ -366,7 +367,7 @@
+ void KDateTable::endOfWeek()
+ {
+   setDate(date.addDays(7 - date.dayOfWeek()));
+-}    
++}
+ 
+ void
+ KDateTable::keyPressEvent( QKeyEvent *e )
+@@ -482,14 +483,14 @@
+   // old selected date:
+   temp = posFromDate( date );
+   // new position and date
+-  pos = (7 * (row - 1)) + col; 
++  pos = (7 * (row - 1)) + col;
+   QDate clickedDate = dateFromPos( pos );
+ 
+   // set the new date. If it is in the previous or next month, the month will
+   // automatically be changed, no need to do that manually...
+   setDate( clickedDate );
+ 
+-  // call updateCell on the old and new selection. If setDate switched to a different 
++  // call updateCell on the old and new selection. If setDate switched to a different
+   // month, these cells will be painted twice, but that's no problem.
+   updateCell( temp/7+1, temp%7 );
+   updateCell( row, col );
+@@ -1007,7 +1008,10 @@
+   popup(pos);
+   repaint();
+   d->exec = true;
++  const QGuardedPtr<QObject> that = this;
+   qApp->enter_loop();
++  if ( !that )
++    return QDialog::Rejected;
+   hide();
+   return result;
+ }
+Index: kdeui/kmenubar.cpp
+===================================================================
+--- kdelibs/kdeui/kmenubar.cpp	 (.../tags/KDE/3.5.10)	(revision 850549)
++++ kdelibs/kdeui/kmenubar.cpp	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -308,7 +308,7 @@
+         if( d->fallback_mode )
+         {
+             d->fallback_mode = false;
+-//            KWin::setStrut( winId(), 0, 0, 0, 0 ); KWin will set strut as it will see fit
++            KWin::setStrut( winId(), 0, 0, 0, 0 );
+             setMinimumSize( 0, 0 );
+             setMaximumSize( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+             updateMenuBarSize();
+Index: dnssd/Mainpage.dox
+===================================================================
+--- kdelibs/dnssd/Mainpage.dox	 (.../tags/KDE/3.5.10)	(revision 0)
++++ kdelibs/dnssd/Mainpage.dox	 (.../branches/KDE/3.5)	(revision 1074156)
+@@ -0,0 +1,40 @@
++/** @mainpage DNSSD
++
++<p>DNSSD is a library for handling the DNS-based Service Discovery Protocol (DNS-SD),
++the layer of <a href="http://www.zeroconf.org">Zeroconf</a> that allows network
++services, such as printers, to be discovered without any user intervention or
++centralized infrastructure.</p>
++
++Apple's implementation of Zeroconf is
++<a href="http://www.apple.com/macosx/technology/bonjour.html">Bonjour</a>.
++Apple's developer documentation provides lots of information about Bonjour
++in its <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/NetServices/Articles/about.html#//apple_ref/doc/uid/TP40002458-SW1">Bonjour overview</a>.
++
++If you are writing an application that wants to discover services on the network,
++use DNSSD::ServiceBrowser.  You can also find available service types using ServiceTypeBrowser.
++
++If you want to announce the availability of a service provided by your application,
++use DNSSD::PublicService.
++
++DNSSD::DomainBrowser allows you to find domains (other than the local one) recommended
++for browsing or publishing to.
++
++Note that DNSSD::ServiceBrowser::isAvailable() provides information about the availability
++of the services provided by this library generally, not just for browsing services.
++
++@authors
++Jakub Stachowski
++
++@maintainers
++Jakub Stachowski
++
++@licenses
++@lgpl
++
++*/
++
++// KDE5: get rid of kdeui reference when settings.kcfgc is changed
++// DOXYGEN_REFERENCES = kdecore kdeui
++// DOXYGEN_SET_PROJECT_NAME = DNSSD
++// DOXYGEN_SET_EXCLUDE_PATTERNS += */dnssd/avahi* */dnssd/mdnsd*
++// vim:ts=4:sw=4:expandtab:filetype=doxygen
+
+Property changes on: .
+___________________________________________________________________
+Deleted: svn:mergeinfo
+Added: svn:externals
+   + admin https://svn.kde.org/home/kde/branches/KDE/3.5/kde-common/admin
+
+

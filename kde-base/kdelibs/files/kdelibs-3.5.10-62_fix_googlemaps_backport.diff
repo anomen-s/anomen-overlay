@@ -1,0 +1,39 @@
+backport fix for google maps
+
+--- kdelibs/khtml/ecma/kjs_dom.cpp	2007-05-14 09:52:40.000000000 +0200
++++ kdelibs/khtml/ecma/kjs_dom.cpp	2008-10-08 22:10:23.000000000 +0200
+@@ -335,26 +335,26 @@
+ 
+     switch (token) {
+     case OffsetLeft:
+-      return rend ? static_cast<Value>( Number( rend->offsetLeft() ) ) : Undefined();
++      return rend ? static_cast<Value>( Number( rend->offsetLeft() ) ) : Number(0);
+     case OffsetTop:
+-      return rend ? static_cast<Value>(  Number( rend->offsetTop() ) ) : Undefined();
++      return rend ? static_cast<Value>(  Number( rend->offsetTop() ) ) : Number(0);
+     case OffsetWidth:
+-      return rend ? static_cast<Value>(  Number( rend->offsetWidth() ) ) : Undefined();
++      return rend ? static_cast<Value>(  Number( rend->offsetWidth() ) ) : Number(0);
+     case OffsetHeight:
+-      return rend ? static_cast<Value>(  Number( rend->offsetHeight() ) ) : Undefined();
++      return rend ? static_cast<Value>(  Number( rend->offsetHeight() ) ) : Number(0);
+     case OffsetParent:
+     {
+       khtml::RenderObject* par = rend ? rend->offsetParent() : 0;
+       return getDOMNode( exec, par ? par->element() : 0 );
+     }
+     case ClientWidth:
+-      return rend ? static_cast<Value>( Number( rend->clientWidth() ) ) : Undefined();
++      return rend ? static_cast<Value>( Number( rend->clientWidth() ) ) : Number(0);
+     case ClientHeight:
+-      return rend ? static_cast<Value>( Number( rend->clientHeight() ) ) : Undefined();
++      return rend ? static_cast<Value>( Number( rend->clientHeight() ) ) : Number(0);
+     case ScrollWidth:
+-      return rend ? static_cast<Value>( Number(rend->scrollWidth()) ) : Undefined();
++      return rend ? static_cast<Value>( Number(rend->scrollWidth()) ) : Number(0);
+     case ScrollHeight:
+-      return rend ? static_cast<Value>( Number(rend->scrollHeight()) ) : Undefined();
++      return rend ? static_cast<Value>( Number(rend->scrollHeight()) ) : Number(0);
+     case ScrollLeft:
+       if (rend && rend->layer()) {
+           if (rend->isRoot() && !rend->style()->hidesOverflow())
