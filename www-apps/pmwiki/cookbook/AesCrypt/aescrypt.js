@@ -501,13 +501,13 @@ AesCtr.kdf_sha256 = function(password, nBits, nonce) {
 AesCtr.kdf_sha256_dup = function(password, nBits, nonce) {
    var buffer = '';
    var nBytes = nBits/8;
-   for (int i = 0; i < nBytes ; i++) {
+   for (var i = 0; i < nBytes ; i++) {
      buffer = buffer.concat(i);
      buffer = buffer.concat(password.charAt(i % password.length));
      buffer = buffer.concat(password);
      buffer = buffer.concat(nonce);
    }
-   alert(buffer);
+   //alert(buffer);
    var hash = Sha256.hash(buffer);
    return hash.slice(0, nBytes);
 }
