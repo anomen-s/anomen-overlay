@@ -7,7 +7,7 @@ EAPI=2
 MODULE_AUTHOR=MACGYVER
 inherit perl-module
 
-DESCRIPTION="Perl Net::SMTPLLServer - Perl SMTP::SERVER Module"
+DESCRIPTION="Perl Net::SMTP::Server - Perl SMTP::SERVER Module"
 
 LICENSE="GPL-2"
 SLOT="0"
