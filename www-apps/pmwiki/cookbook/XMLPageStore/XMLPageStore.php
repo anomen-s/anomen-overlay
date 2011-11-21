@@ -9,7 +9,7 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 */
-$RecipeInfo['XMLPageStore']['Version'] = '2011-09-15';
+$RecipeInfo['XMLPageStore']['Version'] = '2011-11-02';
 
 SDV($EnablePageStoreXML,false);
 
@@ -57,36 +57,22 @@ class XMLPageStore extends PageStore {
     if ($pagefile && ($fp=@fopen($pagefile, "r"))) {
       while (!feof($fp)) {
         $line = fgets($fp, 512);
-        $isXML = (substr($line,0,5) == "<?xml") || (substr(ltrim($line),0,5) == "<page");
-        if ($isXML) {
-    	    fseek($fp, 0, SEEK_SET);
-	    $pagefilesize = filesize($pagefile);
-    	    $data = fread($fp, $pagefilesize);
-    	    $page = $this->read_xml($data, $since);
-    	    break;
-        }
-        while (substr($line, -1, 1) != "\n" && !feof($fp)) 
-          { $line .= fgets($fp, 4096); }
-        $line = rtrim($line);
-        if ($urlencoded) $line = urldecode(str_replace('+', '%2b', $line));
-        @list($k,$v) = explode('=', $line, 2);
-        if (!$k) continue;
-        if ($k == 'version') { 
-          $ordered = (strpos($v, 'ordered=1') !== false); 
-          $urlencoded = (strpos($v, 'urlencoded=1') !== false); 
-          if (strpos($v, 'pmwiki-0.')!==false) $newline="\262";
-        }
-        if ($k == 'newline') { $newline = $v; continue; }
-        if ($since > 0 && preg_match('/:(\\d+)/', $k, $m) && $m[1] < $since) {
-          if ($ordered) break;
-          continue;
-        }
-        if ($newline) $v = str_replace($newline, "\n", $v);
-        $page[$k] = $v;
+        $isXML = (substr($line,0,5) == '<?xml') || (substr(ltrim($line),0,5) == '<page');
+        if (trim($line) != '') {
+    	    break; // we found non-empty line
+    	}
       }
-      fclose($fp);
-    }
-    return @$page;
+        if ($isXML) {
+	    fseek($fp, 0, SEEK_SET);
+	    $pagefilesize = filesize($pagefile);
+	    $data = fread($fp, $pagefilesize);
+	    @fclose($fp);
+	    return $this->read_xml($data, $since);
+	} else {
+	    @fclose($fp);
+	    return parent::read($pagename,$page);
+	}
+     }
   }
 
   function write($pagename,$page) {
