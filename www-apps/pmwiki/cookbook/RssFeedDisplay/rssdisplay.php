@@ -23,12 +23,14 @@
 
 */
 
-$RecipeInfo['RSSDisplay']['Version'] = '2011-11-19';
+$RecipeInfo['RSSDisplay']['Version'] = '2011-11-30';
 
 Markup('rssdisplay', 'fulltext', '/\(:RSS\s*(.*?)\s*:\)/e',"MagpieRSS('\$1')");
 
 
 SDV($MagpieDir, "$FarmD/cookbook/magpie");
+SDV($MagpieDebug, false);
+
 
 SDV($MagpieEnableCache, false);
 SDV($MagpieCacheAge, 2*60*60);
@@ -73,10 +75,12 @@ function MagpieRSS($regex) {
  global $action;
  global $FarmD;
  global $MAGPIE_ERROR;
- global $MagpieDefaultItems, $MagpieDefaultFormat;
+ global $MagpieDefaultItems, $MagpieDefaultFormat, $MagpieDebug;
 
- $OriginalError_reportingLevel = error_reporting();
- error_reporting(0);
+ if (!IsEnabled($MagpieDebug)) {
+    $OriginalError_reportingLevel = error_reporting();
+    error_reporting(0);
+ }
 # If you make a call to your own site
 # and you have any kind of WritePage action ( Lock(2) ) for example
 # because you do some kind of logging in a wiki-page.
@@ -98,7 +102,7 @@ function MagpieRSS($regex) {
     $what=$MagpieDefaultFormat;
   }
 
-  if (empty($num_items)) {
+  if ($num_items == '') {
     $num_items=$MagpieDefaultItems;
   }
   if ( $action && (  $action != 'browse'  ) ) {
@@ -117,8 +121,7 @@ function MagpieRSS($regex) {
       if ( $header != 'noheader') {
           $line .= "<h2 class='rss'>RSS feed: <a href='$link'>$title</a></h2>\n";
       }
-      
-      if ( $num_items > 0 ) { 
+      if ( $num_items >= 0 ) {
         $items = array_slice($rss->items, 0, $num_items);
       } else {
         $items = $rss->items;
@@ -126,10 +129,10 @@ function MagpieRSS($regex) {
       foreach ($items as $item) {
         #print_r ($item);
         $href = $item['link'];
-        $title = $item['title'];	
-	$description = "-- empty -- "; // bugfix by anomen
+        $title = $item['title'];
+	$description = "-- empty -- ";
         if ( isset ($item['description']) ) {
-          $description = $item['description'];	
+          $description = $item['description'];
         }
         if ( isset ($item['atom_content']) ) {
           $description = $item['atom_content'];	
@@ -152,7 +155,10 @@ function MagpieRSS($regex) {
     }
   }//else
 }
-error_reporting($OriginalError_reportingLevel);
+
+if (!IsEnabled($MagpieDebug)) {
+   error_reporting($OriginalError_reportingLevel);
+}
 $line="<div class='rss'>$line</div>";
 
 $rss_link = "\n%right% [[$url|RSS]]\n";
