@@ -18,7 +18,7 @@ For example, include the most recent changes.
 (That could also be done with a [=[include:RecentChanges]]=], but when using a parser you can easily change the look, or display only the top 10 changes.)
 This is also a good way to display images dynamically from Flickr.
 
-This recipe is based on RSS parser [[http://magpierss.sourceforge.net/ |Magpie]].
+This recipe uses RSS parser [[http://magpierss.sourceforge.net/ |Magpie]].
 
 [[#install]]
 !!Installation
@@ -31,7 +31,7 @@ Your host must allow outgoing http requests.
 -->%blue%Try it? ( I will try to make a test script soon)
 
 
-Download [[(Attach:)rssdisplay.zip]].
+Download [[(Attach:)rssdisplay.zip]]. This archive already constains MagpieRSS.
 
 Extract the archive into your PmWiki folder.
 
@@ -40,14 +40,10 @@ Add following line to local/config.php
 
 !!! caching
 Create a cache-directory @@$FarmD/cache@@ to avoid having the rss feed fetched a zillion times a day.
-Ensure the directory is writable for the webserver (chmod 777) 
+Ensure the directory is writable for the webserver (chmod 777).
 Add into local/config.php:
 
  $MagpieEnableCache = true;
-
-!!Alternative version
-(Here are a [[http://www.christophedavid.org/w/c/w.php/Files/Rssdisplayphp|modified version of the script]], and a [[http://www.christophedavid.org/w/c/w.php/Files/RssDisplayDemo|demonstration of its output]].) [[Category.cda|cda]]
-
 
 
 [[#usage]]
@@ -70,22 +66,26 @@ To display a long format and a max of 5 items use:
 
 [[#config]]
 !!Configuration
+List of configuration variables with their respective default values:
 
-%red%TODO
+: $MagpieDefaultItems : default number of displayed items of feed  (default 30)
+: $MagpieDefaultFormat : default format of displayed items of feed  (default 'long')
 
-!!!Testing
+: $MagpieCacheDir : cache directory ("$FarmD/cache")
+: $MagpieCacheAge : cache item timeout (2 hours)
 
-For testing it might be usefull to put a comment (#) in front of the line in rssdisplay.php:
-
- error_reporting(0);
-
-This line avoids some very ugly error messages when fetch fails.
-
+: $MagpieProxy : proxy server, use syntax @@hostname:port@@
+: $MagpieFetchTimeout : timeout for fetching RSS feeds (15)
+: $MagpieGzip : use gzip compression for fetching feeds
+: $MagpieDir : directory where Magpie is installed (@@"$FarmD/cookbook/magpie"@@)
+: $MagpieOutputEncoding : encoding of content produced by feed reeder (defaults to @@$Charset@@)
+: $MagpieDebug : output error messages from Magpie.
 
 [[#relnotes]]
 !! Change log / Release notes
 ||width=75%
-||2005-10-30||1.32||Added html_entity_decode for the rss-url (tanks to [[~JohnCooley]])||
+||2011-11-30||    ||New rewritten version ([[~Anomen]])
+||2005-10-30||1.32||Added html_entity_decode for the rss-url (thanks to [[~JohnCooley]])||
 ||          ||    ||Added some utf8 translation to html entities||
 ||          ||    ||Cleaned the Comments & Bugs list below a bit||
 ||2005-10-18||1.31||Looks like the htmlspecialchars stuff was '''not''' a good thing||
@@ -95,6 +95,8 @@ This line avoids some very ugly error messages when fetch fails.
 ||2004-01-12||1.4||Using new Keep function[[<<]]Added <ul> to meet xhtml validation||
 ||2004-01-12||1.2||Added more ways to display the feed.||
 ||2004-01-10||1.0||Initial version.||
+
+See [[{$Name}-Archive]] for archived documantation.
 
 [[#seealso]]
 !! See also
