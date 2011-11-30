@@ -93,18 +93,26 @@ function MagpieRSS($regex) {
  } else {
   $tokens=preg_split("/\s+/", $regex);
 
-  $url      =html_entity_decode($tokens[0]);
-  $what     =$tokens[1];
-  $num_items=$tokens[2];
-  $header   =$tokens[3];
-
-  if (empty($what)) {
+    $url=html_entity_decode($tokens[0]);
     $what=$MagpieDefaultFormat;
-  }
-
-  if ($num_items == '') {
     $num_items=$MagpieDefaultItems;
-  }
+    $header = '';
+    
+    foreach ($tokens as $t) {
+        if ($t == 'long') {
+		$what = $t;
+	}
+        if ($t == 'short') {
+        	$what = $t;
+        }
+        if ($t == 'noheader') {
+    		$what = $t;
+        }
+        if (is_numeric($t)) {
+    		$num_items = intval($t);
+        }
+    }
+
   if ( $action && (  $action != 'browse'  ) ) {
     # this is important
     #pmwiki processes DoubleBrackets in the rss module

@@ -46,22 +46,28 @@ Add into local/config.php:
  $MagpieEnableCache = true;
 
 
+!!! Security
+Please note that this recipe is inherently insecure.
+Never allow untrusted users use RSS markup, they could include feed with malicious content.
+Also be sure to add only trustworthy feeds.
+
 [[#usage]]
 !!Usage
 
- (:RSS http://example.com/rss.xml [long|short] number_of_items>:) 
+ (:RSS http://example.com/rss.xml [long|short] [noheader] [number_of_items] :)
  
 !!!Parameters
 : how : display only titles (''short'') or also descriptions (''long'') of feed items
 : number_of_items : number of items to display, -1 means all items
+: header: noheader will hide header of feeds
 
-->Will display the items in a simple list with a max of ten items:
+->Will display the items in a default display mode  with a default maximum of items:
 
-*[=(:RSS http://example.com/rss.xml:)=]
+[=(:RSS http://example.com/rss.xml :)=]
 
-To display a long format and a max of 5 items use:
+To display a short format and a max of 5 items use:
 
-*[=(:RSS http://example.com/rss.xml long 5:)=]
+[=(:RSS http://example.com/rss.xml short 5 :)=]
 
 
 [[#config]]
@@ -81,6 +87,16 @@ List of configuration variables with their respective default values:
 : $MagpieOutputEncoding : encoding of content produced by feed reeder (defaults to @@$Charset@@)
 : $MagpieDebug : output error messages from Magpie.
 
+!!!Encoding
+To properly display non-ASCII characters you need to define proper encoding of PmWiki pages.
+The best way is to swich PmWiki to Unicode by inserting this line at the beginning of @@local/config.php@@:
+
+  include_once("scripts/xlpage-utf-8.php");
+
+Be warned that it breaks special characters you already have in existing pages.
+
+See PmWiki:Internationalizations for details.
+
 [[#relnotes]]
 !! Change log / Release notes
 ||width=75%
@@ -96,11 +112,13 @@ List of configuration variables with their respective default values:
 ||2004-01-12||1.2||Added more ways to display the feed.||
 ||2004-01-10||1.0||Initial version.||
 
-See [[{$Name}-Archive]] for archived documantation.
+: archived documentation : [[{$Name}-Archive]]
+: git repository : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/RssFeedDisplay
+
 
 [[#seealso]]
 !! See also
-: git repository : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/RssFeedDisplay
+* [[SimplePieDisplay]]
 
 !!!Links
 * [[http://magpierss.sourceforge.net/ |Magpie]]
