@@ -106,7 +106,7 @@ function MagpieRSS($regex) {
         	$what = $t;
         }
         if ($t == 'noheader') {
-    		$what = $t;
+    		$header = $t;
         }
         if (is_numeric($t)) {
     		$num_items = intval($t);
@@ -145,10 +145,6 @@ function MagpieRSS($regex) {
         if ( isset ($item['atom_content']) ) {
           $description = $item['atom_content'];	
         }
-
-// removed by anomen - nonsense code
-//         list($description,$title)=
-//         preg_replace('/([^\x00-\x7f])/e','sprintf("&#%d;", ord($1))',array($description,$title));
 
         $link="<a class='urllink' href='$href'>$title</a>";
           $line .= "<h3 class='rss$what'>$link</h3>\n";

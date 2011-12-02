@@ -15,6 +15,7 @@ This version fixes several problems:
 * add possibility to decrypt text with different password - to be considered...
 * ''added protection against unintentional submit of plaintext - not yet''
 * ''added support for PBKDF2 - not yet''
+* Add javascript-controlled password input box to provide secure password entry - not yet
 
 !!!! Agorithm description
 * plaintext is padded with spaces to achieve length of multiple of $AesCryptPadding
