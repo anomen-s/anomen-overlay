@@ -15,7 +15,9 @@ import org.apache.commons.codec.binary.Hex;
  * @author ludek
  */
 public class EncryptTest extends TestCase {
-    
+
+    KDF kdf = new KDF.sha256();
+
     public EncryptTest(String testName) {
         super(testName);
     }
@@ -36,13 +38,13 @@ public class EncryptTest extends TestCase {
         String password = "TopSecret";
 
         assertEquals("AAAAAAAAAABHtF8=",
-                AesCrypto.encryptToBase64("abc", password, AesCrypto.ZERO_NONCE));
+                AesCrypto.encryptToBase64("abc", password, AesCrypto.ZERO_NONCE, kdf));
 
         assertEquals("AAAAAAAAAABHtF/GUuR5r+R8gBpKzVQv3FT2osanEmZD1DvoR3m3sQ==",
-                AesCrypto.encryptToBase64("abcdefghijklmnopqrstuvwxyz012345", password, AesCrypto.ZERO_NONCE));
+                AesCrypto.encryptToBase64("abcdefghijklmnopqrstuvwxyz012345", password, AesCrypto.ZERO_NONCE, kdf));
 
         assertEquals("AAAAAAAAAADcVPaixqcSZkPUO+hHebex",
-                AesCrypto.encryptToBase64("qrstuvwxyz012345", password, AesCrypto.ONE_NONCE));
+                AesCrypto.encryptToBase64("qrstuvwxyz012345", password, AesCrypto.ONE_NONCE, kdf));
     }
 
     /**

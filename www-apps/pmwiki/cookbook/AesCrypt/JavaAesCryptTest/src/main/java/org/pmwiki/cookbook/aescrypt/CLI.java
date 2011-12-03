@@ -3,11 +3,6 @@ package org.pmwiki.cookbook.aescrypt;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
 
 /*
  * To change this template, choose Tools | Templates
@@ -22,38 +17,46 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class CLI {
 
-    public static void main(String[] args)throws Exception
+    public static void main(String[] args) throws Exception
     {
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.print("Decrypt/encrypt [d/e]: ");
+        System.out.print("Decrypt/encrypt [d/e][u]: ");
         String mode = r.readLine();
-        System.out.print("text:                  ");
+        System.out.print("text:                     ");
         String text = r.readLine();
-        System.out.print("Password:              ");
+        System.out.print("Password:                 ");
         String password = r.readLine();
         
-        System.out.println("Result:              ");
+        System.out.println("Result:                 ");
 
+        KDF kdf;
+                
+        if ((mode.indexOf('u') > 0)) {
+            kdf = new KDF.sha256();
+        } else {
+            kdf = new KDF.sha256_dup();
+        }
+        
         if ("d".equalsIgnoreCase(mode)) {
-            decrypt(text, password);
+            decrypt(text, password, kdf);
         } else if ("e".equalsIgnoreCase(mode)) {
-            encrypt(text, password);
+            encrypt(text, password, kdf);
         }
     }
 
-    public static void decrypt(String encrypted, String password) throws Exception
+    public static void decrypt(String encrypted, String password, KDF kdf) throws Exception
     {
-        String result = AesCrypto.decryptFromBase64(encrypted, password);
+        String result = AesCrypto.decryptFromBase64(encrypted, password, kdf);
         
-        //System.out.println(result);
+        System.out.println(result);
     }
 
-    public static void encrypt(String text, String password) throws Exception
+    public static void encrypt(String text, String password, KDF kdf) throws Exception
     {
-        String result = AesCrypto.encryptToBase64(text, password, AesCrypto.randomNonce());
+        String result = AesCrypto.encryptToBase64(text, password, AesCrypto.randomNonce(), kdf);
 
-        //System.out.println(result);
+        System.out.println(result);
     }
     
     

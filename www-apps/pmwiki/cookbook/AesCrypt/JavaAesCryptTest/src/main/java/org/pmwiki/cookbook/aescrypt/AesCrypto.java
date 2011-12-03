@@ -28,6 +28,8 @@ public class AesCrypto {
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
     };
 
+    public static final int BITS = 256;
+
     public static byte[] randomNonce() {
 
         Random r = new SecureRandom();
@@ -38,17 +40,18 @@ public class AesCrypto {
         return nonce;
     }
     
-    public static byte[] encrypt (String plaintext, String password, byte[] nonce) throws Exception
+    public static byte[] encrypt(String plaintext, String password, byte[] nonce, KDF kdf) throws Exception
     {
-        return encrypt(plaintext, DigestUtils.sha256(password), nonce);
+        return encrypt(plaintext, kdf.getKey(password, BITS, nonce), nonce);
     }
 
-    public static String encryptToBase64(String plaintext, String password, byte[] nonce) throws Exception
+    public static String encryptToBase64(String plaintext, String password, byte[] nonce, KDF kdf) throws Exception
     {
-        return Base64.encodeBase64String(encrypt(plaintext, password, nonce)).trim();
+
+        return Base64.encodeBase64String(encrypt(plaintext, password, nonce, kdf)).trim();
     }
 
-    public static byte[] encrypt (String plaintext, byte[] keyData, byte[] nonce) throws Exception
+    public static byte[] encrypt(String plaintext, byte[] keyData, byte[] nonce) throws Exception
     {
 
         SecretKeySpec key = new SecretKeySpec(keyData, "AES");
@@ -68,12 +71,13 @@ public class AesCrypto {
         return enc;
     }
 
-    public static String decrypt (byte[] cipher, String password, byte[] nonce) throws Exception
+    public static String decrypt(byte[] cipher, String password, byte[] nonce, KDF kdf) throws Exception
     {
-        return decrypt(cipher, DigestUtils.sha256(password), nonce);
+
+        return decrypt(cipher, kdf.getKey(password, BITS, nonce), nonce);
     }
 
-    public static String decryptFromBase64(String ciphertext, String password) throws Exception
+    public static String decryptFromBase64(String ciphertext, String password, KDF kdf) throws Exception
     {
 
         byte[] dataIn = Base64.decodeBase64(ciphertext);
@@ -84,7 +88,7 @@ public class AesCrypto {
         System.arraycopy(dataIn, 0, nonce, 0, 8);
         System.arraycopy(dataIn, 8, enc, 0, dataIn.length - 8);
 
-        return decrypt(enc, password, nonce);
+        return decrypt(enc, password, nonce, kdf);
     }
 
     public static String decryptFromBase64RawKey(String ciphertext, byte[] keyData) throws Exception
@@ -101,7 +105,7 @@ public class AesCrypto {
         return decrypt(enc, keyData, nonce);
     }
 
-    public static String decrypt (byte[] ciphertext, byte[] keyData, byte[] nonce) throws Exception
+    public static String decrypt(byte[] ciphertext, byte[] keyData, byte[] nonce) throws Exception
     {
 
         SecretKeySpec key = new SecretKeySpec(keyData, "AES");

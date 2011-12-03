@@ -501,11 +501,12 @@ AesCtr.kdf_sha256 = function(password, nBits, nonce) {
 AesCtr.kdf_sha256_dup = function(password, nBits, nonce) {
    var buffer = '';
    var nBytes = nBits/8;
+   var nonceEnc = Base64.encode(nonce);
    for (var i = 0; i < nBytes ; i++) {
      buffer = buffer.concat(i);
      buffer = buffer.concat(password.charAt(i % password.length));
      buffer = buffer.concat(password);
-     buffer = buffer.concat(nonce);
+     buffer = buffer.concat(nonceEnc);
    }
    //alert(buffer);
    var hash = Sha256.hash(buffer);
@@ -547,7 +548,7 @@ Base64.encode = function(str, utf8encode) {  // http://tools.ietf.org/html/rfc46
   var o1, o2, o3, bits, h1, h2, h3, h4, e=[], pad = '', c, plain, coded;
   var b64 = Base64.code;
    
-  plain = utf8encode ? str.encodeUTF8() : str;
+  plain = utf8encode ? str.encodeUTF8() : str; // TODO: this probably doesn't work?
   
   c = plain.length % 3;  // pad string to length of multiple of 3
   if (c > 0) { while (c++ < 3) { pad += '='; plain += '\0'; } }

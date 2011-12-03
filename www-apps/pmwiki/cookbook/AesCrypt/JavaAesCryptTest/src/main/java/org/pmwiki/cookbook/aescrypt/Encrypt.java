@@ -16,13 +16,15 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class Encrypt {
 
+    static KDF kdf = new KDF.sha256();
+
     public static void main(String[] args) throws Exception
     {
         String password = "TopSecret";
         //byte[] plaintext = "abcdefghijklmnopqrstuvwxyz012345".getBytes();
         byte[] plaintext = "abc".getBytes();
 
-        AesCrypto.encrypt("abc", password, AesCrypto.ZERO_NONCE);
+        AesCrypto.encrypt("abc", password, AesCrypto.ZERO_NONCE, kdf);
     }
 
 }
