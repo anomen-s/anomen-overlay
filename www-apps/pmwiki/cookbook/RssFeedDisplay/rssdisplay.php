@@ -2,7 +2,7 @@
 /*
 
     Syntax
-    (:RSS http://url.to.rss.feed/feed.rss <what> <parameters> :)
+    (:RSS http://url.to.rss.feed/feed.rss <parameters> :)
 
     Examples:
     displays the feed of the pmwiki pages with the default layout and number of lines:
@@ -16,6 +16,7 @@
 
     Copyright 2006-2011 Anomen (ludek_h@seznam.cz)
     Copyright 2005 http://www.brambring.nl
+    Copyright 2005 http://mypage.iu.edu/~mweiner/index.html
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -23,7 +24,7 @@
 
 */
 
-$RecipeInfo['RSSDisplay']['Version'] = '2011-11-30';
+$RecipeInfo['RSSDisplay']['Version'] = '2011-12-06';
 
 Markup('rssdisplay', 'fulltext', '/\(:RSS\s*(.*?)\s*:\)/e',"MagpieRSS('\$1')");
 
@@ -41,7 +42,9 @@ SDV($MagpieGzip, true);
 SDV($MagpieProxy, '');
 
 SDV($MagpieDefaultItems, 30);
-SDV($MagpieDefaultFormat, 'long');
+SDV($MagpieDefaultShowHeader, true);
+SDV($MagpieDefaultShowDate, false);
+SDV($MagpieDefaultShowContent, true);
 
 SDV($MagpieOutputEncoding, $Charset);
 
@@ -71,11 +74,47 @@ function MagpieRssPhpInclude()
 	include("$MagpieDir/rss_fetch.inc");
 }
 
+function MagpieRSSDate($item) {
+ # by http://www.pmwiki.org/wiki/Profiles/Mike
+ $date = "";
+ $rss_2_date = $item['pubdate'];
+ $rss_1_date = $item['dc']['date'];
+ $rss_3_date = $item['prism']['publicationDate'];
+ $atom_date = $item['issued'];
+ if ($atom_date != "") $date = parse_w3cdtf($atom_date);
+ if ($rss_1_date != "") $date = parse_w3cdtf($rss_1_date);
+ if ($rss_2_date != "") $date = strtotime($rss_2_date);
+ if ($rss_3_date != "") $date = parse_w3cdtf($rss_3_date);
+ if ($date == '-1') {
+   if ($atom_date != "") $date = strtotime($atom_date);
+   if ($rss_1_date != "") $date = strtotime($rss_1_date);
+   if ($rss_3_date != "") $date = strtotime($rss_3_date);
+ }
+ if (($date != "") && ($date != '-1')) {
+   $secondsinaday = 60 * 60 * 24;
+   $dateformat = 'd M Y';
+   $today = time();
+   $yesterday = time() - $secondsinaday;
+   $datetoday = date($dateformat, $today);
+   $dateyesterday = date($dateformat, $yesterday);
+   $daterss = date($dateformat, $date);
+   if (($daterss == $datetoday) || ($daterss == $dateyesterday)) {
+    $color = 'red';
+   }
+   else {
+     $color = 'gray';
+   }
+   return '<div class="magpie-date" style="font-size:smaller;color:' . $color . '">' . $daterss . '</div>';
+  }
+  return '';
+}
+
 function MagpieRSS($regex) {
  global $action;
  global $FarmD;
- global $MAGPIE_ERROR;
- global $MagpieDefaultItems, $MagpieDefaultFormat, $MagpieDebug;
+ global $MAGPIE_ERROR, $MagpieDebug;
+ global $MagpieDefaultItems;
+ global $MagpieDefaultShowHeader, $MagpieDefaultShowContent, $MagpieDefaultShowDate;
 
  if (!IsEnabled($MagpieDebug)) {
     $OriginalError_reportingLevel = error_reporting();
@@ -94,23 +133,19 @@ function MagpieRSS($regex) {
   $tokens=preg_split("/\s+/", $regex);
 
     $url=html_entity_decode($tokens[0]);
-    $what=$MagpieDefaultFormat;
+    $what=$MagpieDefaultShowContent;
     $num_items=$MagpieDefaultItems;
-    $header = '';
+    $showheader = $MagpieDefaultShowHeader;
+    $showdate = $MagpieDefaultShowDate;
     
     foreach ($tokens as $t) {
-        if ($t == 'long') {
-		$what = $t;
-	}
-        if ($t == 'short') {
-        	$what = $t;
-        }
-        if ($t == 'noheader') {
-    		$header = $t;
-        }
-        if (is_numeric($t)) {
-    		$num_items = intval($t);
-        }
+        if ($t == 'long') {	$what = true; }
+        if ($t == 'short') { 	$what = false; }
+        if ($t == 'header') { 	$showheader = true; }
+        if ($t == 'noheader') {	$showheader = false; }
+        if ($t == 'date') { 	$showdate = true; }
+        if ($t == 'nodate') { 	$showdate = false; }
+        if (is_numeric($t)) { 	$num_items = intval($t); }
     }
 
   if ( $action && (  $action != 'browse'  ) ) {
@@ -126,7 +161,7 @@ function MagpieRSS($regex) {
       $title = $rss->channel['title'];
       $link = $rss->channel['link'];
       
-      if ( $header != 'noheader') {
+      if ( $showheader) {
           $line .= "<h2 class='rss'>RSS feed: <a href='$link'>$title</a></h2>\n";
       }
       if ( $num_items >= 0 ) {
@@ -148,8 +183,12 @@ function MagpieRSS($regex) {
 
         $link="<a class='urllink' href='$href'>$title</a>";
           $line .= "<h3 class='rss$what'>$link</h3>\n";
-        if ( $what == 'long' ) { 
-          $line .=  $description . "<br />\n";
+          if ($showdate) {
+            $date = MagpieRSSDate($item);
+            $line .= "$date \n" ;
+          }
+        if ($what) {
+          $line .=  "<div class=\"magpie-desc\">$description</div>\n";
         }//if
            
       }//foreach
@@ -158,14 +197,14 @@ function MagpieRSS($regex) {
      $line .= "<tt>$MAGPIE_ERROR</tt>";
     }
   }//else
-}
+ }
 
-if (!IsEnabled($MagpieDebug)) {
+ if (!IsEnabled($MagpieDebug)) {
    error_reporting($OriginalError_reportingLevel);
-}
-$line="<div class='rss'>$line</div>";
+ }
+ $line="<div class='rss'>$line</div>";
 
-$rss_link = "\n%right% [[$url|RSS]]\n";
+ $rss_link = "\n%right% [[$url|RSS]]\n";
 
-return  Keep($line) . $rss_link;
+ return  Keep($line) . $rss_link;
 }

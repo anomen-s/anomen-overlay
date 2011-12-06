@@ -1,6 +1,6 @@
 >>recipeinfo<<
 Summary: How to add an RSS feed to a page
-Version: 2011-11-30
+Version: 2011-12-06
 Prerequisites: 
 Status: 
 Maintainer: [[~Anomen]]
@@ -15,7 +15,7 @@ Adding an RSS feed to your page.
 !! Description
 Use the rss feed from another site, or your own, to be displayed on your wiki. 
 For example, include the most recent changes. 
-(That could also be done with a [=[include:RecentChanges]]=], but when using a parser you can easily change the look, or display only the top 10 changes.)
+(That could also be done with a [=[[include:RecentChanges]]=], but when using a parser you can easily change the look, or display only the top 10 changes.)
 This is also a good way to display images dynamically from Flickr.
 
 This recipe uses RSS parser [[http://magpierss.sourceforge.net/ |Magpie]].
@@ -35,7 +35,8 @@ Download [[(Attach:)rssdisplay.zip]]. This archive already constains MagpieRSS.
 
 Extract the archive into your PmWiki folder.
 
-Add following line to local/config.php
+Add following line to @@local/config.php@@:
+
  include_once("$FarmD/local/rssdisplay.php");
 
 !!! caching
@@ -47,21 +48,23 @@ Add into local/config.php:
 
 
 !!! Security
-Please note that this recipe is inherently insecure.
-Never allow untrusted users use RSS markup, they could include feed with malicious content.
-Also be sure to add only trustworthy feeds.
+Adding content from 3rd party web sites is inherently insecure.
+
+* Never allow untrusted users to use RSS markup, they could include feed with malicious content.
+* Be sure to add only trustworthy feeds.
 
 [[#usage]]
 !!Usage
 
- (:RSS http://example.com/rss.xml [long|short] [noheader] [number_of_items] :)
+ (:RSS http://example.com/rss.xml [long|short] [(no)header] [(no)date] [number_of_items] :)
  
 !!!Parameters
-: how : display only titles (''short'') or also descriptions (''long'') of feed items
+: short/long : display only titles (''short'') or also descriptions (''long'') of feed items
+: (no)header : noheader will hide header of feeds
+: (no)date : show date of feed items
 : number_of_items : number of items to display, -1 means all items
-: header: noheader will hide header of feeds
 
-->Will display the items in a default display mode  with a default maximum of items:
+This will display the items in a default display mode  with a default maximum of items:
 
 [=(:RSS http://example.com/rss.xml :)=]
 
@@ -74,18 +77,20 @@ To display a short format and a max of 5 items use:
 !!Configuration
 List of configuration variables with their respective default values:
 
-: $MagpieDefaultItems : default number of displayed items of feed  (default 30)
-: $MagpieDefaultFormat : default format of displayed items of feed  (default 'long')
+: @@$MagpieDefaultItems@@ : default number of displayed items of feed  (default 30)
+: @@$MagpieDefaultShowHeader@@ : show header of feed (true)
+: @@$MagpieDefaultShowDate@@ : show dates of feed items (false)
+: @@$MagpieDefaultShowContent@@ : default format of displayed items of feed  (true)
 
-: $MagpieCacheDir : cache directory ("$FarmD/cache")
-: $MagpieCacheAge : cache item timeout (2 hours)
+: @@$MagpieCacheDir@@ : cache directory ("$FarmD/cache")
+: @@$MagpieCacheAge@@ : cache item timeout (2 hours)
 
-: $MagpieProxy : proxy server, use syntax @@hostname:port@@
-: $MagpieFetchTimeout : timeout for fetching RSS feeds (15)
-: $MagpieGzip : use gzip compression for fetching feeds
-: $MagpieDir : directory where Magpie is installed (@@"$FarmD/cookbook/magpie"@@)
-: $MagpieOutputEncoding : encoding of content produced by feed reeder (defaults to @@$Charset@@)
-: $MagpieDebug : output error messages from Magpie.
+: @@$MagpieProxy@@ : proxy server, use syntax @@hostname:port@@
+: @@$MagpieFetchTimeout@@ : timeout for fetching RSS feeds (15)
+: @@$MagpieGzip@@ : use gzip compression for fetching feeds
+: @@$MagpieDir@@ : directory where Magpie is installed (@@"$FarmD/cookbook/magpie"@@)
+: @@$MagpieOutputEncoding@@ : encoding of content produced by feed reeder (defaults to @@$Charset@@)
+: @@$MagpieDebug@@ : output error messages from Magpie. Only useful for debugging since it produces lot of chaotic messages on error.
 
 !!!Encoding
 To properly display non-ASCII characters you need to define proper encoding of PmWiki pages.
@@ -118,10 +123,10 @@ See PmWiki:Internationalizations for details.
 
 [[#seealso]]
 !! See also
-* [[SimplePieDisplay]]
+* [[SimplePieDisplay]] - alternative RSS recipe using more up-to-date feed reader
 
 !!!Links
-* [[http://magpierss.sourceforge.net/ |Magpie]]
+* [[http://magpierss.sourceforge.net/ |Magpie RSS]]
 
 [[#contributors]]
 !! Contributors
