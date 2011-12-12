@@ -2,7 +2,7 @@
 !! Contributors
 !!!Alternative version by [[~Anomen]].
 : git repo : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/AesCrypt
-: download : Attach:AesCrypt-0.2.zip
+: download : Attach:AesCrypt-2011-12-12.zip
 
 This version fixes several problems:
 * non-standard and weak (only 128bit) key derivation function replaced with SHA-256
@@ -17,20 +17,8 @@ This version fixes several problems:
 * ''added support for PBKDF2 - not yet''
 * Add javascript-controlled password input box to provide secure password entry - not yet
 
-!!!! Agorithm description
-* plaintext is padded with spaces to achieve length of multiple of $AesCryptPadding
-* pseudo-random 64bit nonce is extended to 128bit by appending 64bit counter (zeroes)
-* key derivation algorithm (configurable by $AesCryptKDF)
-** sha256 (SHA-256 hash of password)
-** sha256_dup (SHA-256 hash of longer text constructed using password)
-** aes (encrypt password with AES, compatible with original aescrypt-0.1 recipe)
-** ''pbkdf2 (not yet implemented)''
-* plaintext is encrypted using AES-256 in CTR mode
-* output is Base64-encoded concatenation of upper 64 bits of nonce and ciphertext
-
-
 !!Configuration
-: $AesCryptKDF : aes, sha256, sha256_dup, pbkdf2
+: $AesCryptKDF : aes, sha256, sha256_dup (default), pbkdf2
 : $AesCryptPlainToken : starting token for plaintext
 : $AesCryptCipherToken : starting token for ciphertext
 : $AesCryptEndToken : closing token

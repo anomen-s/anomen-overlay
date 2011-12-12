@@ -21,7 +21,16 @@ public class CLI {
     {
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.print("Decrypt/encrypt [d/e][u]: ");
+
+        System.out.println("Modes: ");
+        System.out.println(" d = decrypt (default)");
+        System.out.println(" e = encrypt ");
+        System.out.println("KDF: ");
+        System.out.println(" s = sha256");
+        System.out.println(" u = sha256_dup (default)");
+        System.out.println(" a = aes");
+
+        System.out.print("Decrypt/encrypt [d/e][s/u/a]: ");
         String mode = r.readLine();
         System.out.print("text:                     ");
         String text = r.readLine();
@@ -31,17 +40,21 @@ public class CLI {
         System.out.println("Result:                 ");
 
         KDF kdf;
-                
-        if ((mode.indexOf('u') > 0)) {
+        
+        mode = mode.toLowerCase();
+        
+        if ((mode.indexOf('s') >= 0)) {
             kdf = new KDF.sha256();
+        } else if ((mode.indexOf('a') >= 0)) {
+            kdf = new KDF.aes();
         } else {
             kdf = new KDF.sha256_dup();
         }
         
-        if ("d".equalsIgnoreCase(mode)) {
-            decrypt(text, password, kdf);
-        } else if ("e".equalsIgnoreCase(mode)) {
+        if (mode.indexOf('e') >= 0) {
             encrypt(text, password, kdf);
+        } else {
+            decrypt(text, password, kdf);
         }
     }
 
