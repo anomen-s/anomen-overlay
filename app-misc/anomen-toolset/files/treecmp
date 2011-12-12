@@ -1,6 +1,6 @@
 #! /bin/sh
 
-TPATH=/usr/libexec/anomen-toolset
+TPATH=/usr/local/lib/anomen-toolset
 
 if [ -z "$1" ]
 then
@@ -36,7 +36,7 @@ then
  exit 4
 fi
 
-find "$SRCDIR" -type f -exec $TPATH/treecmp.sha "$SRCDIR" "$DESTDIR" '{}' ';'
+find "$SRCDIR" -type f -exec $TPATH/treecmp.sha.sh "$SRCDIR" "$DESTDIR" '{}' ';'
 
 
 DODIFF=`expr match "$0" '.*treecmp\(d\)$'`
@@ -44,5 +44,5 @@ DODIFF=`expr match "$0" '.*treecmp\(d\)$'`
 if [ -n "$DODIFF"  ]
 then
  echo "##DIFF"
- find "$SRCDIR" -type f -exec $TPATH/treecmp.diff "$SRCDIR" "$DESTDIR" '{}' ';'
+ find "$SRCDIR" -type f -exec $TPATH/treecmp.diff.sh "$SRCDIR" "$DESTDIR" '{}' ';'
 fi

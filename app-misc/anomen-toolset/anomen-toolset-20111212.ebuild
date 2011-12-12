@@ -22,10 +22,10 @@ RDEPEND="
 
 src_unpack() {
 	cd "${WORKDIR}"
-	mkdir {bin,sbin,libexec}
+	mkdir {bin,sbin,lib}
 
-	cp -t bin "${FILESDIR}"/{decwin,chmod.std,psm,treecmp,treeprune}
-	cp -t libexec "${FILESDIR}"/{treecmp.diff,treecmp.sha}
+	cp -t bin "${FILESDIR}"/{chmod.std,psm,treecmp,treeprune}
+	cp -t lib "${FILESDIR}"/{treecmp.diff.sh,treecmp.sha.sh}
 	use "ssh" && cp -t bin "${FILESDIR}"/ssh-agent-shared
 	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src,svn.mv}
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
@@ -35,12 +35,12 @@ src_unpack() {
 }
 
 src_install() {
-	into /usr
+	into /usr/local
 	dobin bin/*
 	dosbin sbin/*
 	
-	insinto /usr/libexec/anomen-toolset
-	doins libexec/*
-	fperms 0755 /usr/libexec/anomen-toolset/treecmp.{sha,diff}
+	insinto /usr/local/lib/anomen-toolset
+	doins lib/*
+	fperms 0755 /usr/local/lib/anomen-toolset/treecmp.{sha,diff}.sh
 }
 

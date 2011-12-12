@@ -13,4 +13,4 @@ fi
 
 fi
 
-find .  -depth -mindepth 1 -type d -print0 -exec rmdir --ignore-fail-on-non-empty '{}' ';'
+find .  -depth -mindepth 1 -type d -print -exec rmdir --ignore-fail-on-non-empty '{}' ';'
