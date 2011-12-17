@@ -2,7 +2,7 @@
 !! Contributors
 !!!Alternative version by [[~Anomen]].
 : git repo : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/AesCrypt
-: download : Attach:AesCrypt-2011-12-12.zip
+: download : Attach:AesCrypt-2011-12-17.zip
 
 This version fixes several problems:
 * non-standard and weak (only 128bit) key derivation function replaced with SHA-256
@@ -17,7 +17,7 @@ This version fixes several problems:
 * ''added support for PBKDF2 - not yet''
 * Add javascript-controlled password input box to provide secure password entry - not yet
 
-!!Configuration
+!!Advanced Configuration
 : $AesCryptKDF : aes, sha256, sha256_dup (default), pbkdf2
 : $AesCryptPlainToken : starting token for plaintext
 : $AesCryptCipherToken : starting token for ciphertext
@@ -48,7 +48,7 @@ $AesCryptPlainToken='(:aescrypt:) [=';
 $AesCryptCipherToken='(:aescrypted:) [=';
 $AesCryptEndToken='=]';
 $AesCryptSelectionMode=0;
-require_once('cookbook/aescrypt.php');
+require_once("$FarmD/cookbook/aescrypt.php");
 @]
 
 !!!Java testing application

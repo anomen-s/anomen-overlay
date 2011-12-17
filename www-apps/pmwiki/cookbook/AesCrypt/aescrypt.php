@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2011-12-12';
+$RecipeInfo['AesCrypt']['Version'] = '2011-12-17';
 
 SDV($AesCryptKDF, 'sha256_dup');
 SDV($AesCryptPlainToken, '(:encrypt ');
@@ -25,7 +25,9 @@ $HTMLHeaderFmt['aescrypt_common'] = "
 <script type=\"text/javascript\">
 // <![CDATA[
 
-AesCtr.kdf = AesCtr.kdf_$AesCryptKDF;
+AesCtr.kdf = function(password, nBits, nonce) {
+    return AesCtr.kdf_$AesCryptKDF (password, nBits, nonce);
+}
 
 function decAesClick(elem) {
     var node = elem.childNodes[0];

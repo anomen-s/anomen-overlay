@@ -23,6 +23,29 @@ Possible values are:
 : aes : encrypt password with AES, compatible with original aescrypt-0.1 recipe
 : pbkdf2 : not yet implemented
 
+!!!! Custom key derivation function
+* use following template to create code which shall be inserted into @@local/config.php@@
+[@
+$AesCryptKDF='custom';
+include_once("$FarmD/cookbook/aescrypt.php");
+$HTMLHeaderFmt['aescrypt_custom'] = "
+<script type=\"text/javascript\">
+// <![CDATA[
+AesCtr.kdf_custom = function(password, nBits, nonce) {
+
+   var hash;
+   // insert custom derivation function here
+   // params:
+   //   password - password given by user
+   //   nBits - AES variant, always 256
+   //   nonce - string of length 8 containing nonce, can be used as salt
+   return hash;
+}
+// ]]>
+</script>
+";
+@]
+
 !!Links
 * http://en.wikipedia.org/wiki/Block_cipher_modes_of_operation
 

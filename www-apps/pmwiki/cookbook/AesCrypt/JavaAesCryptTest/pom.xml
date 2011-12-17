@@ -3,7 +3,7 @@
   <groupId>org.pmwiki.cookbook.aescrypt</groupId>
   <artifactId>JavaAesCryptTest</artifactId>
   <packaging>jar</packaging>
-  <version>2011.10.31</version>
+  <version>2011.12.17</version>
   <name>${project.artifactId}</name>
   <url>http://www.pmwiki.org/wiki/Cookbook/AesCrypt</url>
   <dependencies>
