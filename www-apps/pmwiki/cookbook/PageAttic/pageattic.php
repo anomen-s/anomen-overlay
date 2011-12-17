@@ -15,7 +15,7 @@
     Create wiki.attic directory 
     Add to local/config.php:
 
-    include_once('cookbook/pageattic.php');
+    include_once("$FarmD/cookbook/pageattic.php");
     $WikiDir = new AtticPageStore($WikiDir->dirfmt);
 
 */

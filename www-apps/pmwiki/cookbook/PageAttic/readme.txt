@@ -18,7 +18,7 @@ The ''wiki.d/'' directory can get crowded if many pages are deleted, especially 
 * Add the following lines to your ''local/config.php'' file:
 
 ->[@
- include_once('cookbook/pageattic.php');
+ include_once("$FarmD/cookbook/pageattic.php");
  $WikiDir = new AtticPageStore($WikiDir->dirfmt);
 @]
 
