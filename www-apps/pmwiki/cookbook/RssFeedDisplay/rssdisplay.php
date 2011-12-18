@@ -24,7 +24,7 @@
 
 */
 
-$RecipeInfo['RSSDisplay']['Version'] = '2011-12-06';
+$RecipeInfo['RSSDisplay']['Version'] = '2011-12-18';
 
 Markup('rssdisplay', 'fulltext', '/\(:RSS\s*(.*?)\s*:\)/e',"MagpieRSS('\$1')");
 
@@ -49,19 +49,18 @@ SDV($MagpieDefaultShowContent, true);
 SDV($MagpieOutputEncoding, $Charset);
 
 
-$MagpieRssPhpIncluded = 0;
 
 function MagpieRssPhpInclude()
 {
-	global $MagpieRssPhpIncluded;
-	if (!empty($MagpieRssPhpIncluded)) {
+	static $MagpieRssPhpIncluded = false;
+	if ($MagpieRssPhpIncluded) {
 	    return;
 	}
 	global $MagpieDir;
 	global $MagpieEnableCache, $MagpieCacheAge, $MagpieCacheDir;
 	global $MagpieFetchTimeout, $MagpieGzip, $MagpieOutputEncoding, $MagpieProxy;
 
-	$MagpieRssPhpIncluded = 1;
+	$MagpieRssPhpIncluded = true;
 	define('MAGPIE_CACHE_ON', $MagpieEnableCache);
 	define('MAGPIE_CACHE_AGE', $MagpieCacheAge);
 	define('MAGPIE_CACHE_DIR', $MagpieCacheDir);
