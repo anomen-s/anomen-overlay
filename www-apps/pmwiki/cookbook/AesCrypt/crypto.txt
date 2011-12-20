@@ -23,6 +23,39 @@ Possible values are:
 : aes : encrypt password with AES, compatible with original aescrypt-0.1 recipe
 : pbkdf2 : not yet implemented
 
+!!!! sha256_dup
+Input for SHA-256 hashing is constructed using following JavaScript code:
+
+[@
+   var buffer = '';
+   var nBytes = nBits/8;
+   var nonceEnc = Base64.encode(nonce);
+   for (var i = 0; i < nBytes ; i++) {
+     buffer = buffer.concat(i);
+     buffer = buffer.concat(password.charAt(i % password.length));
+     buffer = buffer.concat(password);
+     buffer = buffer.concat(nonceEnc);
+   }
+   var hash = Sha256.hash(buffer);
+   return hash.slice(0, nBytes);
+@]
+
+For example, "TopSecret" password and nonce "+u3lTovF4nE=" (in base64) produce (line breaks added for clarity):
+
+[@
+0TTopSecret+u3lTovF4nE=1oTopSecret+u3lTovF4nE=2pTopSecret+u3lTovF4nE=
+3STopSecret+u3lTovF4nE=4eTopSecret+u3lTovF4nE=5cTopSecret+u3lTovF4nE=
+6rTopSecret+u3lTovF4nE=7eTopSecret+u3lTovF4nE=8tTopSecret+u3lTovF4nE=
+9TTopSecret+u3lTovF4nE=10oTopSecret+u3lTovF4nE=11pTopSecret+u3lTovF4nE=
+12STopSecret+u3lTovF4nE=13eTopSecret+u3lTovF4nE=14cTopSecret+u3lTovF4nE=
+15rTopSecret+u3lTovF4nE=16eTopSecret+u3lTovF4nE=17tTopSecret+u3lTovF4nE=
+18TTopSecret+u3lTovF4nE=19oTopSecret+u3lTovF4nE=20pTopSecret+u3lTovF4nE=
+21STopSecret+u3lTovF4nE=22eTopSecret+u3lTovF4nE=23cTopSecret+u3lTovF4nE=
+24rTopSecret+u3lTovF4nE=25eTopSecret+u3lTovF4nE=26tTopSecret+u3lTovF4nE=
+27TTopSecret+u3lTovF4nE=28oTopSecret+u3lTovF4nE=29pTopSecret+u3lTovF4nE=
+30STopSecret+u3lTovF4nE=31eTopSecret+u3lTovF4nE=
+@]
+
 !!!! Custom key derivation function
 * use following template to create code which shall be inserted into @@local/config.php@@
 [@
