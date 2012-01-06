@@ -12,7 +12,6 @@
     
     TODO:
     * GPX export (see sourceblock for howto)
-    * bearing calc. check 0deg, etc...
 */
 
 
