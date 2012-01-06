@@ -17,7 +17,29 @@ SDV($AesCryptPlainToken, '(:encrypt ');
 SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
 SDV($AesCryptPadding, 8);
-SDV($AesCryptSelectionMode, 1);
+SDV($AesCryptSelectionMode, true);
+
+SDV($HTMLStylesFmt['aescrypt'], "
+.aescrypt_overlay {
+     visibility: hidden;
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     text-align:center;
+     z-index: 1000;
+}
+
+.aescrypt_overlay div {
+     width:300px;
+     margin: 100px auto;
+     background-color: #ffffff;
+     border:1px solid #000000;
+     padding:15px;
+     text-align:center;
+}
+");
 
 
 $HTMLHeaderFmt['aescrypt_common'] = "
@@ -25,11 +47,45 @@ $HTMLHeaderFmt['aescrypt_common'] = "
 <script type=\"text/javascript\">
 // <![CDATA[
 
+function aescryptOverlay(id, state) {
+  var el = document.getElementById('aescrypt_o_'+id);
+  el.style.visibility = state ? 'visible' : 'hidden';
+  if (state) {
+    var pw = document.getElementById('aescrypt_p_'+id);
+    pw.focus();
+  }
+}
+
+function aescryptDecSubmit(id)
+{
+ aescryptOverlay(id, false);
+ var pwel = document.getElementById('aescrypt_p_'+id);
+ var pw = pwel.value;
+ var pwel = document.getElementById('aescrypt_c_'+id);
+
+ var contentel = document.getElementById('aescrypt_c_'+id);
+ var cipher = contentel.childNodes[0].nodeValue;
+ var plain = AesCtr.decrypt(cipher,pw,256);
+ contentel.childNodes[0].nodeValue = plain;
+ contentel.style.display='block';
+
+ var linkel = document.getElementById('aescrypt_a_'+id);
+ linkel.style.visibility='hidden';
+ linkel.style.display='none';
+}
+
+function aescryptEncSubmit() {
+ aescryptOverlay('enc', false);
+ 
+  // TODO
+}
+
+
 AesCtr.kdf = function(password, nBits, nonce) {
     return AesCtr.kdf_$AesCryptKDF (password, nBits, nonce);
 }
 
-function decAesClick(elem) {
+function aescryptDecClick(elem) {
     var node = elem.childNodes[0];
     var nodeDec = elem.childNodes[1];
     if (nodeDec.style.visibility=='hidden') {
@@ -43,6 +99,15 @@ function decAesClick(elem) {
     nodeDec.style.visibility='hidden';
     nodeDec.style.display='none';
 }
+
+function aescryptOverlayDecClick(elem) {
+    aescryptOverlay();
+    var node = elem.childNodes[0];
+    var crypted = node.childNodes[0].nodeValue;
+    var aesDecrypt = getElementById('aescryptLabel').nodevalue = crypted;
+}
+
+
 // ]]>
 </script>
 ";
@@ -103,6 +168,13 @@ function aesSelectionClick() {
   
 }
 
+function aescryptDecSubmit($id)
+{
+    aescryptOverlay(false);
+    var textField = document.getElementById('aescrypt_c_$id');
+    var enc = elem.childNodes[0];
+    alert (enc);
+}
 
 function aesClick() {
 
@@ -165,24 +237,61 @@ if ( document.addEventListener ) {
 ";
 }
 
+
+function aescryptMarkup($ciphertext)
+{
+    static $id = 0;
+    $id++;
+    $res = "\n";
+    $res .= "<div id=\"aescrypt_c_$id\" style=\"white-space:pre;display:none;\">$ciphertext</div>";
+    $res .= "<div id=\"aescrypt_d_$id\">";
+    $res .= "<a id=\"aescrypt_a_$id\" href=\"javascript:void (0);\" onClick=\"aescryptOverlay($id, true);\">";
+    $res .= "[Decrypt]";
+    $res .= "</a>";
+    $res .= "</div>";
+    $c = $ciphertext;
+    if (strlen($c) > 30) {
+      $c = substr($c, 0, 27) . "...";
+    }
+    $res .= "<div id=\"aescrypt_o_$id\" class=\"aescrypt_overlay\">
+     <div>
+          <p id=\"aescrypt_l_$id\">Decrypting \"$c\".</p>
+          <form id=\"aescrypt_f_$id\" onsubmit=\"aescryptDecSubmit($id);return false;\">
+           <label for=\"aescrypt_p_$id\">Password </label>
+           <input type=\"password\" name=\"aescrypt_p_$id\" id=\"aescrypt_p_$id\" />
+           <input type=\"submit\"  />
+          </form>
+        </div>
+    </div>";
+
+    return $res;
+}
+
 Markup('aescrypt',
        'directives',
        "/\\Q$AesCryptCipherToken\\E\\s*(.*?)\\s*\\Q$AesCryptEndToken\\E/se",
-       "'\n'.'<a href=\"javascript:void (0);\" onClick=\"decAesClick(this);\"><div style=\"white-space:pre;display:none;\">$1</div><span>[Decrypt]</span></a>'");
+       "aescryptMarkup('$1')");
 
 if ($action == 'edit') {
 
- $aesBtnFunction = (IsEnabled($AesCryptSelectionMode)) ? 'aesSelectionClick' : 'aesClick';
-
  if (IsEnabled($EnableGUIButtons)) {
   $GUIButtons['aescrypt'] = array(750, '', '', '',
+  // TODO:  add overlay DIV here & test browsers
    "<a href='#' onclick='$aesBtnFunction();'><img src='\$GUIButtonDirUrlFmt/aescrypt.png' title='Encrypt' /></a>");
  } else {
-  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='$aesBtnFunction();'/>";
+  // TODO: simply add overlay DIV here
+  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='aesSelectionClick();'/>
+     <div id=\"aescrypt_o_enc\" class=\"aescrypt_overlay\">
+     <div>
+          <p id=\"aescrypt_l_enc\">Encrypt selected text:</p>
+          <form id=\"aescrypt_f_enc\" onsubmit=\"aescryptEncSubmit();return false;\">
+           <input type=\"password\" name=\"aescrypt_p_enc\" id=\"aescrypt_p_enc\" />
+           <input type=\"submit\"  />
+          </form>
+        </div>
+    </div>";
+  
  }
 }
 
- // DEV
-// $GUIButtons['aescryptDebug'] = array(1750, '', '', '',
-//  '<a href=\"#\" onclick=\"registerAesEvent();\"><img src=\"$GUIButtonDirUrlFmt/aescrypt.png\" title=\"dev\" /></a>');
 
