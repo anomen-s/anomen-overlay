@@ -37,7 +37,7 @@ to create link list:
 *Coordinates consists of latitude and logitude values separated by space character(s).
 * Values can pre prefixed or postfixed with N or S for lat. and E or W for lon.
 * Decimal dot or coma can be used.
-* several characters can be used as degree sign (''U+002A ASTERISK'', ''U+00B0 DEGREE SIGN'', ''U+00BA MASCULINE ORDINAL INDICATOR', ''U+02DA RING ABOVE'').
+* several different characters can be used as degree sign ( * ° ˚ º ). This simpifiesusage accross various keyboard layouts. Note: PmWiki must be setup to use Unicode.
 * all three formats are recognised (degrees only and mixed formats with arcmin or arcmin+arcsec)
 * degree sign is mandatory only for mixed formats (to separate degrees and arcminutess)
 
@@ -65,7 +65,7 @@ For example, following line will produce coordinates @@ 50.00949 15.18703 @@:
 !!Configuration
 
 !!!Map sites
-You can modify list of links be changing @@$GeoBoxLinks@@ array.
+You can modify list of links by changing @@$GeoBoxLinks@@ array.
 
 : disable list :  @@$GeoBoxLinks = array();@@
 : remove link : @@unset($GeoBoxLinks['mapy.cz']);@@
