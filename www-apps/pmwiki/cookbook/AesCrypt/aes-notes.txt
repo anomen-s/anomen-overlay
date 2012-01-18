@@ -1,0 +1,22 @@
+DECRYPT:
+*Markup - vygen kodu
+
+button "decrypt":
+*Overlay($id, true)
+
+decrypt overlay:
+*DecSubmit($id) 
+- DONE
+
+
+ENCRYPT
+*SelectionClick
+
+
+aesSelectionClick - selection
+aesClick - no selection
+
+
+*OverlayDecClick
+
+
