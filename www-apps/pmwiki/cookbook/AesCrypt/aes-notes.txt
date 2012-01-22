@@ -1,11 +1,13 @@
 DECRYPT:
-*Markup - vygen kodu
+aescryptMarkup - vygen kodu
 
-button "decrypt":
-*Overlay($id, true)
+
+button "decrypt" on modal box:
+aescryptOverlay($id, true)
+
 
 decrypt overlay:
-*DecSubmit($id) 
+aescryptDecSubmit($id) 
 - DONE
 
 
