@@ -102,7 +102,7 @@ function aescryptDecSubmit(id)
 }
 
 /**
- * Key derivation function selectedd by AesCryptKDF variable.
+ * Key derivation function selected by AesCryptKDF variable.
  */
 AesCtr.kdf = function(password, nBits, nonce) {
     return AesCtr.kdf_$AesCryptKDF (password, nBits, nonce);
@@ -118,11 +118,15 @@ $HTMLHeaderFmt['aescrypt_edit'] = "
 // <![CDATA[
 
 /**
-  display modal box for encryption
+ * display modal box for encryption
  */
 function aesEncPopup()
 {
 //    alert('123');
+    aescryptSelectionRange = aescryptSaveSelection();
+
+    alert(aescryptSelectionRange);
+
     var popup =  '<div id=\'aescrypt_o_enc\' class=\'aescrypt_overlay\'>' 
 	+ '<div>' 
 	+ '<p id=\'aescrypt_l_enc\'>Encrypt selected text:</p>' 
@@ -145,15 +149,13 @@ function aesEncPopup()
 }
 
 /**
-  hide modal box and encrypt selection
-  - how to save selection?
-  - 
- */
+  * Hide modal box and encrypt selection
+  * - how to get selection?
+  * - 
+  */
 function aescryptEncSubmit() {
 
-//    alert('456');
-
-    var tpart = 'selection';  // FIXME !!!
+    var tpart = aescryptGetSelection();
     
     var pwel = document.getElementById('aescrypt_p_enc');
     var pw = pwel.value;
@@ -174,13 +176,16 @@ function aescryptEncSubmit() {
     tarr += markup_end;
     alert('encrypted: ' + tarr);
 
-  // TODO
+  // TODO write result
+  aescryptReplaceSelection(tarr);
 }
 
+var aescryptSelectionRange = [0, 0];
+
 /**
-  obsolete function for encryption (selection mode)
+ * Get selection to be encrypted (selection mode)
  */
-function aesSelectionClick() {
+function aescryptSaveSelection() {
 
   var textarea = document.getElementById('text');
 
@@ -202,18 +207,32 @@ function aesSelectionClick() {
     var sel = textarea.value.substring(start, end);
            
     if (start  < end) {
-        var replace =  aesPrompt(start, sel);
+	return [start, (end-start)];
+        //var replace =  aesPrompt(start, sel);
 	// Here we are replacing the selected text with this one
-	textarea.value =  textarea.value.substring(0,start) + replace + textarea.value.substring(end,len);
     }
     else {
 	alert('Please select text to encrypt');
-	return;
+	return [0,0];
     }
   }
-  
 }
 
+function aescryptGetSelection() {
+    var start = aescryptSelectionRange[0];
+    var end = start + aescryptSelectionRange[1];
+    var textarea = document.getElementById('text');
+    var sel = textarea.value.substring(start, end);
+    return sel;
+}
+
+function aescryptReplaceSelection(replace) {
+    var textarea = document.getElementById('text');
+    var start = aescryptSelectionRange[0];
+    var end = start + aescryptSelectionRange[1];
+    var len = textarea.value.length;
+    textarea.value = textarea.value.substring(0,start) + replace + textarea.value.substring(end,len);
+}
 
 /**
   obsolete function for encryption (parse mode)
