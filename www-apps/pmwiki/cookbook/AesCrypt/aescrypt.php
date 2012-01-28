@@ -125,7 +125,7 @@ function aesEncPopup()
 //    alert('123');
     aescryptSelectionRange = aescryptSaveSelection();
 
-    alert(aescryptSelectionRange);
+//    alert(aescryptSelectionRange);
 
     var popup =  '<div id=\'aescrypt_o_enc\' class=\'aescrypt_overlay\'>' 
 	+ '<div>' 
@@ -190,26 +190,29 @@ function aescryptSaveSelection() {
   var textarea = document.getElementById('text');
 
   if (document.selection) { // IE variant
-    textarea.focus();
-    var sel = document.selection.createRange();
+     textarea.focus();
+     //var sel = document.selection.createRange();
+     
+     // TODO: save selection object (easier, might not work)
+     // or save start,length and reconstruct later ?
+     var bm = document.selection.createRange().getBookmark();
+      var sel = textarea.createTextRange();
+      sel.moveToBookmark(bm);
+    
+      var sleft = textarea.createTextRange();
+      sleft.collapse(true);
+      sleft.setEndPoint('EndToStart', sel);
+      var start = sleft.text.length
+      var end = sleft.text.length + sel.text.length;
+	return [start, (end-start)];
+      
     // alert the selected text in textarea
     // alert(sel.text);
-    // Finally replace the value of the selected text with this new replacement one
-    if (sel != null && sel.text != null && sel.text != '' ) {
-	sel.text = aesPrompt('[selection]', sel.text);
-    } else {
-	alert('Please select text to encrypt');
-    }
   } else {
-    var len = textarea.value.length;
     var start = textarea.selectionStart;
     var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-           
     if (start  < end) {
 	return [start, (end-start)];
-        //var replace =  aesPrompt(start, sel);
-	// Here we are replacing the selected text with this one
     }
     else {
 	alert('Please select text to encrypt');
