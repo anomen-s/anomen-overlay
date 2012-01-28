@@ -16,7 +16,7 @@ SDV($AesCryptKDF, 'sha256_dup');
 SDV($AesCryptPlainToken, '(:encrypt ');
 SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
-SDV($AesCryptPadding, 8);
+SDV($AesCryptPadding, 6);
 SDV($AesCryptSelectionMode, true);
 
 SDV($HTMLStylesFmt['aescrypt'], "
@@ -47,9 +47,12 @@ $HTMLHeaderFmt['aescrypt_common'] = "
 <script type=\"text/javascript\">
 // <![CDATA[
 
+/**
+ * Displays and hides modal dialog.
+ */
 function aescryptOverlay(id, state) {
   var el = document.getElementById('aescrypt_o_'+id);
-  el.style.visibility = state ? 'visible' : 'hidden';
+  el.style.visibility = (state ? 'visible' : 'hidden');
   if (state) {
     var pw = document.getElementById('aescrypt_p_'+id);
     pw.focus();
@@ -57,24 +60,25 @@ function aescryptOverlay(id, state) {
 }
 
 /**
- Function invoked on submit of password modal dialog.
- Performs decryption.
-*/
+ * Function invoked on submit of password modal dialog.
+ * Performs decryption.
+ */
 function aescryptDecSubmit(id)
 {
  aescryptOverlay(id, false);
  var pwel = document.getElementById('aescrypt_p_'+id);
  var pw = pwel.value;
+ // decrypt all ?
  var allEl = document.getElementById('aescrypt_b_'+id);
  
  var i = id;
  var to = id;
  if (allEl.checked) {
   i = 1;
-  to = 1000;
+  to = 10000; // just some big number
  }
  
- while ( i <= to) {
+ while (i <= to) {
     var contentel = document.getElementById('aescrypt_c_'+i);
     if (!contentel) {
 	break;
@@ -95,11 +99,11 @@ function aescryptDecSubmit(id)
     }
     i++;
  }
-
 }
 
-
-
+/**
+ * Key derivation function selectedd by AesCryptKDF variable.
+ */
 AesCtr.kdf = function(password, nBits, nonce) {
     return AesCtr.kdf_$AesCryptKDF (password, nBits, nonce);
 }
@@ -116,19 +120,28 @@ $HTMLHeaderFmt['aescrypt_edit'] = "
 /**
   display modal box for encryption
  */
-funcion aesEncPopup()
+function aesEncPopup()
 {
-
+//    alert('123');
     var popup =  '<div id=\'aescrypt_o_enc\' class=\'aescrypt_overlay\'>' 
 	+ '<div>' 
-	+ '<p id='aescrypt_l_enc'>Encrypt selected text:</p>' 
+	+ '<p id=\'aescrypt_l_enc\'>Encrypt selected text:</p>' 
 	+ '<form id=\'aescrypt_f_enc\' onsubmit=\'aescryptEncSubmit();return false;\'>' 
 	+ '<input type=\'password\' name=\'aescrypt_p_enc\' id=\'aescrypt_p_enc\' />' 
 	+ '<input type=\'submit\'  />' 
 	+ '</form>' + '</div>' + '</div>';
 
-   // TODO: append to body
+	var theBody = document.getElementsByTagName('BODY')[0];
+	var popmask = document.createElement('div');
+	popmask.id = 'popupMask';
+	var popcont = document.createElement('div');
+	popcont.id = 'popupContainer';
+	popcont.innerHTML = popup;
 
+	theBody.appendChild(popmask);
+	theBody.appendChild(popcont);
+	
+	aescryptOverlay('enc',true);
 }
 
 /**
@@ -137,31 +150,32 @@ funcion aesEncPopup()
   - 
  */
 function aescryptEncSubmit() {
- aescryptOverlay('enc', false);
- 
-  // TODO
-}
 
-/**
-  obsolete function for password input
- */
-function aesPrompt(tmark, tpart) {
+//    alert('456');
+
+    var tpart = 'selection';  // FIXME !!!
+    
+    var pwel = document.getElementById('aescrypt_p_enc');
+    var pw = pwel.value;
+
+    aescryptOverlay('enc', false);
+
     var padding = $AesCryptPadding;
     var tarr = '$AesCryptCipherToken';
     var markup_end = '$AesCryptEndToken';
 
-    var tpass = prompt('Encrypt key for text starting at position '+tmark,'TopSecret');
-
     while ((tpart.length % padding) > 0) {
        tpart = tpart.concat(' ');
     }
+    tpart = tpart.concat(' ');
 
-    tarr +=AesCtr.encrypt(tpart,tpass,256);
+    tarr +=AesCtr.encrypt(tpart, pw, 256);
     tarr += ' ';
     tarr += markup_end;
-    return tarr;
-}
+    alert('encrypted: ' + tarr);
 
+  // TODO
+}
 
 /**
   obsolete function for encryption (selection mode)
@@ -289,7 +303,6 @@ function aescryptMarkup($ciphertext)
      <div>
           <p id=\"aescrypt_l_$id\">Decrypting \"$c\".</p>
           <form id=\"aescrypt_f_$id\" onsubmit=\"aescryptDecSubmit($id);return false;\">
-          
            <label for=\"aescrypt_p_$id\">Password </label>
            <input type=\"password\" name=\"aescrypt_p_$id\" id=\"aescrypt_p_$id\" />
            <br />
