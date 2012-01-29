@@ -1,0 +1,13 @@
+#! /bin/sh
+
+for A do
+
+ TEMP=`mktemp $HOME/tmp/iconv-tmp.XXXXXX`
+
+ iconv -f windows-1250 "$A" > $TEMP
+
+ mv -f "$A" `mktemp $HOME/tmp/iconv-hist.XXXXXX`
+
+ mv $TEMP "$A"
+
+done
