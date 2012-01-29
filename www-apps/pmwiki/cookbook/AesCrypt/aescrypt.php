@@ -20,6 +20,31 @@ SDV($AesCryptPadding, 6);
 SDV($AesCryptSelectionMode, true);
 
 SDV($HTMLStylesFmt['aescrypt'], "
+#aescryptPopupMask {
+	position: absolute;
+	z-index: 200;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: .4;
+	filter: alpha(opacity=40);
+	/* this hack is so it works in IE
+	 * I find setting the color in the css gives me more flexibility 
+	 * than the PNG solution.
+	 */
+	background-color:transparent !important;
+	background-color: #333333;
+	/* this hack is for opera support
+	 * you can uncomment the background-image if you don't care about opera.
+	 * this gives you the flexibility to use any bg color that you want, instead of the png
+	 */
+	background-image/**/: url('$PubDirUrl/aescrypt/maskBG.png') !important; // For browsers Moz, Opera, etc.
+	background-image:none;
+	background-repeat: repeat;
+	display:none;
+}
+
 .aescrypt_overlay {
      visibility: hidden;
      position: absolute;
@@ -56,6 +81,7 @@ function aescryptOverlay(id, state) {
   if (state) {
     var pw = document.getElementById('aescrypt_p_'+id);
     pw.focus();
+    pw.value = '';
   }
 }
 
@@ -122,7 +148,7 @@ var aeascryptPopupDiv = false;
 /**
  * display modal box for encryption
  */
-function aesEncPopup()
+function aescryptEncPopup()
 {
 //    alert('123');
     aescryptSelectionRange = aescryptSaveSelection();
@@ -139,9 +165,9 @@ function aesEncPopup()
 
 	var theBody = document.getElementsByTagName('BODY')[0];
 	var popmask = document.createElement('div');
-	popmask.id = 'popupMask';
+	popmask.id = 'aescryptPopupMask';
 	var popcont = document.createElement('div');
-	popcont.id = 'popupContainer';
+	popcont.id = 'aescrypt_x_enc';
 	popcont.innerHTML = popup;
 
 	theBody.appendChild(popmask);
@@ -295,10 +321,10 @@ if ($action == 'edit') {
  if (IsEnabled($EnableGUIButtons)) {
   $GUIButtons['aescrypt'] = array(750, '', '', '',
   // TODO:  add overlay DIV here & test browsers
-   "<a href='#' onclick='aesEncPopup();'><img src='\$GUIButtonDirUrlFmt/aescrypt.png' title='Encrypt' /></a>");
+   "<a href='#' onclick='aescryptEncPopup();'><img src='\$GUIButtonDirUrlFmt/aescrypt.png' title='Encrypt' /></a>");
  } else {
   // TODO: simply add overlay DIV here
-  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='aesEncPopup();'/>";
+  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='aescryptEncPopup();'/>";
   
  }
 }
