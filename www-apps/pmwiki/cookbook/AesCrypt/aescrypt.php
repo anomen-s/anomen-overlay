@@ -68,6 +68,7 @@ function aescryptDecSubmit(id)
  aescryptOverlay(id, false);
  var pwel = document.getElementById('aescrypt_p_'+id);
  var pw = pwel.value;
+ pwel.value = 'TopSecret';
  // decrypt all ?
  var allEl = document.getElementById('aescrypt_b_'+id);
  
@@ -117,6 +118,7 @@ $HTMLHeaderFmt['aescrypt_edit'] = "
 <script type=\"text/javascript\">
 // <![CDATA[
 
+var aeascryptPopupDiv = false;
 /**
  * display modal box for encryption
  */
@@ -126,7 +128,7 @@ function aesEncPopup()
     aescryptSelectionRange = aescryptSaveSelection();
 
 //    alert(aescryptSelectionRange);
-
+  if (!aeascryptPopupDiv) {
     var popup =  '<div id=\'aescrypt_o_enc\' class=\'aescrypt_overlay\'>' 
 	+ '<div>' 
 	+ '<p id=\'aescrypt_l_enc\'>Encrypt selected text:</p>' 
@@ -145,7 +147,12 @@ function aesEncPopup()
 	theBody.appendChild(popmask);
 	theBody.appendChild(popcont);
 	
-	aescryptOverlay('enc',true);
+	aeascryptPopupDiv = true;
+  }
+    var pwel = document.getElementById('aescrypt_p_enc');
+    pwel.value = '';
+
+  aescryptOverlay('enc',true);
 }
 
 /**
@@ -159,6 +166,7 @@ function aescryptEncSubmit() {
     
     var pwel = document.getElementById('aescrypt_p_enc');
     var pw = pwel.value;
+    pwel.value = 'TopSecret';
 
     aescryptOverlay('enc', false);
 
@@ -204,7 +212,7 @@ function aescryptSaveSelection() {
       sleft.setEndPoint('EndToStart', sel);
       var start = sleft.text.length
       var end = sleft.text.length + sel.text.length;
-	return [start, (end-start)];
+      return [start, end];
       
     // alert the selected text in textarea
     // alert(sel.text);
@@ -212,7 +220,7 @@ function aescryptSaveSelection() {
     var start = textarea.selectionStart;
     var end = textarea.selectionEnd;
     if (start  < end) {
-	return [start, (end-start)];
+	return [start, end];
     }
     else {
 	alert('Please select text to encrypt');
@@ -223,7 +231,7 @@ function aescryptSaveSelection() {
 
 function aescryptGetSelection() {
     var start = aescryptSelectionRange[0];
-    var end = start + aescryptSelectionRange[1];
+    var end = aescryptSelectionRange[1];
     var textarea = document.getElementById('text');
     var sel = textarea.value.substring(start, end);
     return sel;
@@ -232,72 +240,10 @@ function aescryptGetSelection() {
 function aescryptReplaceSelection(replace) {
     var textarea = document.getElementById('text');
     var start = aescryptSelectionRange[0];
-    var end = start + aescryptSelectionRange[1];
+    var end = aescryptSelectionRange[1];
     var len = textarea.value.length;
     textarea.value = textarea.value.substring(0,start) + replace + textarea.value.substring(end,len);
 }
-
-/**
-  obsolete function for encryption (parse mode)
- */
-function aesClick() {
-
-  var textField = document.getElementById('text');
-
-  var markup1 = '$AesCryptPlainToken';
-  var markup2 = '$AesCryptCipherToken';
-  var markup_end = '$AesCryptEndToken';
-  var padding = $AesCryptPadding;
-
-  var testt = textField.value;
-  var tmark2 = 0;
-  var tarr = new String;
-  var tmark = testt.indexOf(markup1);
-
-  while(tmark >= 0) {
-   tarr += testt.substring(tmark2,tmark);
-   tmark2 = testt.indexOf(markup_end,tmark);
-   var tpart = testt.substring(tmark+markup1.length,tmark2);
-
-   tarr += aesPrompt(tmark, tpart);
-
-   tmark2 += markup_end.length;
-   tmark = testt.indexOf(markup1,tmark2);
-  }
-
-  tarr += testt.substr(tmark2);
-
-  textField.value = tarr;
-}
-
-/** 
-  obsolete - parse mode will be removed
- */
-function registerAesEvent()
-{
-  // TODO: add protection handler to save buttons
-/*
-  var formElement = document.getElementById('text').parentNode;
-  //alert(formElement.nodeValue);
-
-  var inputs = document.getElementsByTagName('input');
-  var button;
-  for (var i=0; i < inputs.length; i++)
-  {
-     if ((inputs[i].getAttribute('type') == 'submit') && (inputs[i].getAttribute('name') == name))
-     {
-        button = inputs[i];
-     }
-  }
-  */
-  
-}
-
-//if ( document.addEventListener ) {
-//  window.addEventListener( 'load', registerAesEvent, false );
-//} else if ( document.attachEvent ) {
-//  window.attachEvent( 'onload', registerAesEvent );
-//}
 
 // ]]>
 </script>
