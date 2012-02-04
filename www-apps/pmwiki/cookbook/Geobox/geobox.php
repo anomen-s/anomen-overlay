@@ -208,20 +208,20 @@ function geobox_maps($param, $coords_param)
     $c = geobox_parse_coords($coords_param);
     
     if (empty($c['result'])) {
-	     return "[Invalid \"$coords_param\"]";
+        return "[Invalid \"$coords_param\"]";
     }
     
     $params = geobox_parse_params($param);
     $cformat = $params['format'];
     
-	  if (!empty($params['azimuth']) || !empty($params['distance'])) { 
-  	  if (is_numeric($params['azimuth']) && is_numeric($params['distance'])) { 
-         $c = geobox_projection($c[0], $c[1], $params['azimuth'], $params['distance']);
-      } else {
-  	     return "[Invalid azimuth \"${params['azimuth']}\" or distance \"${params['distance']}\"]";
-      }
+    if (!empty($params['azimuth']) || !empty($params['distance'])) {
+        if (is_numeric($params['azimuth']) && is_numeric($params['distance'])) {
+            $c = geobox_projection($c[0], $c[1], $params['azimuth'], $params['distance']);
+        } else {
+            return "[Invalid azimuth \"${params['azimuth']}\" or distance \"${params['distance']}\"]";
+        }
     }
-	$c = geobox_convert_coords($c);
+    $c = geobox_convert_coords($c);
 
 	if (empty($cformat)) { 
 		$cformat = $GeoBoxDefaultFormat; 
@@ -263,23 +263,22 @@ function geobox_projection($latitude_deg, $longtitude_deg, $azimuth_deg, $distan
     $latitude = $latitude_deg*$ro;
     
     $fi2 = sin($latitude)*cos($DR)+cos($latitude)*sin($DR)*cos($azimuth);
-    //System.out.println("fi2="+fi2);
+    //echo "fi2=$fi2";
     $lat = asin($fi2);
-    //System.out.println("lat="+lat);
+    //echo "lat=$lat";
     
     $x = (cos($DR)-sin($latitude)*sin($lat))/(cos($latitude)*cos($lat));
-    //System.out.println("x="+x);
+    //echo "x=$x";
     $y = sin($DR)*sin($azimuth)/cos($lat);
-    //System.out.println("y="+y);
-    $la2 = geobox_atan2($y, $x); //MathUtil.atan2(y, x);
-    //System.out.println("la2="+la2);
+    //echo "y=$y";
+    $la2 = geobox_atan2($y, $x);
+    //echo "la2=$la2";
     $lon = $longtitude_deg + $la2/$ro;
-    //System.out.println("lon="+lon);
+    //echo "lon=$lon";
           
     $ret = array();
     $ret[0] = $lat / $ro;
     $ret[1] = $lon;
     return $ret;
 }
-
 
