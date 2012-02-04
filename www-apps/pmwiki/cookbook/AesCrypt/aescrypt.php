@@ -16,10 +16,9 @@ SDV($AesCryptKDF, 'sha256_dup');
 SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
 SDV($AesCryptPadding, 6);
-SDV($AesCryptSelectionMode, true);
 
 SDV($HTMLStylesFmt['aescrypt'], "
-div.aescryptPopupMask {
+#aescrypt_m {
 	position: absolute;
 	z-index: 200;
 	top: 0px;
@@ -43,7 +42,7 @@ div.aescryptPopupMask {
 	background-color:#cccccc;
 	background-repeat: repeat;
 	/*display:none; */
-     visibility: hidden;
+	visibility: hidden;
 }
 
 .aescrypt_overlay {
@@ -83,6 +82,7 @@ AesCtr.kdf = function(password, nBits, nonce) {
 
 AesCrypt.AesCryptCipherToken = '$AesCryptCipherToken';
 AesCrypt.AesCryptEndToken = '$AesCryptEndToken';
+AesCrypt.AesCryptPadding = $AesCryptPadding;
 
 // ]]>
 </script>
@@ -96,30 +96,10 @@ function aescryptMarkup($ciphertext)
     $res = "\n";
     $res .= "<div id=\"aescrypt_c_$id\" style=\"white-space:pre;display:none;\">$ciphertext</div>";
     $res .= "<div id=\"aescrypt_d_$id\">";
-    $res .= "<a id=\"aescrypt_a_$id\" href=\"javascript:void (0);\" onClick=\"aescryptOverlay($id, true);\">";
+    $res .= "<a id=\"aescrypt_a_$id\" href=\"javascript:void (0);\" onClick=\"AesCrypt.decPopup($id);\">";
     $res .= "[Decrypt]";
     $res .= "</a>";
     $res .= "</div>";
-    $c = $ciphertext;
-    if (strlen($c) > 30) {
-      $c = substr($c, 0, 27) . "...";
-    }
-    $res .= "<div id=\"aescrypt_o_$id\" class=\"aescrypt_overlay\">
-	 <div>
-          <p id=\"aescrypt_l_$id\">Decrypting \"$c\".</p>
-          <form id=\"aescrypt_f_$id\" onsubmit=\"aescryptDecSubmit($id);return false;\">
-           <label for=\"aescrypt_p_$id\">Password </label>
-           <input type=\"password\" name=\"aescrypt_p_$id\" id=\"aescrypt_p_$id\" />
-           <br />
-           <input type=\"checkbox\" name=\"aescrypt_b_$id\" id=\"aescrypt_b_$id\" value=\"true\" />
-           <label for=\"aescrypt_b_$id\">decrypt all</label>
-           <br />
-           <input type=\"submit\"  />
-          </form>
-        </div>
-    </div>";
-    $res .="<div class=\"aescryptPopupMask\" id=\"aescrypt_m_$id\"></div>";
-
     return $res;
 }
 
@@ -132,12 +112,9 @@ if ($action == 'edit') {
 
  if (IsEnabled($EnableGUIButtons)) {
   $GUIButtons['aescrypt'] = array(750, '', '', '',
-  // TODO:  add overlay DIV here & test browsers
-   "<a href='#' onclick='aescryptEncPopup();'><img src='\$GUIButtonDirUrlFmt/aescrypt.png' title='Encrypt' /></a>");
+   "<a href='#' onclick='AesCrypt.encPopup();'><img src='\$GUIButtonDirUrlFmt/aescrypt.png' title='Encrypt' /></a>");
  } else {
-  // TODO: simply add overlay DIV here
-  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='aescryptEncPopup();'/>";
-  
+  $MessagesFmt[] = "<input type='button' name='aesButton' value='Encrypt' onClick='AesCrypt.encPopup();'/>";
  }
 }
 
