@@ -13,14 +13,13 @@
 $RecipeInfo['AesCrypt']['Version'] = '2012-DEV';
 
 SDV($AesCryptKDF, 'sha256_dup');
-SDV($AesCryptPlainToken, '(:encrypt ');
 SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
 SDV($AesCryptPadding, 6);
 SDV($AesCryptSelectionMode, true);
 
 SDV($HTMLStylesFmt['aescrypt'], "
-#aescryptPopupMask {
+div.aescryptPopupMask {
 	position: absolute;
 	z-index: 200;
 	top: 0px;
@@ -41,8 +40,10 @@ SDV($HTMLStylesFmt['aescrypt'], "
 	 */
 	background-image/**/: url('$PubDirUrl/aescrypt/maskBG.png') !important; // For browsers Moz, Opera, etc.
 	background-image:none;
+	background-color:#cccccc;
 	background-repeat: repeat;
-	display:none;
+	/*display:none; */
+     visibility: hidden;
 }
 
 .aescrypt_overlay {
@@ -69,64 +70,9 @@ SDV($HTMLStylesFmt['aescrypt'], "
 
 $HTMLHeaderFmt['aescrypt_common'] = "
 <script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/aescrypt.js\"></script>
+<script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/main.js\"></script>
 <script type=\"text/javascript\">
 // <![CDATA[
-
-/**
- * Displays and hides modal dialog.
- */
-function aescryptOverlay(id, state) {
-  var el = document.getElementById('aescrypt_o_'+id);
-  el.style.visibility = (state ? 'visible' : 'hidden');
-  if (state) {
-    var pw = document.getElementById('aescrypt_p_'+id);
-    pw.focus();
-    pw.value = '';
-  }
-}
-
-/**
- * Function invoked on submit of password modal dialog.
- * Performs decryption.
- */
-function aescryptDecSubmit(id)
-{
- aescryptOverlay(id, false);
- var pwel = document.getElementById('aescrypt_p_'+id);
- var pw = pwel.value;
- pwel.value = 'TopSecret';
- // decrypt all ?
- var allEl = document.getElementById('aescrypt_b_'+id);
- 
- var i = id;
- var to = id;
- if (allEl.checked) {
-  i = 1;
-  to = 10000; // just some big number
- }
- 
- while (i <= to) {
-    var contentel = document.getElementById('aescrypt_c_'+i);
-    if (!contentel) {
-	break;
-    }
-    if (contentel.style.display == 'none') {
-	var cipher = contentel.childNodes[0].nodeValue;
-	var plain = AesCtr.decrypt(cipher,pw,256);
-	var plainTrim = plain.replace(/\\s\\s*\$/, '');
-	contentel.childNodes[0].nodeValue = plainTrim;
-	contentel.style.display='block';
-	var linkel = document.getElementById('aescrypt_a_'+i);
-	if (!linkel) {
-	   alert(i);
-	} else {
-	  linkel.style.visibility='hidden';
-	  linkel.style.display='none';
-	}
-    }
-    i++;
- }
-}
 
 /**
  * Key derivation function selected by AesCryptKDF variable.
@@ -135,147 +81,12 @@ AesCtr.kdf = function(password, nBits, nonce) {
     return AesCtr.kdf_$AesCryptKDF (password, nBits, nonce);
 }
 
-// ]]>
-</script>
-";
-
-if ($action == 'edit') {
-$HTMLHeaderFmt['aescrypt_edit'] = "
-<script type=\"text/javascript\">
-// <![CDATA[
-
-var aeascryptPopupDiv = false;
-/**
- * display modal box for encryption
- */
-function aescryptEncPopup()
-{
-//    alert('123');
-    aescryptSelectionRange = aescryptSaveSelection();
-
-//    alert(aescryptSelectionRange);
-  if (!aeascryptPopupDiv) {
-    var popup =  '<div id=\'aescrypt_o_enc\' class=\'aescrypt_overlay\'>' 
-	+ '<div>' 
-	+ '<p id=\'aescrypt_l_enc\'>Encrypt selected text:</p>' 
-	+ '<form id=\'aescrypt_f_enc\' onsubmit=\'aescryptEncSubmit();return false;\'>' 
-	+ '<input type=\'password\' name=\'aescrypt_p_enc\' id=\'aescrypt_p_enc\' />' 
-	+ '<input type=\'submit\'  />' 
-	+ '</form>' + '</div>' + '</div>';
-
-	var theBody = document.getElementsByTagName('BODY')[0];
-	var popmask = document.createElement('div');
-	popmask.id = 'aescryptPopupMask';
-	var popcont = document.createElement('div');
-	popcont.id = 'aescrypt_x_enc';
-	popcont.innerHTML = popup;
-
-	theBody.appendChild(popmask);
-	theBody.appendChild(popcont);
-	
-	aeascryptPopupDiv = true;
-  }
-    var pwel = document.getElementById('aescrypt_p_enc');
-    pwel.value = '';
-
-  aescryptOverlay('enc',true);
-}
-
-/**
-  * Hide modal box and encrypt selection
-  * - how to get selection?
-  * - 
-  */
-function aescryptEncSubmit() {
-
-    var tpart = aescryptGetSelection();
-    
-    var pwel = document.getElementById('aescrypt_p_enc');
-    var pw = pwel.value;
-    pwel.value = 'TopSecret';
-
-    aescryptOverlay('enc', false);
-
-    var padding = $AesCryptPadding;
-    var tarr = '$AesCryptCipherToken';
-    var markup_end = '$AesCryptEndToken';
-
-    while ((tpart.length % padding) > 0) {
-       tpart = tpart.concat(' ');
-    }
-    tpart = tpart.concat(' ');
-
-    tarr +=AesCtr.encrypt(tpart, pw, 256);
-    tarr += ' ';
-    tarr += markup_end;
-    alert('encrypted: ' + tarr);
-
-  // TODO write result
-  aescryptReplaceSelection(tarr);
-}
-
-var aescryptSelectionRange = [0, 0];
-
-/**
- * Get selection to be encrypted (selection mode)
- */
-function aescryptSaveSelection() {
-
-  var textarea = document.getElementById('text');
-
-  if (document.selection) { // IE variant
-     textarea.focus();
-     //var sel = document.selection.createRange();
-     
-     // TODO: save selection object (easier, might not work)
-     // or save start,length and reconstruct later ?
-     var bm = document.selection.createRange().getBookmark();
-      var sel = textarea.createTextRange();
-      sel.moveToBookmark(bm);
-    
-      var sleft = textarea.createTextRange();
-      sleft.collapse(true);
-      sleft.setEndPoint('EndToStart', sel);
-      var start = sleft.text.length
-      var end = sleft.text.length + sel.text.length;
-      return [start, end];
-      
-    // alert the selected text in textarea
-    // alert(sel.text);
-  } else {
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    if (start  < end) {
-	return [start, end];
-    }
-    else {
-	alert('Please select text to encrypt');
-	return [0,0];
-    }
-  }
-}
-
-function aescryptGetSelection() {
-    var start = aescryptSelectionRange[0];
-    var end = aescryptSelectionRange[1];
-    var textarea = document.getElementById('text');
-    var sel = textarea.value.substring(start, end);
-    return sel;
-}
-
-function aescryptReplaceSelection(replace) {
-    var textarea = document.getElementById('text');
-    var start = aescryptSelectionRange[0];
-    var end = aescryptSelectionRange[1];
-    var len = textarea.value.length;
-    textarea.value = textarea.value.substring(0,start) + replace + textarea.value.substring(end,len);
-}
+AesCrypt.AesCryptCipherToken = '$AesCryptCipherToken';
+AesCrypt.AesCryptEndToken = '$AesCryptEndToken';
 
 // ]]>
 </script>
 ";
-}
-
 
 /* generate decryption code */
 function aescryptMarkup($ciphertext)
@@ -294,7 +105,7 @@ function aescryptMarkup($ciphertext)
       $c = substr($c, 0, 27) . "...";
     }
     $res .= "<div id=\"aescrypt_o_$id\" class=\"aescrypt_overlay\">
-     <div>
+	 <div>
           <p id=\"aescrypt_l_$id\">Decrypting \"$c\".</p>
           <form id=\"aescrypt_f_$id\" onsubmit=\"aescryptDecSubmit($id);return false;\">
            <label for=\"aescrypt_p_$id\">Password </label>
@@ -307,6 +118,7 @@ function aescryptMarkup($ciphertext)
           </form>
         </div>
     </div>";
+    $res .="<div class=\"aescryptPopupMask\" id=\"aescrypt_m_$id\"></div>";
 
     return $res;
 }
