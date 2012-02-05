@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2012-DEV';
+$RecipeInfo['AesCrypt']['Version'] = '2012-02-05';
 
 SDV($AesCryptKDF, 'sha256_dup');
 SDV($AesCryptCipherToken, '(:aes ');
