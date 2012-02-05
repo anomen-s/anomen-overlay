@@ -21,7 +21,6 @@ Possible values are:
 : sha256 : SHA-256 hash of password
 : sha256_dup : SHA-256 hash of longer text constructed using password and nonce
 : aes : encrypt password with AES, compatible with original aescrypt-0.1 recipe
-: pbkdf2 : not yet implemented
 
 !!!! sha256_dup
 Input for SHA-256 hashing is constructed using following JavaScript code:
