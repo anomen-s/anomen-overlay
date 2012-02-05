@@ -37,7 +37,7 @@ SDV($HTMLStylesFmt['aescrypt'], "
 	 * you can uncomment the background-image if you don't care about opera.
 	 * this gives you the flexibility to use any bg color that you want, instead of the png
 	 */
-	background-image/**/: url('$PubDirUrl/aescrypt/maskBG.png') !important; // For browsers Moz, Opera, etc.
+	background-image/**/: url('$PubDirUrl/aescrypt/maskbg.png') !important; // For browsers Moz, Opera, etc.
 	background-image:none;
 	background-color:#cccccc;
 	background-repeat: repeat;

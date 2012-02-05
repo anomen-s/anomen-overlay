@@ -5,6 +5,11 @@
  *   http://submodal.googlecode.com
  *   http://www.pmwiki.org/wiki/Cookbook/DesCrypt
  *   http://www.pmwiki.org/wiki/Cookbook/AesCrypt
+ *
+ *
+ * TODO: 
+ * - show password checkbox
+ * - close imag on modal dialog
  */
 
 var AesCrypt = {};
@@ -51,14 +56,8 @@ AesCrypt.createPopup = function ()
 }
 
 /**
- * display ciphered text with given id
+ * Retrieve password and clear password box.
  */
-AesCrypt.getCipher = function (id) 
-{
-    var contentdiv = document.getElementById('aescrypt_c_'+id);
-    return contentdiv.childNodes[0].nodeValue;
-}
-
 AesCrypt.getPassword = function ()
 {
     var pwel = document.getElementById('aescrypt_p');
@@ -69,37 +68,35 @@ AesCrypt.getPassword = function ()
 
 
 /**
- * Displays and hides modal dialog.
+ * Display modal dialog.
  */
-AesCrypt.overlay = function(label, state, decmode) 
+AesCrypt.showDialog = function(label, decmode) 
 {
-    var el = document.getElementById('aescrypt_o');
-    var mask = document.getElementById('aescrypt_m');
-    var newState = (state ? 'visible' : 'hidden');
-    el.style.visibility = newState;
-    mask.style.visibility = newState;
-
+    document.getElementById('aescrypt_o').style.visibility = 'visible';
+    document.getElementById('aescrypt_m').style.visibility = 'visible';
+    document.getElementById('aescrypt_all').style.visibility = (decmode ? 'visible' : 'hidden');
+    document.getElementById('aescrypt_l').childNodes[0].nodeValue = label;
 
     var pw = document.getElementById('aescrypt_p');
-    var decAll = document.getElementById('aescrypt_all');
-    if (state) {
-        decAll.style.visibility = (decmode ? 'visible' : 'hidden');
-
-        var labeldiv = document.getElementById('aescrypt_l');
-        labeldiv.childNodes[0].nodeValue = label;
-
-        var pw = document.getElementById('aescrypt_p');
-        pw.focus();
-        pw.value = '';
-        // TODO
-        // AesCrypt.addEvent(window, 'keypress', AesCrypt.onEscPress);
-    } 
-    else {
-        decAll.style.visibility = 'inherit';
-  
-        //AesCrypt.removeEvent(window, 'keypress', AesCrypt.onEscPress, false);
-    }
+    pw.focus();
+    pw.value = '';
+        
+    AesCrypt.addEvent(window, 'keypress', AesCrypt.onEscPress);
 }
+
+/**
+ * Hide modal dialog.
+ */
+AesCrypt.hideDialog = function() 
+{
+    document.getElementById('aescrypt_o').style.visibility = 'hidden';
+    document.getElementById('aescrypt_m').style.visibility = 'hidden';
+    document.getElementById('aescrypt_all').style.visibility = 'inherit';
+    document.getElementById('aescrypt_l').childNodes[0].nodeValue = 'Enter password:';
+
+    AesCrypt.removeEvent(window, 'keypress', AesCrypt.onEscPress, false);
+}
+
 
 AesCrypt.addEvent = function (obj, evType, fn)
 {
@@ -107,7 +104,7 @@ AesCrypt.addEvent = function (obj, evType, fn)
         obj.addEventListener(evType, fn, false);
         return true;
     } 
-    else if (obj.attachEvent){
+    else if (obj.attachEvent) {
         var r = obj.attachEvent('on'+evType, fn);
         return r;
     } else {
@@ -128,10 +125,12 @@ AesCrypt.removeEvent = function(obj, evType, fn, useCapture)
     }
 }
 
-AesCrypt.onEscPress  = function ()
+AesCrypt.onEscPress = function(e)
 {
-    if (window.event.keyCode == 27) {
-        AesCrypt.overlay('', false);
+    if (!e) e = event;
+
+    if (e.keyCode == 27) {
+        AesCrypt.hideDialog();
     }
 }
 
@@ -151,10 +150,9 @@ AesCrypt.encPopup = function()
 
     AesCrypt.createPopup();
 
-    var pwel = document.getElementById('aescrypt_p');
-    pwel.value = '';
+    document.getElementById('aescrypt_p').value = '';
 
-    AesCrypt.overlay("Encrypt selected text", true, false);
+    AesCrypt.showDialog("Encrypt selected text", false);
     
 }
 
@@ -167,21 +165,20 @@ AesCrypt.decPopup = function(id)
     
     AesCrypt.createPopup();
 
-    var pwel = document.getElementById('aescrypt_p');
-    pwel.value = '';
+    document.getElementById('aescrypt_p').value = '';
 
-    var c = AesCrypt.getCipher(id);
+    var c = document.getElementById('aescrypt_c_'+id).childNodes[0].nodeValue;
     if (c.length > 30) {
         c = c.substr(0,29) + "\u2026";
     }
-    AesCrypt.overlay("Decrypt " + c, true, true);
+    AesCrypt.showDialog("Decrypt " + c, true);
 }
 
 AesCrypt.overlaySubmit = function()
 {
     var pw = AesCrypt.getPassword();
 
-    AesCrypt.overlay('', false);
+    AesCrypt.hideDialog();
 
     if (!pw) {
       alert("No password given!");
