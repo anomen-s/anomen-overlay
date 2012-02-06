@@ -32,6 +32,7 @@ AesCrypt.createPopup = function ()
     if (!AesCrypt.popupDiv) {
         var popup =  '<div id=\'aescrypt_o\' class=\'aescrypt_overlay\'>' 
 	        + '<div>' 
+	        + '<img onclick=\'AesCrypt.hideDialog()\' width=\'15\' height=\'15\' alt=\'close dialog\' id=\'aescrypt_i\' src=\''+AesCrypt.PubDirUrl+'/close.png\' />'
 	        + '<p id=\'aescrypt_l\'>Enter password:</p>' 
 	        + '<form id=\'aescrypt_f\' onsubmit=\'AesCrypt.overlaySubmit();return false;\'>' 
 	        + '<input type=\'password\' name=\'aescrypt_p\' id=\'aescrypt_p\' />' 
@@ -81,7 +82,7 @@ AesCrypt.showDialog = function(label, decmode)
     pw.focus();
     pw.value = '';
         
-    AesCrypt.addEvent(window, 'keypress', AesCrypt.onEscPress);
+    AesCrypt.addEvent(window, 'keyup', AesCrypt.onEscPress);
 }
 
 /**
@@ -94,7 +95,7 @@ AesCrypt.hideDialog = function()
     document.getElementById('aescrypt_all').style.visibility = 'inherit';
     document.getElementById('aescrypt_l').childNodes[0].nodeValue = 'Enter password:';
 
-    AesCrypt.removeEvent(window, 'keypress', AesCrypt.onEscPress, false);
+    AesCrypt.removeEvent(window, 'keyup', AesCrypt.onEscPress, false);
 }
 
 

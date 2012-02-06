@@ -10,7 +10,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['AesCrypt']['Version'] = '2012-02-05';
+$RecipeInfo['AesCrypt']['Version'] = '2012-02-06';
 
 SDV($AesCryptKDF, 'sha256_dup');
 SDV($AesCryptCipherToken, '(:aes ');
@@ -64,6 +64,11 @@ SDV($HTMLStylesFmt['aescrypt'], "
      padding:15px;
      text-align:center;
 }
+
+#aescrypt_i {
+    float:right;
+}
+
 ");
 
 
@@ -83,6 +88,7 @@ AesCtr.kdf = function(password, nBits, nonce) {
 AesCrypt.AesCryptCipherToken = '$AesCryptCipherToken';
 AesCrypt.AesCryptEndToken = '$AesCryptEndToken';
 AesCrypt.AesCryptPadding = $AesCryptPadding;
+AesCrypt.PubDirUrl = '$PubDirUrl/aescrypt';
 
 // ]]>
 </script>
