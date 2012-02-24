@@ -5,6 +5,7 @@ export WINEARCH=win32
 export WINEPREFIX="$HOME/Wine/$PROFILE"
 export WINETRICKS_CACHE="$WINEPREFIX/drive_c/wine"
 export W_CACHE="$WINETRICKS_CACHE"
+export W_PREFIXES_ROOT="$HOME/Wine"
 #export WINEDEBUG=-all
 
 cd "$WINETRICKS_CACHE"
@@ -13,5 +14,5 @@ wget -nc http://www.kegel.com/wine/winetricks || exit 1
 
 chmod 755 winetricks
 
-exec ./winetricks  "$@"
+exec ./winetricks --no-isolate --no-clean "$@"
 

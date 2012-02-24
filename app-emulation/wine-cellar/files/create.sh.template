@@ -34,7 +34,7 @@ ln -v -s -f -n .. "$WINEPREFIX/dosdevices/p:"
 ln -v -s -f -n ../../drive_t "$WINEPREFIX/dosdevices/t:"
 ln -v -s -f -n /usr/share/fonts "$WINEPREFIX/dosdevices/v:"
 ln -v -s -f -n /usr/share/wine "$WINEPREFIX/dosdevices/w:"
-rm -v "$WINEPREFIX/dosdevices/z:"
+ln -v -s -f -n .. "$WINEPREFIX/dosdevices/z:"
 
 echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
 
