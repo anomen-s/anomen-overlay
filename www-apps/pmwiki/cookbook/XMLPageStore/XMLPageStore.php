@@ -93,7 +93,7 @@ class XMLPageStore extends PageStore {
     $pagefile = $this->pagefile($pagename);
     $dir = dirname($pagefile); mkdirp($dir);
     if ($pagefile && ($fp=fopen("$pagefile,new","w"))) {
-      $x = "<?xml version=\"1.0\" encoding=\"$Charset\"?>\n<page xmlns=\"http://www.pmwiki.org/anomen/xmlpage\" version=\"$Version\">\n";
+      $x = "<?xml version=\"1.0\" encoding=\"$Charset\"?>\n<page xmlns=\"http://www.pmwiki.org/cookbook/xmlpage\" version=\"$Version\">\n";
       $s = true && fputs($fp, $x); $sz = strlen($x);
       foreach($page as $k=>$v) 
         if ($k > '' && $k{0} != '=') {
