@@ -9,7 +9,7 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 */
-$RecipeInfo['XMLPageStore']['Version'] = '2011-11-02';
+$RecipeInfo['XMLPageStore']['Version'] = '2012-03-04';
 
 SDV($EnablePageStoreXML,false);
 
@@ -120,6 +120,4 @@ class XMLPageStore extends PageStore {
     PCache($pagename, $page);
   }
 
-
 }
-
