@@ -14,6 +14,6 @@ mkdir -v "$WINECELLAR" ||  exit 1
 mkdir -v "$WINECELLAR/drive_t" || exit 1
 
 ln -v -s ../.wine "$WINECELLAR/Default"
-ln -v -s "$CELLAR_SHARE/create.sh.template" "$WINECELLAR/create.sh"
+ln -v -s "$CELLAR_SHARE/create.sh" "$WINECELLAR/create.sh"
 
 

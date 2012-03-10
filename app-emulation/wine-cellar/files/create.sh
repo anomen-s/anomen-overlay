@@ -38,10 +38,12 @@ ln -v -s -f -n .. "$WINEPREFIX/dosdevices/z:"
 
 echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
 
-
-for D in "Desktop" "My Documents" "My Music" "My Pictures" "My Videos"
+for D in "${WINEPREFIX}/drive_c/users/${USER}"/*
 do
-    ln -v -s -f -n ../../../home "${WINEPREFIX}/drive_c/users/${USER}/${D}"
+    if readlink "${D}"
+    then
+	ln -v -s -f -n ../../../home "${D}"
+    fi
 done
 
 cp -f -v  "$CELLAR_SHARE/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
