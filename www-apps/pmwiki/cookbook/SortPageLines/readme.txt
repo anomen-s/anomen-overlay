@@ -16,6 +16,9 @@ How to alphabetically sort lines in page.
 Recipe adds two GUI buttons in edit form which allow user to alphabetically sort lines in page 
 (either in descending or ascending order).
 
+Duplicate and empty lines are removed.
+
+
 [[#install]]
 !!Installation
 Download [[(Attach:)sortpagelines.zip]].

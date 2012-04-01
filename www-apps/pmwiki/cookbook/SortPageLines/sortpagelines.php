@@ -3,6 +3,11 @@
 /*
     SortPage
 
+    Adds two sort buttons to edit form.
+    Lines in page can be sorted in ascending or descending order.
+    Duplicate and empty lines are removed.
+    
+
     Copyright 2011 Anomen (ludek_h@seznam.cz)
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
@@ -10,7 +15,7 @@
     (at your option) any later version.
 */
 
-$RecipeInfo['SortPageLines']['Version'] = '2011-10-13';
+$RecipeInfo['SortPageLines']['Version'] = '2012-04-01';
 
 if ($action == 'edit') {
 
@@ -36,10 +41,13 @@ function sortPage(order) {
   mySplitResult.reverse();
  }   
  var value  = "";
+ var lastval = "";
  for(i = 0; i < mySplitResult.length; i++) {
-  if (mySplitResult[i] != "") {
-     value= value + mySplitResult[i] + "\n";
+  var curr = mySplitResult[i];
+  if ((lastval != curr) && (curr != "")) {
+      value = value + curr + "\n";
   }
+  lastval = curr;
  }
  textField.value = value;
 }
