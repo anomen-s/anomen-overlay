@@ -225,15 +225,20 @@ AesCrypt.decSubmit = function(password)
         if (contentel.style.display == 'none') {
             var cipher = contentel.childNodes[0].nodeValue;
             var plain = AesCtr.decrypt(cipher,password,256);
-            var plainTrim = plain.replace(/\\s\\s*\$/, '');
-            contentel.childNodes[0].nodeValue = plainTrim;
-            contentel.style.display='block';
-            var linkel = document.getElementById('aescrypt_a_'+i);
-            if (!linkel) {
-                alert("Cipher block not found: id="+i);
-            } else {
-                linkel.style.visibility='hidden';
-                linkel.style.display='none';
+            if (plain.charAt(plain.length-1) != ' ') {
+        	alert ("Invalid password for cipher #"+i);
+            }
+            else {
+        	var plainTrim = plain.replace(/\\s\\s*\$/, '');
+        	contentel.childNodes[0].nodeValue = plainTrim;
+        	contentel.style.display='block';
+        	var linkel = document.getElementById('aescrypt_a_'+i);
+                if (!linkel) {
+                    alert("Cipher block not found: id="+i);
+                } else {
+                    linkel.style.visibility='hidden';
+                    linkel.style.display='none';
+                }
             }
         }
         i++;
