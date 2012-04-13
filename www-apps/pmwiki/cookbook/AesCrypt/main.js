@@ -7,9 +7,6 @@
  *   http://www.pmwiki.org/wiki/Cookbook/AesCrypt
  *
  *
- * TODO: 
- * - show password checkbox
- * - close imag on modal dialog
  */
 
 var AesCrypt = {};
@@ -18,6 +15,11 @@ var AesCrypt = {};
  * Mode of work. Either ['enc', start, end] or ['dec',block_id];
  */
 AesCrypt.mode = null;
+
+/**
+ * Title of dialog
+ */
+AesCrypt.title = null;
 
 /**
  * is popup element created?
@@ -32,14 +34,15 @@ AesCrypt.createPopup = function ()
     if (!AesCrypt.popupDiv) {
         var popup =  '<div id=\'aescrypt_o\' class=\'aescrypt_overlay\'>' 
 	        + '<div>' 
-	        + '<img onclick=\'AesCrypt.hideDialog()\' width=\'15\' height=\'15\' alt=\'close dialog\' id=\'aescrypt_i\' src=\''+AesCrypt.PubDirUrl+'/close.png\' />'
-	        + '<p id=\'aescrypt_l\'>Enter password:</p>' 
-	        + '<form id=\'aescrypt_f\' onsubmit=\'AesCrypt.overlaySubmit();return false;\'>' 
-	        + '<input type=\'password\' name=\'aescrypt_p\' id=\'aescrypt_p\' />' 
-	        + '<br />'
-            + '<label id=\'aescrypt_all\'><input type=\"checkbox\" name=\"aescrypt_allb\" id=\"aescrypt_allb\" value=\"true\" /> decrypt all</label>'
+	        + '<img onclick=\'AesCrypt.hideDialog()\' width=\'24\' height=\'24\' title=\'close dialog\' alt=\'close dialog\' id=\'aescrypt_i\' src=\''+AesCrypt.PubDirUrl+'/close.png\' />'
+	        + '<p id=\'aescrypt_l\'>Enter password:</p>'
+	        + '<form id=\'aescrypt_f\' onsubmit=\'AesCrypt.overlaySubmit();return false;\'>'
+	        + '<span><input type=\'password\' name=\'aescrypt_p\' id=\'aescrypt_p\' onkeypress=\'AesCrypt.hidePass()\' />  '
+	        + '<img onmousedown=\'AesCrypt.showPass()\' style=\'vertical-align:bottom\' onmouseup=\'AesCrypt.hidePass()\' onmouseout=\'AesCrypt.hidePass()\' onmouseover=\'AesCrypt.hidePass()\'   width=\'24\' height=\'24\' alt=\'Show password\' title=\'Show password\' id=\'aescrypt_sp\' src=\''+AesCrypt.PubDirUrl+'/showpass.png\' />'
+	        + '</span><br />'
+            + '<label title=\'All encrypted texts on this page will be decrypted.\' id=\'aescrypt_all\'><input type=\"checkbox\" name=\"aescrypt_allb\" id=\"aescrypt_allb\"  checked=\"checked\" value=\"true\" /> decrypt all</label>'
             + '<br />'
-	        + '<input type=\'submit\' />' 
+	        + '<input type=\'submit\' />'
 	        + '</form>' + '</div>' + '</div>';
 
 	    var theBody = document.getElementsByTagName('body')[0];
@@ -77,6 +80,7 @@ AesCrypt.showDialog = function(label, decmode)
     document.getElementById('aescrypt_m').style.visibility = 'visible';
     document.getElementById('aescrypt_all').style.visibility = (decmode ? 'visible' : 'hidden');
     document.getElementById('aescrypt_l').childNodes[0].nodeValue = label;
+    AesCrypt.title = label;
 
     var pw = document.getElementById('aescrypt_p');
     pw.focus();
@@ -175,6 +179,23 @@ AesCrypt.decPopup = function(id)
     AesCrypt.showDialog("Decrypt " + c, true);
 }
 
+AesCrypt.showPass = function()
+{
+    var pwel = document.getElementById('aescrypt_p');
+    var pw = pwel.value;
+    if (pw) {
+	document.getElementById('aescrypt_l').childNodes[0].nodeValue = "Password is: "+pw;
+    }
+}
+
+AesCrypt.hidePass = function()
+{
+    if (AesCrypt.title) {
+	document.getElementById('aescrypt_l').childNodes[0].nodeValue = AesCrypt.title;
+    }
+}
+
+
 AesCrypt.overlaySubmit = function()
 {
     var pw = AesCrypt.getPassword();
@@ -229,7 +250,7 @@ AesCrypt.decSubmit = function(password)
         	alert ("Invalid password for cipher #"+i);
             }
             else {
-        	var plainTrim = plain.replace(/\\s\\s*\$/, '');
+        	var plainTrim = plain.replace(/\s\s*$/, '');
         	contentel.childNodes[0].nodeValue = plainTrim;
         	contentel.style.display='block';
         	var linkel = document.getElementById('aescrypt_a_'+i);
@@ -264,7 +285,6 @@ AesCrypt.encSubmit = function(password)
     tarr +=AesCtr.encrypt(tpart, password, 256);
     tarr += ' ';
     tarr += markup_end;
-    //alert('encrypted: ' + tarr);
 
     AesCrypt.replaceSelection(tarr);
 }
