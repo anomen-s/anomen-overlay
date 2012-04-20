@@ -147,6 +147,8 @@ AesCrypt.onEscPress = function(e)
 AesCrypt.encPopup = function()
 {
     AesCrypt.mode = AesCrypt.saveSelection();
+
+    //alert("selection: " + AesCrypt.mode);
     
     if (!AesCrypt.mode) {
 	    alert('Please select text to encrypt');
@@ -309,10 +311,13 @@ AesCrypt.saveSelection = function()
         sleft.setEndPoint('EndToStart', sel);
         var start = sleft.text.length
         var end = sleft.text.length + sel.text.length;
-        return ['enc', start, end];
-      
+
         // alert the selected text in textarea
-        alert(sel.text);
+        //alert(">" + sel.text + "<");
+
+	// add 'magic' constants, no idea why.
+        return ['enc', start+1, end+2];
+      
     } else {
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
