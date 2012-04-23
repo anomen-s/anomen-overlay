@@ -5,6 +5,7 @@
  *   http://submodal.googlecode.com
  *   http://www.pmwiki.org/wiki/Cookbook/DesCrypt
  *   http://www.pmwiki.org/wiki/Cookbook/AesCrypt
+ *   http://the-stickman.com/web-development/javascript/finding-selection-cursor-position-in-a-textarea-in-internet-explorer/
  *
  *
  */
@@ -300,29 +301,27 @@ AesCrypt.saveSelection = function()
 
     if (document.selection) { // IE variant
         textarea.focus();
-        //var sel = document.selection.createRange();
 
-        var bm = document.selection.createRange().getBookmark();
-        var sel = textarea.createTextRange();
-        sel.moveToBookmark(bm);
+	var range = document.selection.createRange();
+	var stored_range = range.duplicate();
+	stored_range.moveToElementText(textarea);
+	stored_range.setEndPoint( 'EndToEnd', range );
+	var start = stored_range.text.length - range.text.length;
+	var end = start + range.text.length;
 
-        var sleft = textarea.createTextRange();
-        sleft.collapse(true);
-        sleft.setEndPoint('EndToStart', sel);
-        var start = sleft.text.length
-        var end = sleft.text.length + sel.text.length;
-
-        // alert the selected text in textarea
-        //alert(">" + sel.text + "<");
-
-	// add 'magic' constants, no idea why.
-        return ['enc', start+1, end+2];
+        var sel = textarea.value.substring(start, end);
+        var st = textarea.value.substring(0,start);
+        var et = textarea.value.substring(end);
+        return ['enc', st, sel, et];
       
     } else {
         var start = textarea.selectionStart;
         var end = textarea.selectionEnd;
         if (start  < end) {
-            return ['enc', start, end];
+            var sel = textarea.value.substring(start, end);
+            var st = textarea.value.substring(0,start);
+            var et = textarea.value.substring(end);
+            return ['enc',  st, sel, et];
         }
         else {
             return null;
@@ -332,19 +331,14 @@ AesCrypt.saveSelection = function()
 
 AesCrypt.getSelection = function()
 {
-    var start = AesCrypt.mode[1];
-    var end = AesCrypt.mode[2];
-    var textarea = document.getElementById('text');
-    var sel = textarea.value.substring(start, end);
-    return sel;
+    return AesCrypt.mode[2];
 }
 
-AesCrypt.replaceSelection = function(replace) 
+AesCrypt.replaceSelection = function(replacement)
 {
     var textarea = document.getElementById('text');
     var start = AesCrypt.mode[1];
-    var end = AesCrypt.mode[2];
-    var len = textarea.value.length;
-    textarea.value = textarea.value.substring(0,start) + replace + textarea.value.substring(end,len);
+    var end = AesCrypt.mode[3];
+    textarea.value = start + replacement + end;
 }
 
