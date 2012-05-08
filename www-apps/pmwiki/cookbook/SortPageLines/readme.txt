@@ -34,7 +34,7 @@ In config.php, add the following line:
 
 [[#config]]
 !!Configuration
-
+No configuration available.
 
 [[#relnotes]]
 !! Change log / Release notes

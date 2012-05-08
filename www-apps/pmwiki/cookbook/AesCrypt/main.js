@@ -13,7 +13,7 @@
 var AesCrypt = {};
 
 /**
- * Mode of work. Either ['enc', start, end] or ['dec',block_id];
+ * Mode of work. Either ['enc', before-selection, selection, after-selection] or ['dec',block_id];
  */
 AesCrypt.mode = null;
 
@@ -41,8 +41,8 @@ AesCrypt.createPopup = function ()
 	        + '<span><input type=\'password\' name=\'aescrypt_p\' id=\'aescrypt_p\' onkeypress=\'AesCrypt.hidePass()\' />  '
 	        + '<img onmousedown=\'AesCrypt.showPass()\' style=\'vertical-align:bottom\' onmouseup=\'AesCrypt.hidePass()\' onmouseout=\'AesCrypt.hidePass()\' onmouseover=\'AesCrypt.hidePass()\'   width=\'24\' height=\'24\' alt=\'Show password\' title=\'Show password\' id=\'aescrypt_sp\' src=\''+AesCrypt.PubDirUrl+'/showpass.png\' />'
 	        + '</span><br />'
-            + '<label title=\'All encrypted texts on this page will be decrypted.\' id=\'aescrypt_all\'><input type=\"checkbox\" name=\"aescrypt_allb\" id=\"aescrypt_allb\"  checked=\"checked\" value=\"true\" /> decrypt all</label>'
-            + '<br />'
+	        + '<label title=\'All encrypted texts on this page will be decrypted.\' id=\'aescrypt_all\'><input type=\"checkbox\" name=\"aescrypt_allb\" id=\"aescrypt_allb\"  checked=\"checked\" value=\"true\" /> decrypt all</label>'
+	        + '<br />'
 	        + '<input type=\'submit\' />'
 	        + '</form>' + '</div>' + '</div>';
 
