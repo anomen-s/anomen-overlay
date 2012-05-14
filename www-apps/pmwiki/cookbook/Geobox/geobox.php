@@ -15,7 +15,7 @@
 */
 
 
-$RecipeInfo['Geobox']['Version'] = '2011-12-17';
+$RecipeInfo['Geobox']['Version'] = '2012-05-14';
 
 
 Markup('geo','fulltext','/\(:geo\s+((?:[dmsDMS,.]+:\s+)?(?:[a-z]+=\S+\s+)*)?(.*?)\s*:\)/e',
@@ -47,9 +47,9 @@ function geobox_p()
         $pat[1] = '\'|’|′';
         $pat[2] = '\'\'|\"|“|″|”|’’|';
     } else {
-        $pat[10] = chr(0xB0) . '|\*';
-        $pat[11] = '\'';
-        $pat[12] = '\'\'|\"|';
+        $pat[0] = chr(0xB0) . '|\*';
+        $pat[1] = '\'';
+        $pat[2] = '\'\'|\"|';
     }
     return $pat;
 }
