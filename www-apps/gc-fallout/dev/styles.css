@@ -1,0 +1,26 @@
+body {
+    background-image : url('img/pipboy.jpg');
+    background-repeat : no-repeat;
+    background-position : center  top;
+}
+
+div#input_div {
+    color: #77ff77;
+    background-color: black;
+    width : 400px;
+    margin : auto; 
+    margin-top:60px;
+    
+}
+
+
+
+div#result {
+
+    color: #77ff77;
+    background-color: black;
+    width : 400px;
+    margin : auto; 
+    margin-top:60px;
+
+}
