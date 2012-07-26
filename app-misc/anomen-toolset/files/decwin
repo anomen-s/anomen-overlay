@@ -2,12 +2,14 @@
 
 for A do
 
- TEMP=`mktemp $HOME/tmp/iconv-tmp.XXXXXX`
+ AB=`basename "$A"`
+ TEMP=`mktemp -t "${AB}.XXXXXX"`
+ BAK=`mktemp -t "${AB}.XXXXXX"`
 
- iconv -f windows-1250 "$A" > $TEMP
+ iconv -f windows-1250 "$A" > "$TEMP"
 
- mv -f "$A" `mktemp $HOME/tmp/iconv-hist.XXXXXX`
+ mv -f "$A" "$BAK"
 
- mv $TEMP "$A"
+ mv "$TEMP" "$A"
 
 done
