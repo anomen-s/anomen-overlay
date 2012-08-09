@@ -6,7 +6,7 @@ if test '!' -f "$1" ; then
 fi
 
 F="$1"
-D=${F%.zip}
+D=${F%.*}
 
 echo $D
 
