@@ -15,7 +15,7 @@
 */
 
 
-$RecipeInfo['Geobox']['Version'] = '2012-05-14';
+$RecipeInfo['Geobox']['Version'] = '2012-09-07';
 
 
 Markup('geo','fulltext','/\(:geo\s+((?:[dmsDMS,.]+:\s+)?(?:[a-z]+=\S+\s+)*)?(.*?)\s*:\)/e',
@@ -25,7 +25,7 @@ SDV($GeoBoxDefaultFormat,'dm');
 
 SDVA($GeoBoxLinks, array(
  'maps.google.com'=>'http://maps.google.com/?q=$N%20$E',
- 'mapy.cz'=>'http://www.mapy.cz/?query=$N%20$LAT%20$E%20$LON',
+ 'mapy.cz'=>'http://www.mapy.cz/?query=$N$LAT%20$E$LON',
  'geocaching.com/maps'=>'http://www.geocaching.com/map/default.aspx?lat=$N&amp;lng=$E',
  'geocaching.com/near'=>'http://www.geocaching.com/seek/nearest.aspx?lat=$N&amp;lng=$E&amp;f=1'
 ));
