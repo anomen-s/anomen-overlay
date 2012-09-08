@@ -15,7 +15,7 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	dev-java/maven-bin:2.2
-	app-misc/realpath"
+	|| ( >=sys-apps/coreutils-8.15 app-misc/realpath )"
 
 src_unpack() {
 	cd "${WORKDIR}"
