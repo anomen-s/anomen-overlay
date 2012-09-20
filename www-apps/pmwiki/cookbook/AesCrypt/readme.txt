@@ -39,6 +39,12 @@ $AesCryptEndToken='=]';
 require_once("$FarmD/cookbook/aescrypt.php");
 @]
 
+!!!Supported browsers
+This recipe should work in all current browsers with JavaScript support. Successfully tested on:
+* Windows (IE, Firefox, Opera, Chrome)
+* Linux (Firefox, Opera, Chromium)
+* Android (Opera Mini 7.5)
+
 !!!Java testing application
 Build application using Maven:
 

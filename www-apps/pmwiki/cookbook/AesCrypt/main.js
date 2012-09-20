@@ -176,8 +176,8 @@ AesCrypt.decPopup = function(id)
     document.getElementById('aescrypt_p').value = '';
 
     var c = document.getElementById('aescrypt_c_'+id).childNodes[0].nodeValue;
-    if (c.length > 30) {
-        c = c.substr(0,29) + "\u2026";
+    if (c.length > 20) {
+        c = c.substr(0,19) + "\u2026";
     }
     AesCrypt.showDialog("Decrypt " + c, true);
 }
