@@ -1,0 +1,11 @@
+--- mplayer.c	2012-10-16 22:01:41.000000000 +0200
++++ mplayer.c	2012-10-16 22:07:20.000000000 +0200
+@@ -1498,7 +1498,7 @@
+ 
+ void set_osd_bar(int type,const char* name,double min,double max,double val) {
+ 
+-    if(osd_level < 1) return;
++    if(osd_level < 3) return;
+ 
+     if(mpctx->sh_video) {
+         osd_visible = (GetTimerMS() + 1000) | 1;
