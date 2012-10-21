@@ -1,14 +1,15 @@
 #!/bin/sh -x
 
-PROFILE="@PROFILE@"
-ISOFILE=
+export PROFILE="@PROFILE@"
+export WINEARCH=win32
+export WINEPREFIX="$HOME/Wine/$PROFILE"
+
+export ISOFILE=
 
 # english locale
 #export LC_ALL=en_US
 #export LANG=en_US
 
-export WINEARCH=win32
-export WINEPREFIX="$HOME/Wine/$PROFILE"
 #export WINEDEBUG=-all
 
 cd "$WINEPREFIX"

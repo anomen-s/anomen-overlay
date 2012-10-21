@@ -17,7 +17,7 @@ if [ ! -d "$WINECELLAR" ]; then
   exit 1
 fi
 
-mkdir -v -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/wine"
+mkdir -v -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/wine" "$WINEPREFIX/drive_c/install"
 
 cd "$WINEPREFIX/drive_c"
 wine regedit "$CELLAR_SHARE/init.reg"
