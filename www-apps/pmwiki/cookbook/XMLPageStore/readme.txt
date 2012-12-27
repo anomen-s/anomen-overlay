@@ -1,7 +1,7 @@
 >>recipeinfo<<
 Summary: Store pages as XML files
-Version: 2011-09-15
-Prerequisites: 
+Version: 2012-012-27
+Prerequisites: Requires at least PmWiki version: 2.2.0; last tested on PmWiki version: 2.2.45
 Status: Beta
 Maintainer:  [[~Anomen]]
 Categories: [[!Administration]], [[!CustomPageStore]]
@@ -36,6 +36,12 @@ There's no need to convert or modify your existing pages;
 As pages are edited and saved, they will be then saved as XML files in ''wiki.d/''.
 Please make sure the above cookbook script is loaded before other scripts.
 
+If you want to convert all of your files at once append the following line to local/config.php:
+[@
+    ConvertGZ();
+@]
+
+
 [[#config]]
 !! Configuration
 Use @@$EnablePageStoreXML@@ variable to enable/disable writing xml files.
@@ -50,6 +56,7 @@ Use @@$EnablePageStoreXML@@ variable to enable/disable writing xml files.
 !! Change log / Release notes
 * 2011-04-22 - added to PmWiki Cookbook
 * 2011-09-15 - minor fixes
+* 2012-12-27 - added support for converting all pages
 
 [[#seealso]]
 !! See also

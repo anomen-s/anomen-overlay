@@ -9,7 +9,7 @@
     by the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 */
-$RecipeInfo['XMLPageStore']['Version'] = '2012-03-04';
+$RecipeInfo['XMLPageStore']['Version'] = '2012-12-27';
 
 SDV($EnablePageStoreXML,false);
 
@@ -51,8 +51,6 @@ class XMLPageStore extends PageStore {
   }
 
   function read($pagename, $since=0) {
-    $newline = '';
-    $urlencoded = false;
     $pagefile = $this->pagefile($pagename);
     if ($pagefile && ($fp=@fopen($pagefile, "r"))) {
       while (!feof($fp)) {
@@ -120,4 +118,37 @@ class XMLPageStore extends PageStore {
     PCache($pagename, $page);
   }
 
+}
+
+function ConvertXML() {
+  global $WikiDir;
+  global $EnablePageStoreXML;
+  $pagelist = $WikiDir->ls();
+  $pagelist = array_unique($pagelist);
+  sort($pagelist);
+  $pagecount = count($pagelist);
+
+  echo "
+    <html>
+    <head>
+    <title>Convert pages from/to XML</title>
+    </head>
+    <body>
+    <h2>Convert existing pages</h2>
+    <p>I'm now converting ";
+  echo ($EnablePageStoreXML) ? "<b>to</b> " : "<b>from</b> ";
+  echo "XML the files (pages) you have stored in your wiki. When this is finished
+    you can get rid of the <tt>ConvertXML();</tt> line in your
+    local/config.php</p>";
+  if ($pagelist) {
+    foreach($pagelist as $p) {
+      echo ($EnablePageStoreXML) ? "<li>Converting to XML: $p</li>\n" : "<li>Converting from XML: $p</li>\n";
+      $page = ReadPage($p);
+      WritePage($p,$page);
+    }
+  }
+  echo "<p>Converted $pagecount pages.</p>\n";
+  echo "<p>Now you can get rid of the <tt>ConvertXML();</tt> line in your local/config.php</p>
+                 </body></html>\n";
+  exit(0);
 }
