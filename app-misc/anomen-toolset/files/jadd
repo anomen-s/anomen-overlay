@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if expr "x$1" : ".*l.*"
+then
+ JOPTS="-l"
+fi
+
+find . -type f -name '*.class' -execdir jad '{}' $JOPTS ';'
+
