@@ -1,9 +1,27 @@
 #!/bin/sh
 
+
+JOPTS="-ff -pi 10"
+
 if expr "x$1" : ".*l.*"
 then
- JOPTS="-l"
+ JOPTS="$JOPTS -l"
 fi
 
-find . -type f -name '*.class' -execdir jad '{}' $JOPTS ';'
+if expr "x$1" : ".*j.*"
+then
+ JOPTS="$JOPTS -s java"
+fi
+
+if expr "x$1" : ".*o.*"
+then
+ JOPTS="$JOPTS -o"
+fi
+
+if expr "x$1" : ".*v.*"
+then
+ JOPTS="$JOPTS -v"
+fi
+
+find . -type f -name '*.class' -execdir jad $JOPTS '{}' ';'
 
