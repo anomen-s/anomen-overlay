@@ -9,7 +9,7 @@ This version fixes several problems:
 * rewritten low quality javascript code
 * doesn't require $EnableGUIButtons
 * disabled decrypting of already decrypted text
-* added "Encrypt selection" mode
+* "Encrypt selection" mode
 * alternative implementation available - see Java testing application
 * padding plaintext with spaces to conceal exact length of input data (e.q. password)
 * Add javascript-controlled password input box to provide secure password entry
@@ -22,12 +22,12 @@ This version fixes several problems:
 : $EnableGUIButtons : affects rendering of Encrypt button (do not modify it after including aescrypt.php)
 
 !!Usage
-Wen editing page select text to be encrypted. 
+When editing page select text to be encrypted.
 Then press encrypt button in toolbar above textarea.
 Popup dialog for entering password will appear.
 After submitting password your page should contain in appropriate place something like this:
 
-[@ (:aes 5QN7Th0dHR2LVA/UjXTDWQ== :) @]
+[@ (:aes 5QN7Th0dHR2LVA/UjXTDWQ :) @]
 
 !!!Backward compatibility
 Default settings are not compatible with aescrypt-0.1.
