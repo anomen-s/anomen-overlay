@@ -1,7 +1,7 @@
 >>recipeinfo<<
 Summary: Alphabetically sort lines in page.
 Version: 2011-08-24
-Prerequisites: 
+Prerequisites:
 Status: 
 Maintainer: [[~Anomen]]
 Users: {{$FullName}-Users$Rating2} ([[{$FullName}-Users|View]] / [[{$FullName}-Users?action=edit|Edit]])
@@ -42,6 +42,11 @@ No configuration available.
 
 [[#seealso]]
 !! See also
+: git repo : http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/www-apps/pmwiki/cookbook/SortPageLines
+
+[[#todo]]
+!!ToDos
+* replace buttons with icons
 
 [[#contributors]]
 !! Contributors
@@ -49,14 +54,4 @@ No configuration available.
   
 [[#comments]]
 !! Comments
->>comment<<
-This space is for User-contributed commentary and notes.
-Please include your name and a date (eg 2007-05-19) along with your comment.
-Optional alternative:  create a new page with a name like "ThisRecipe-Talk" (e.g. PmCalendar-Talk).
->><< 
-(:if exists {$Name}-Talk:)See discussion at [[{$Name}-Talk]](:ifend:)
->>faq display=none<<
-
-Q:
-A:
-
+See discussion at [[{$Name}-Talk]]
