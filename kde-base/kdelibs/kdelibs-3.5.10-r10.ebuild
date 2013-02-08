@@ -16,7 +16,7 @@ LICENSE="GPL-2 LGPL-2"
 SLOT="3.5"
 KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
 IUSE="acl alsa arts bindist branding cups doc jpeg2k kerberos legacyssl utempter openexr spell tiff
-	avahi kernel_linux fam lua kdehiddenvisibility"
+	kernel_linux fam lua kdehiddenvisibility"
 
 # Added aspell-en as dependency to work around bug 131512.
 # Made openssl and zeroconf mandatory dependencies, see bug #172972 and #175984
@@ -59,12 +59,6 @@ RDEPEND="
 	)
 	alsa? ( media-libs/alsa-lib )
 	arts? ( ~kde-base/arts-3.5.10 )
-	!avahi? (
-		!bindist? (
-			!kde-misc/kdnssd-avahi
-			net-misc/mDNSResponder
-		)
-	)
 	cups? ( >=net-print/cups-1.1.19 )
 	fam? ( virtual/fam )
 	jpeg2k? ( media-libs/jasper )
@@ -91,8 +85,6 @@ RDEPEND="${RDEPEND}
 	>=x11-misc/xdg-utils-1.0.2-r3
 "
 PDEPEND="
-	avahi? ( kde-misc/kdnssd-avahi )
-	bindist? ( kde-misc/kdnssd-avahi )
 "
 
 # Testing code is rather broken and merely for developer purposes, so disable it.
@@ -178,11 +170,11 @@ src_compile() {
 			$(use_enable kernel_linux sendfile) --enable-mitshm
 			$(use_with spell aspell)"
 
-	if use avahi || use bindist ; then
+#	if use avahi || use bindist ; then
 		myconf="${myconf} --disable-dnssd"
-	else
-		myconf="${myconf} --enable-dnssd"
-	fi
+#	else
+#		myconf="${myconf} --enable-dnssd"
+#	fi
 
 	if has_version x11-apps/rgb; then
 		myconf="${myconf} --with-rgbfile=/usr/share/X11/rgb.txt"
@@ -218,9 +210,9 @@ src_install() {
 	fi
 
 	# Get rid of the disabled version of the kdnsd libraries
-	if use avahi || use bindist ; then
+#	if use avahi || use bindist ; then
 		rm -rf "${D}/${PREFIX}"/$(get_libdir)/libkdnssd.*
-	fi
+#	fi
 
 	dodir /etc/env.d
 
