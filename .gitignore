@@ -1,2 +1,5 @@
 nbactions.xml
 target
+*.zip
+*.tgz
+*.tar.gz

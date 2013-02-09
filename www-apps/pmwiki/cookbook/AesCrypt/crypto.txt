@@ -1,5 +1,5 @@
 !!! Agorithm description
-!!!!Encryption
+!!!!Encryption steps
 : padding : plaintext is padded with spaces to achieve length of multiple of $AesCryptPadding
 : nonce : pseudo-random 64bit nonce is generated
 : counter : 64bit counter is set to zero
@@ -7,16 +7,15 @@
 : encryption : plaintext is encrypted using AES-256 in CTR mode
 : output : Base64-encoded concatenation of nonce and ciphertext
 
-!!!!Decryption
+!!!!Decryption steps
 : input : Base64-decode and split input to nonce and ciphertext
 : counter : 64bit counter is set to zero
 : key derivation : key is computed from password and possibly nonce (see below)
 : decryption : ciphertext is decrypted using AES-256 in CTR mode
 : trim : plaintext is trimmed
 
-
 !!!KDF functions
-Function is selected by  $AesCryptKDF variable.
+Function is selected by $AesCryptKDF variable.
 Possible values are:
 : sha256 : SHA-256 hash of password
 : sha256_dup : SHA-256 hash of longer text constructed using password and nonce
@@ -31,10 +30,7 @@ Input for SHA-256 hashing is constructed using following JavaScript code:
    var nBytes = nBits/8;
    var nonceEnc = Base64.encode(nonce);
    for (var i = 0; i < nBytes ; i++) {
-     buffer = buffer.concat(i);
-     buffer = buffer.concat(password.charAt(i % password.length));
-     buffer = buffer.concat(password);
-     buffer = buffer.concat(nonceEnc);
+     buffer = buffer.concat(i, password.charAt(i % password.length), password, nonceEnc);
    }
    var hash = Sha256.hash(buffer);
    return hash.slice(0, nBytes);

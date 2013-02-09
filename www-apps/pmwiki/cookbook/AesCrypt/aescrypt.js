@@ -6,6 +6,12 @@
  *   http://www.movable-type.co.uk/scripts/aes.html
  *   http://www.pmwiki.org/wiki/Cookbook/DesCrypt
  *   http://www.pmwiki.org/wiki/Cookbook/AesCrypt
+ *
+ * Copyright 2011-2013 Anomen (ludek_h@seznam.cz)
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published
+ * by the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  */
  
 
@@ -503,12 +509,8 @@ AesCtr.kdf_sha256_dup = function(password, nBits, nonce) {
    var nBytes = nBits/8;
    var nonceEnc = Base64.encode(nonce);
    for (var i = 0; i < nBytes ; i++) {
-     buffer = buffer.concat(i);
-     buffer = buffer.concat(password.charAt(i % password.length));
-     buffer = buffer.concat(password);
-     buffer = buffer.concat(nonceEnc);
+     buffer = buffer.concat(i, password.charAt(i % password.length), password, nonceEnc);
    }
-   //alert(buffer);
    var hash = Sha256.hash(buffer);
    return hash.slice(0, nBytes);
 }
