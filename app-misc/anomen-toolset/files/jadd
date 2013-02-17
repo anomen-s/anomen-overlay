@@ -5,7 +5,7 @@ JOPTS="-ff -pi 10"
 
 if expr "x$1" : ".*l.*"
 then
- JOPTS="$JOPTS -l"
+ JOPTS="$JOPTS -lnc"
 fi
 
 if expr "x$1" : ".*j.*"
