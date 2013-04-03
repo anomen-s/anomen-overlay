@@ -53,7 +53,7 @@ RDEPEND="
 	>=sys-apps/portage-2.1.2.11
 	app-text/ghostscript-gpl
 	x11-libs/libXext
-	>=x11-libs/qt-meta-3.3.3:3
+	>=dev-qt/qt-meta-3.3.3:3
 	acl? (
 		virtual/acl
 	)

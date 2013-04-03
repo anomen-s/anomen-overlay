@@ -1,0 +1,35 @@
+diff -urpN qt-x11-free-3.3.8b.orig/src/tools/qvaluevector.h qt-x11-free-3.3.8b/src/tools/qvaluevector.h
+--- qt-x11-free-3.3.8b.orig/src/tools/qvaluevector.h	2008-01-15 11:09:13.000000000 -0800
++++ qt-x11-free-3.3.8b/src/tools/qvaluevector.h	2012-12-09 04:11:27.641340594 -0800
+@@ -47,6 +47,7 @@
+
+ #ifndef QT_NO_STL
+ #include <vector>
++#include <cstddef>
+ #endif
+
+ template <class T>
+diff -urpN qt-x11-free-3.3.8b.orig/src/tools/qmap.h qt-x11-free-3.3.8b/src/tools/qmap.h
+--- qt-x11-free-3.3.8b.orig/src/tools/qmap.h	2008-01-15 11:09:13.000000000 -0800
++++ qt-x11-free-3.3.8b/src/tools/qmap.h	2013-01-10 15:30:00.636796209 -0800
+@@ -54,6 +54,8 @@
+ #include <map>
+ #endif
+ 
++#include <cstddef>
++
+ //#define QT_CHECK_MAP_RANGE
+ 
+ struct Q_EXPORT QMapNodeBase
+diff -urpN qt-x11-free-3.3.8b.orig/src/tools/qvaluelist.h qt-x11-free-3.3.8b/src/tools/qvaluelist.h
+--- qt-x11-free-3.3.8b.orig/src/tools/qvaluelist.h	2008-01-15 11:09:13.000000000 -0800
++++ qt-x11-free-3.3.8b/src/tools/qvaluelist.h	2013-01-10 15:30:23.561863215 -0800
+@@ -58,6 +58,8 @@
+ #pragma warning(disable:4284) // "return type for operator -> is not a UDT"
+ #endif
+ 
++#include <cstddef>
++
+ template <class T>
+ class QValueListNode
+ {

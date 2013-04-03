@@ -1,6 +1,28 @@
-# ChangeLog for x11-libs/qt-meta
-# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# ChangeLog for dev-qt/qt-meta
+# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/x11-libs/qt/ChangeLog,v 1.586 2009/08/02 21:54:28 tommy Exp $
+
+  21 Mar 2013; Lars Wendler <polynomial-c@gentoo.org> qt-meta-3.3.8b-r2.ebuild,
+  +files/qt-3.3.8b-cstddef.patch:
+  Added patch from https://github.com/gmt/my-kde-sunset to fix compilation with
+  >=gcc-4.6
+
+*qt-meta-3.3.8b-r2 (21 Mar 2013)
+*qt-meta-3.3.8b-r1 (21 Mar 2013)
+
+  21 Mar 2013; Lars Wendler <polynomial-c@gentoo.org>
+  +files/0001-dnd_optimization.patch,
+  +files/qt-3.3.8-fix-compiler-detection.patch,
+  +files/qt-3.3.8-seli-xinerama.patch, +files/0002-dnd_active_window_fix.patch,
+  +files/qt-3.3.8-immqt+gcc-4.3.patch, +files/qt-3.3.8-uic-fix.patch,
+  +files/0038-dragobject-dont-prefer-unknown.patch,
+  +files/qt-3.3.8-libpng15.patch, +files/qt-3.3.8-visibility.patch,
+  +files/0044-qscrollview-windowactivate-fix.diff, +files/qt-3.3.8-mips.patch,
+  +qt-meta-3.3.8b-r1.ebuild, +files/0047-fix-kmenu-widget.diff,
+  +qt-meta-3.3.8b-r2.ebuild, +files/0048-qclipboard_hack_80072.patch,
+  +files/qt-3.3.8b-cjk-fix.patch, +files/qt-ulibc.patch, +metadata.xml:
+  Moved qt-meta to dev-qt category due to Gentoo portage doing this through
+  pkg-move when updating the system.
 
   30 Sep 2011; Michał Górny <mgorny@gentoo.org> qt-meta-3.3.8b-r2.ebuild,
   -files/qt-3.3.8-libpng14.patch, +files/qt-3.3.8-libpng15.patch:
