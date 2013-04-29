@@ -1,4 +1,5 @@
-#!/bin/sh -x
+#!/bin/sh
+
 PROFILE="@PROFILE@"
 
 export WINEARCH="win32"
@@ -10,9 +11,19 @@ export HOME="$WINEPREFIX"
 export XDG_CONFIG_HOME="$WINEPREFIX/.config"
 export XDG_DATA_HOME="$WINEPREFIX/.local"
 
-#export WINEDEBUG=-all
 
-cd "$WINEPREFIX/drive_c"
+cd "$WINEPREFIX"
+unset GIT_DIR
 
-wine regedit "$@"
+if [ -e .git ]
+then
+ echo .git already exists
+ exit 1
+fi
 
+git init .
+git config user.email "$USER@localhost"
+git config user.name "$USER"
+git add -A .
+git commit --all --message "init"
+git gc

@@ -1,8 +1,15 @@
 #!/bin/sh -x
 PROFILE="@PROFILE@"
 
-export WINEARCH=win32
-export WINEPREFIX="$HOME/Wine/$PROFILE"
+export WINEARCH="win32"
+export WINECELLAR="$HOME/Wine"
+export WINEPREFIX="$WINECELLAR/$PROFILE"
+
+export REAL_HOME="$HOME"
+export HOME="$WINEPREFIX"
+export XDG_CONFIG_HOME="$WINEPREFIX/.config"
+export XDG_DATA_HOME="$WINEPREFIX/.local"
+
 #export WINEDEBUG=-all
 
 cd "$WINEPREFIX/drive_c"

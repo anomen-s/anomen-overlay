@@ -11,18 +11,45 @@ export WINECELLAR="$HOME/Wine"
 export WINEPREFIX="$WINECELLAR/$PROFILE"
 export CELLAR_SHARE=/usr/share/wine/cellar
 
+export REAL_HOME="$HOME"
+export HOME="$WINEPREFIX"
+export XDG_CONFIG_HOME="$WINEPREFIX/.config"
+export XDG_DATA_HOME="$WINEPREFIX/.local"
+
 if [ ! -d "$WINECELLAR" ]; then
   echo Missing cellar: "$WINECELLAR"...
   echo Use $CELLAR_SHARE/install.sh to create it.
   exit 1
 fi
 
-mkdir -v -p "$WINEPREFIX" "$WINEPREFIX/loop" "$WINEPREFIX/home" "$WINEPREFIX/drive_c/wine" "$WINEPREFIX/drive_c/install"
+echo '*** precreate WINEPREFIX'
+
+for A in loop home drive_c/wine .config .local
+do
+ mkdir -v -p "$WINEPREFIX/$A"
+done
+
+for A in .fontconfig
+do
+ echo cp $A
+ cp -a -t "$WINEPREFIX" "$REAL_HOME/$A"
+done
+
+echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
+
+for F in config.sh regedit.sh run.sh winetricks.sh gitinit.sh
+do
+    sed -e  "s/@PROFILE@/$PROFILE/g" "$CELLAR_SHARE/$F.template" > "$WINEPREFIX/$F"
+    chmod -v 755 "$WINEPREFIX/$F"
+done
+
+echo '*** wine wineboot...'
 
 cd "$WINEPREFIX/drive_c"
-wine regedit "$CELLAR_SHARE/init.reg"
+wine wineboot
 
-for I in `seq 1 5 ` ; do
+
+for I in `seq 1 10 ` ; do
 # wait for registry
  sleep 3
  test -s "$WINEPREFIX/system.reg" && break
@@ -34,9 +61,9 @@ ln -v -s -f -n .. "$WINEPREFIX/dosdevices/p:"
 ln -v -s -f -n ../../drive_t "$WINEPREFIX/dosdevices/t:"
 ln -v -s -f -n /usr/share/fonts "$WINEPREFIX/dosdevices/v:"
 ln -v -s -f -n /usr/share/wine "$WINEPREFIX/dosdevices/w:"
-ln -v -s -f -n .. "$WINEPREFIX/dosdevices/z:"
 
-echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
+
+echo '*** wine fixing links to $HOME...'
 
 for D in "${WINEPREFIX}/drive_c/users/${USER}"/*
 do
@@ -46,15 +73,7 @@ do
     fi
 done
 
-cp -f -v  "$CELLAR_SHARE/winemenubuilder.exe" "$WINEPREFIX/drive_c/windows/system32/"
-
-for F in config.sh regedit.sh run.sh winetricks.sh
-do
-    sed -e  "s/@PROFILE@/$PROFILE/g" "$CELLAR_SHARE/$F.template" > "$WINEPREFIX/$F"
-    chmod -v 755 "$WINEPREFIX/$F"
-done
+ln -v -s -f -n .. "$WINEPREFIX/dosdevices/z:"
 
 wine regedit "w:\\cellar\\setup.reg"
-
-sleep 3
 

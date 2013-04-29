@@ -3,9 +3,6 @@ REGEDIT4
 [HKEY_LOCAL_MACHINE\Software\Wine\Drives]
 "d:"="cdrom"
 
-[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
-"winemenubuilder.exe"="native"
-
 [HKEY_CURRENT_USER\Software\Wine\WineDbg]
 "ShowCrashDialog"=dword:00000000
 
@@ -13,3 +10,6 @@ REGEDIT4
 "FtpIniName"=".\\wcx_ftp.ini"
 "IniFileName"=".\\wincmd.ini"
 "InstallDir"="t:\\totalcmd"
+
+[HKEY_LOCAL_MACHINE\Software\WineCellar\]
+"inited"="true"
