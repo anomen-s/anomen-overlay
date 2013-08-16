@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
 IUSE=""
-DEPEND=">=dev-lang/python-2.3
+DEPEND="<dev-lang/python-3.0
 		app-i18n/unicode-data"
 RDEPEND="${DEPEND}"
 
@@ -23,6 +23,7 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 	epatch ${FILESDIR}/${P}-gentooPath.patch
+	epatch ${FILESDIR}/${P}-python2.patch
 }
 
 src_install() {
