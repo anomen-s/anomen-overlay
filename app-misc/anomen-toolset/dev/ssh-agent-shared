@@ -1,0 +1,130 @@
+#!/usr/bin/env python
+
+import argparse
+import subprocess
+import os.path
+import os
+import socket
+
+__version__ = "0.0.1"
+
+DEFAULT_SOCKET_ADDRESS = "$HOME/.ssh/agent-$HOSTNAME";
+def parseArguments():
+    parser = argparse.ArgumentParser(description='Authentication agent wrapper.')
+    parser.add_argument('command', nargs='?', help='command to be executed')
+    parser.add_argument('args', nargs='*',  help='an integer for the accumulator')
+
+    parser.add_argument('-a', dest='address', default=os.path.expandvars(DEFAULT_SOCKET_ADDRESS ),
+             help='Bind the agent to the UNIX-domain socket bind_address. The default is ' + DEFAULT_SOCKET_ADDRESS + '.')
+    parser.add_argument('-k', dest='kill', action='store_true',
+             help='Kill the current agent (given by the SSH_AGENT_PID environment variable).')
+    parser.add_argument('-t', dest='timeout',
+             help='Set a default value for the maximum lifetime of identities added to the agent.')
+    parser.add_argument('-s', dest='bash', action='store_true',
+             help='Generate Bourne shell commands on stdout.')
+    parser.add_argument('-c', dest='csh', action='store_true',
+             help='Generate C-shell commands on stdout.')
+    parser.add_argument('-d', dest='debug', action='store_true',
+             help='Debug mode.')
+
+    args = parser.parse_args()
+
+    return args;
+
+
+def testAgent():
+ if (not os.environ['SSH_AUTH_SOCK']):
+    return false
+ devNull = open('/dev/null', 'w')
+ sshStatus = subprocess.call(['ssh-add','-l'], stdout=devNull, stderr=devNull)
+ print (sshStatus)
+ return (sshStatus <= 1);
+
+def setSharedAgent():
+ os.environ['SSH_AUTH_SOCK'] = os.path.expandvars(DEFAULT_SOCKET_ADDRESS)
+ del os.environ['SSH_AGENT_PID']
+
+def cleanupAgent():
+ f = os.environ['SSH_AUTH_SOCK']
+ try:
+   os.remove(f);
+ except IOError:
+    print "Cannot remove " + f
+
+
+def startAgent(args):
+  
+  # start new agent, check params
+  # print output
+
+ cmdLine = ['/usr/bin/ssh-agent']
+ if (args.csh)
+    cmdLine.append('-c')
+ if (args.bash)
+    cmdLine.append('-a')
+ if (args.debug)
+    cmdLine.append('-d')
+ if (args.timeout)
+    cmdLine.append('-t')
+    cmdLine.append(args.timeout)
+ if (args.timeout)
+    cmdLine.append('-a')
+    cmdLine.append(args.address)
+ if (args.cmd):
+    cmdLine.append(args.cmd)
+     if (args.args):
+        cmdLine.exend(args.args)
+
+ print(cmdLine)
+ subprocess.call(cmdLine, stdout=devNull, stderr=devNull)
+  
+ return
+
+
+def printCurrentEnv(args):
+ return
+
+def execCommand(args):
+
+ if (not args.cmd):
+    return
+
+ cmdLine = [cmd]
+ if (args.args):
+    cmdLine.exend(args.args)
+ subprocess.call(cmdLine, stdout=devNull, stderr=devNull)
+
+def main():
+    if (not 'HOSTNAME' in os.environ):
+       os.environ['HOSTNAME'] = socket.gethostname()
+
+    args = parseArguments()
+
+    if (args.kill):
+        print ("KILL")
+        subprocess.call(['ssh-agent', '-k']);
+        return
+
+    print ("addr: " + args.address);
+
+    if testAgent():
+       print('# ssh-agent running')
+       printCurrentEnv(args)
+       execCommand(args)
+       return
+    else:
+      cleanupAgent()
+
+    setSharedAgent()
+
+    if testAgent():
+      print('# shared ssh-agent running')
+      printCurrentEnv(args)
+      execCommand(args)
+      return
+    else:
+      cleanupAgent()
+
+    startAgent(args)
+
+if  __name__ =='__main__':main()
