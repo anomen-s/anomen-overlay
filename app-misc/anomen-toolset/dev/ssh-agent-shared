@@ -33,8 +33,8 @@ def parseArguments():
 
 
 def testAgent():
- if (not os.environ['SSH_AUTH_SOCK']):
-    return false
+ if (not 'SSH_AUTH_SOCK' in os.environ):
+    return 0
  devNull = open('/dev/null', 'w')
  sshStatus = subprocess.call(['ssh-add','-l'], stdout=devNull, stderr=devNull)
  print (sshStatus)
@@ -42,14 +42,19 @@ def testAgent():
 
 def setSharedAgent():
  os.environ['SSH_AUTH_SOCK'] = os.path.expandvars(DEFAULT_SOCKET_ADDRESS)
- del os.environ['SSH_AGENT_PID']
+ if ('SSH_AGENT_PID' in os.environ):
+   del os.environ['SSH_AGENT_PID']
 
 def cleanupAgent():
+ if (not 'SSH_AUTH_SOCK' in os.environ):
+    return
  f = os.environ['SSH_AUTH_SOCK']
  try:
    os.remove(f);
+ except OSError:
+    print ("Cannot remove " + f)
  except IOError:
-    print "Cannot remove " + f
+    print ("Cannot remove " + f)
 
 
 def startAgent(args):
@@ -58,41 +63,46 @@ def startAgent(args):
   # print output
 
  cmdLine = ['/usr/bin/ssh-agent']
- if (args.csh)
+ if (args.csh):
     cmdLine.append('-c')
- if (args.bash)
-    cmdLine.append('-a')
- if (args.debug)
+ if (args.bash):
+    cmdLine.append('-s')
+ if (args.debug):
     cmdLine.append('-d')
- if (args.timeout)
+ if (args.timeout):
     cmdLine.append('-t')
     cmdLine.append(args.timeout)
- if (args.timeout)
+ if (args.address):
     cmdLine.append('-a')
     cmdLine.append(args.address)
- if (args.cmd):
-    cmdLine.append(args.cmd)
-     if (args.args):
-        cmdLine.exend(args.args)
+# if (args.command):
+#    cmdLine.append(args.command)
+#    if (args.args):
+#        cmdLine.extend(args.args)
 
  print(cmdLine)
- subprocess.call(cmdLine, stdout=devNull, stderr=devNull)
-  
+ subprocess.call(cmdLine)
+
  return
 
 
 def printCurrentEnv(args):
  return
 
+
 def execCommand(args):
 
- if (not args.cmd):
+
+ if (not args.command):
     return
 
- cmdLine = [cmd]
+ cmdLine = [args.command]
  if (args.args):
-    cmdLine.exend(args.args)
- subprocess.call(cmdLine, stdout=devNull, stderr=devNull)
+    cmdLine.extend(args.args)
+
+ print('# runnung command',  cmdLine)
+
+ subprocess.call(cmdLine)
 
 def main():
     if (not 'HOSTNAME' in os.environ):
@@ -127,4 +137,6 @@ def main():
 
     startAgent(args)
 
+    execCommand(args)
+    
 if  __name__ =='__main__':main()
