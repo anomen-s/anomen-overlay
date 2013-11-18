@@ -56,10 +56,7 @@ For example, "TopSecret" password and nonce "+u3lTovF4nE=" (in base64) produce (
 * use following template to create code which shall be inserted into @@local/config.php@@
 [@
 $AesCryptKDF='custom';
-include_once("$FarmD/cookbook/aescrypt.php");
-$HTMLHeaderFmt['aescrypt_custom'] = "
-<script type=\"text/javascript\">
-// <![CDATA[
+$AesCryptKDFJSCode = "
 AesCtr.kdf_custom = function(password, nBits, nonce) {
 
    var hash;
@@ -70,9 +67,8 @@ AesCtr.kdf_custom = function(password, nBits, nonce) {
    //   nonce - string of length 8 containing nonce, can be used as salt
    return hash;
 }
-// ]]>
-</script>
 ";
+include_once("$FarmD/cookbook/aescrypt.php");
 @]
 
 !!Links

@@ -13,6 +13,11 @@
 $RecipeInfo['AesCrypt']['Version'] = '2013-01-11';
 
 SDV($AesCryptKDF, 'sha256_dup');
+SDV($AesCryptKDFJSCode, "
+AesCtr.kdf_custom = function(password, nBits, nonce) {
+    return '';
+}
+");
 SDV($AesCryptCipherToken, '(:aes ');
 SDV($AesCryptEndToken, ':)');
 SDV($AesCryptPadding, 6);
@@ -76,6 +81,8 @@ $HTMLHeaderFmt['aescrypt_common'] = "
 <script type=\"text/javascript\" src=\"\$PubDirUrl/aescrypt/main.js\"></script>
 <script type=\"text/javascript\">
 // <![CDATA[
+
+$AesCryptKDFJSCode
 
 /**
  * Key derivation function selected by AesCryptKDF variable.

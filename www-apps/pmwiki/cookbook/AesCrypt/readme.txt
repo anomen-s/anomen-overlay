@@ -20,6 +20,7 @@ This version fixes several problems:
 : $AesCryptEndToken : closing token for ciphertext
 : $AesCryptPadding : size of padding block
 : $EnableGUIButtons : affects rendering of Encrypt button (do not modify it after including aescrypt.php)
+: $AesCryptKDFJSCode : javascript which shoul provide AesCtr.kdf_custom function
 
 !!Usage
 When editing page select text to be encrypted.
@@ -40,10 +41,10 @@ require_once("$FarmD/cookbook/aescrypt.php");
 @]
 
 !!!Supported browsers
-This recipe should work in all current browsers (as of end of 2012) with JavaScript support. 
+This recipe should work in all current browsers (as of end of 2013) with JavaScript support.
 It was successfully tested on:
 * Windows (IE, Firefox, Opera, Chrome)
-* Linux (Firefox, Opera, Chromium)
+* Linux (Firefox, Opera, Chromium, Midori)
 * Android (Opera Mini 7.5 !!! This browser sends password to Opera servers !!!)
 
 !!!Java testing application
