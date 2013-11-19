@@ -6,7 +6,7 @@ import os.path
 import os
 import socket
 
-__version__ = "0.0.1"
+__version__ = "0.0.5"
 
 DEFAULT_SOCKET_ADDRESS = "$HOME/.ssh/agent-$HOSTNAME";
 def parseArguments():
@@ -37,8 +37,8 @@ def testAgent():
     return 0
  devNull = open('/dev/null', 'w')
  sshStatus = subprocess.call(['ssh-add','-l'], stdout=devNull, stderr=devNull)
- print (sshStatus)
- return (sshStatus <= 1);
+ print ("# status of ssh-add:", sshStatus)
+ return (sshStatus < 2);
 
 def setSharedAgent():
  os.environ['SSH_AUTH_SOCK'] = os.path.expandvars(DEFAULT_SOCKET_ADDRESS)
@@ -80,14 +80,28 @@ def startAgent(args):
 #    if (args.args):
 #        cmdLine.extend(args.args)
 
- print(cmdLine)
+ print("# Cmd:", cmdLine)
  subprocess.call(cmdLine)
 
  return
 
 
 def printCurrentEnv(args):
- return
+ # print only when not executing command
+ if (args.command):
+    return
+ if (args.csh):
+   print ("setenv SSH_AUTH_SOCK " + os.environ['SSH_AUTH_SOCK'] + ";")
+   if ('SSH_AGENT_PID' in os.environ):
+     print ("setenv SSH_AGENT_PID " + os.environ['SSH_AGENT_PID'] + ";")
+     print ("echo Agent pid " + os.environ['SSH_AGENT_PID'] + ";")
+ else:
+   print ("SSH_AUTH_SOCK=" + os.environ['SSH_AUTH_SOCK'] + "; export SSH_AUTH_SOCK;")
+   if ('SSH_AGENT_PID' in os.environ):
+     print ("SSH_AGENT_PID=" + os.environ['SSH_AGENT_PID'] + "; export SSH_AGENT_PID;")
+     print ("echo Agent pid " + os.environ['SSH_AGENT_PID'],";")
+ 
+
 
 
 def execCommand(args):
@@ -115,7 +129,7 @@ def main():
         subprocess.call(['ssh-agent', '-k']);
         return
 
-    print ("addr: " + args.address);
+    print ("# addr: " + args.address);
 
     if testAgent():
        print('# ssh-agent running')
