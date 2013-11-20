@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 
+# TODOs:
+# copyright
+# remove debug messages
+# kill shared agent ?
+
 import argparse
 import subprocess
 import os.path
 import os
 import socket
 
-__version__ = "0.0.5"
+__version__ = "0.9.5"
 
 DEFAULT_SOCKET_ADDRESS = "$HOME/.ssh/agent-$HOSTNAME";
 def parseArguments():
@@ -125,7 +130,7 @@ def main():
     args = parseArguments()
 
     if (args.kill):
-        print ("KILL")
+        print ("# KILL")
         subprocess.call(['ssh-agent', '-k']);
         return
 
