@@ -27,13 +27,16 @@ import os.path
 import os
 import socket
 
-__version__ = "0.9.7"
+__version__ = "0.9.8"
 
 DEFAULT_SOCKET_ADDRESS = "$HOME/.ssh/agent-$HOSTNAME";
 def parseArguments():
     parser = argparse.ArgumentParser(description='Authentication agent wrapper.')
     parser.add_argument('command', nargs='?', help='command to be executed')
     parser.add_argument('args', nargs='*',  help='an integer for the accumulator')
+
+    parser.add_argument('-q', dest='quiet', action='store_true',
+             help='Quiet mode.')
 
     parser.add_argument('-a', dest='address', default=os.path.expandvars(DEFAULT_SOCKET_ADDRESS ),
              help='Bind the agent to the UNIX-domain socket bind_address. The default is ' + DEFAULT_SOCKET_ADDRESS + '.')
@@ -101,10 +104,6 @@ def startAgent(args):
  if (args.address):
     cmdLine.append('-a')
     cmdLine.append(args.address)
-# if (args.command):
-#    cmdLine.append(args.command)
-#    if (args.args):
-#        cmdLine.extend(args.args)
 
  printdebug("# Cmd: " + str(cmdLine))
  subprocess.call(cmdLine)
@@ -120,18 +119,17 @@ def printCurrentEnv(args):
    print ("setenv SSH_AUTH_SOCK " + os.environ['SSH_AUTH_SOCK'] + ";")
    if ('SSH_AGENT_PID' in os.environ):
      print ("setenv SSH_AGENT_PID " + os.environ['SSH_AGENT_PID'] + ";")
-     print ("echo Agent pid " + os.environ['SSH_AGENT_PID'] + ";")
+     if (not args.quiet):
+        print ("echo Agent pid " + os.environ['SSH_AGENT_PID'] + ";")
  else:
    print ("SSH_AUTH_SOCK=" + os.environ['SSH_AUTH_SOCK'] + "; export SSH_AUTH_SOCK;")
    if ('SSH_AGENT_PID' in os.environ):
      print ("SSH_AGENT_PID=" + os.environ['SSH_AGENT_PID'] + "; export SSH_AGENT_PID;")
-     print ("echo Agent pid " + os.environ['SSH_AGENT_PID'],";")
- 
-
+     if (not args.quiet):
+       print ("echo Agent pid " + os.environ['SSH_AGENT_PID'] + ";")
 
 
 def execCommand(args):
-
 
  if (not args.command):
     return
@@ -180,5 +178,5 @@ def main():
     startAgent(args)
 
     execCommand(args)
-    
+
 if  __name__ =='__main__':main()
