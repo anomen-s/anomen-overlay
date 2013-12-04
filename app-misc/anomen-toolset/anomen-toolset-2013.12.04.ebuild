@@ -1,7 +1,7 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
-EAPI="3"
+EAPI="4"
 
 DESCRIPTION="Anomen's collection of simple shell scripts"
 HOMEPAGE="http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/app-misc/anomen-toolset"
@@ -22,7 +22,8 @@ RDEPEND="
 	"
 
 src_unpack() {
-	cd "${WORKDIR}"
+	mkdir "${WORKDIR}/${P}"
+	cd "${WORKDIR}/${P}"
 	mkdir bin sbin lib
 
 	cp -t bin "${FILESDIR}"/{chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd}
@@ -41,8 +42,8 @@ src_install() {
 	dobin bin/*
 	dosbin sbin/*
 	
-	insinto /usr/local/lib/anomen-toolset
+	insinto /usr/libexec/anomen-toolset
 	doins lib/*
-	fperms 0755 /usr/local/lib/anomen-toolset/treecmp.{sha,diff}.sh
+	fperms 0755 /usr/libexec/anomen-toolset/treecmp.{sha,diff}.sh
 }
 

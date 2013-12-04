@@ -1,6 +1,6 @@
 #! /bin/sh
 
-TPATH=/usr/local/lib/anomen-toolset
+TPATH=/usr/libexec/anomen-toolset
 
 if [ -z "$1" ]
 then
