@@ -30,7 +30,7 @@ src_unpack() {
 	use "ssh" && cp -t bin "${FILESDIR}"/ssh-agent-shared
 	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src,svn.mv}
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
-	use "xml" && cp -t bin "${FILESDIR}"/jadd
+	use "jad" && cp -t bin "${FILESDIR}"/jadd
 
 	cp -t sbin "${FILESDIR}"/revdep-list.sh
 
