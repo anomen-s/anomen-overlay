@@ -1,7 +1,7 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
-EAPI="3"
+EAPI="4"
 
 DESCRIPTION="Colorize Maven output"
 HOMEPAGE="http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/dev-java/maven-color"
@@ -18,7 +18,8 @@ RDEPEND="
 	|| ( >=sys-apps/coreutils-8.15 app-misc/realpath )"
 
 src_unpack() {
-	cd "${WORKDIR}"
+	mkdir "${WORKDIR}/${P}"
+	cd "${WORKDIR}/${P}"
 	cp "${FILESDIR}/cmvn-${PV}" cmvn
 }
 
