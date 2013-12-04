@@ -17,15 +17,13 @@ RDEPEND="
 	dev-java/maven-bin:2.2
 	|| ( >=sys-apps/coreutils-8.15 app-misc/realpath )"
 
+S="${WORKDIR}"
+
 src_unpack() {
-	mkdir "${WORKDIR}/${P}"
-	cd "${WORKDIR}/${P}"
+	cd "${WORKDIR}"
 	cp "${FILESDIR}/cmvn-${PV}" cmvn
 }
-
-
 
 src_install() {
 	dobin "cmvn"
 }
-

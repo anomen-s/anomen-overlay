@@ -21,9 +21,10 @@ IUSE=""
 DEPEND=""
 RDEPEND="dev-vcs/mercurial"
 
+S="${WORKDIR}"
+
 src_unpack() {
-	mkdir "${WORKDIR}/${P}"
-	cp "${DISTDIR}"/*.py "${WORKDIR}/${P}"
+	cp "${DISTDIR}"/*.py "${S}"
 }
 
 src_install() {
