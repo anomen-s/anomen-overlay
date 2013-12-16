@@ -65,8 +65,13 @@ def testAgent():
     return 0
  devNull = open('/dev/null', 'w')
  sshStatus = subprocess.call(['ssh-add','-l'], stdout=devNull, stderr=devNull)
- printdebug ("# status of ssh-add: "+ str(sshStatus))
+ printdebug ("# status of ssh-add: " + str(sshStatus))
  return (sshStatus < 2);
+
+def touchAgent():
+ fname = os.environ['SSH_AUTH_SOCK'];
+ printdebug ("# touch: " + fname)
+ os.utime(fname, None)
 
 def setSharedAgent():
  os.environ['SSH_AUTH_SOCK'] = os.path.expandvars(DEFAULT_SOCKET_ADDRESS)
@@ -159,6 +164,7 @@ def main():
 
     if testAgent():
        printdebug ('# ssh-agent running')
+       touchAgent()
        printCurrentEnv(args)
        execCommand(args)
        return

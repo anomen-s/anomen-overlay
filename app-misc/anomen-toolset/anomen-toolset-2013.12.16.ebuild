@@ -10,12 +10,11 @@ SRC_URI=""
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="subversion +ssh +xml +jad"
+IUSE="subversion +xml +jad"
 
 DEPEND=""
 RDEPEND="
 	subversion? ( dev-vcs/subversion )
-	ssh? ( net-misc/openssh )
 	xml? ( dev-libs/libxml2 )
 	jad? ( dev-java/jad-bin )
 	virtual/libiconv
@@ -28,7 +27,6 @@ src_unpack() {
 
 	cp -t bin "${FILESDIR}"/{chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd}
 	cp -t lib "${FILESDIR}"/{treecmp.diff.sh,treecmp.sha.sh}
-	use "ssh" && cp -t bin "${FILESDIR}"/ssh-agent-shared
 	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src,svn.mv}
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
 	use "jad" && cp -t bin "${FILESDIR}"/jadd
@@ -38,7 +36,7 @@ src_unpack() {
 }
 
 src_install() {
-	into /usr/local
+	into /usr
 	dobin bin/*
 	dosbin sbin/*
 	
