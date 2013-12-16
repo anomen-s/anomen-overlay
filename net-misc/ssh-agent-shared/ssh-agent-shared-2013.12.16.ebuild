@@ -3,7 +3,7 @@
 # $Header$
 EAPI="4"
 
-DESCRIPTION="Anomen's wrapper for ss-agent"
+DESCRIPTION="Anomen's wrapper for ssh-agent"
 HOMEPAGE="http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/net-misc/ssh-agent-shared"
 SRC_URI=""
 
