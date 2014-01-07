@@ -27,10 +27,20 @@ import os.path
 import os
 import socket
 
-__version__ = "0.9.8"
+__version__ = "0.9.9"
 
 DEFAULT_SOCKET_ADDRESS = "$HOME/.ssh/agent-$HOSTNAME";
+
+
+ENV_SSH_AUTH_SOCK = 'SSH_AUTH_SOCK';
+
+ENV_SSH_AGENT_PID = 'SSH_AGENT_PID';
+
+DEBUG = False;
+
 def parseArguments():
+    global DEBUG
+
     parser = argparse.ArgumentParser(description='Authentication agent wrapper.')
     parser.add_argument('command', nargs='?', help='command to be executed')
     parser.add_argument('args', nargs='*',  help='an integer for the accumulator')
@@ -50,38 +60,53 @@ def parseArguments():
              help='Generate C-shell commands on stdout.')
     parser.add_argument('-d', dest='debug', action='store_true',
              help='Debug mode.')
+    parser.add_argument('-p', dest='prefer_shared', action='store_true',
+             help='Prefer shared agent to current one.')
 
     args = parser.parse_args()
+
+    DEBUG = args.debug
 
     return args;
 
 def printdebug(arg):
-#      uncomment next line to get debug messages
-#      print (arg)
+    if (DEBUG):
+      print (arg)
     return
 
 def testAgent():
- if (not 'SSH_AUTH_SOCK' in os.environ):
+ if (not ENV_SSH_AUTH_SOCK in os.environ):
     return 0
  devNull = open('/dev/null', 'w')
  sshStatus = subprocess.call(['ssh-add','-l'], stdout=devNull, stderr=devNull)
  printdebug ("# status of ssh-add: " + str(sshStatus))
  return (sshStatus < 2);
 
+def testSharedAgent():
+ prevSock = setSharedAgent(False)
+ result = testAgent
+
+ os.environ[ENV_SSH_AUTH_SOCK] = prevSock
+ return (result);
+
 def touchAgent():
- fname = os.environ['SSH_AUTH_SOCK'];
+ fname = os.environ[ENV_SSH_AUTH_SOCK];
  printdebug ("# touch: " + fname)
  os.utime(fname, None)
 
-def setSharedAgent():
- os.environ['SSH_AUTH_SOCK'] = os.path.expandvars(DEFAULT_SOCKET_ADDRESS)
- if ('SSH_AGENT_PID' in os.environ):
-   del os.environ['SSH_AGENT_PID']
+def setSharedAgent(clean):
+ prevSock = None
+ if (ENV_SSH_AUTH_SOCK in os.environ):
+    prevSock = os.environ[ENV_SSH_AUTH_SOCK];
+ os.environ[ENV_SSH_AUTH_SOCK] = os.path.expandvars(DEFAULT_SOCKET_ADDRESS)
+ if (clean and ENV_SSH_AGENT_PID in os.environ):
+   del os.environ[ENV_SSH_AGENT_PID]
+ return prevSock
 
 def cleanupAgent():
- if (not 'SSH_AUTH_SOCK' in os.environ):
+ if (not ENV_SSH_AUTH_SOCK in os.environ):
     return
- f = os.environ['SSH_AUTH_SOCK']
+ f = os.environ[ENV_SSH_AUTH_SOCK]
  try:
    if (os.path.lexists(f)):
     os.remove(f);
@@ -121,17 +146,17 @@ def printCurrentEnv(args):
  if (args.command):
     return
  if (args.csh):
-   print ("setenv SSH_AUTH_SOCK " + os.environ['SSH_AUTH_SOCK'] + ";")
-   if ('SSH_AGENT_PID' in os.environ):
-     print ("setenv SSH_AGENT_PID " + os.environ['SSH_AGENT_PID'] + ";")
+   print ("setenv "+ENV_SSH_AUTH_SOCK+" " + os.environ[ENV_SSH_AUTH_SOCK] + ";")
+   if (ENV_SSH_AGENT_PID in os.environ):
+     print ("setenv "+ENV_SSH_AGENT_PID + " " + os.environ[ENV_SSH_AGENT_PID] + ";")
      if (not args.quiet):
-        print ("echo Agent pid " + os.environ['SSH_AGENT_PID'] + ";")
+        print ("echo Agent pid " + os.environ[ENV_SSH_AGENT_PID] + ";")
  else:
-   print ("SSH_AUTH_SOCK=" + os.environ['SSH_AUTH_SOCK'] + "; export SSH_AUTH_SOCK;")
-   if ('SSH_AGENT_PID' in os.environ):
-     print ("SSH_AGENT_PID=" + os.environ['SSH_AGENT_PID'] + "; export SSH_AGENT_PID;")
+   print (ENV_SSH_AUTH_SOCK + "=" + os.environ[ENV_SSH_AUTH_SOCK] + "; export "+ENV_SSH_AUTH_SOCK+";")
+   if (ENV_SSH_AGENT_PID in os.environ):
+     print (ENV_SSH_AGENT_PID + "=" + os.environ[ENV_SSH_AGENT_PID] + "; export "+ENV_SSH_AGENT_PID+";")
      if (not args.quiet):
-       print ("echo Agent pid " + os.environ['SSH_AGENT_PID'] + ";")
+       print ("echo Agent pid " + os.environ[ENV_SSH_AGENT_PID] + ";")
 
 
 def execCommand(args):
@@ -162,6 +187,14 @@ def main():
 
     printdebug ("# addr: " + args.address);
 
+    if (args.prefer_shared and testSharedAgent):
+      setSharedAgent(True)
+      printdebug('# prefering shared ssh-agent')
+      printCurrentEnv(args)
+      execCommand(args)
+      return
+        
+
     if testAgent():
        printdebug ('# ssh-agent running')
        touchAgent()
@@ -171,7 +204,7 @@ def main():
     else:
       cleanupAgent()
 
-    setSharedAgent()
+    setSharedAgent(True)
 
     if testAgent():
       printdebug('# shared ssh-agent running')
