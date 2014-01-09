@@ -15,6 +15,7 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	dev-java/maven-bin:2.2
+	sys-libs/ncurses
 	|| ( >=sys-apps/coreutils-8.15 app-misc/realpath )"
 
 S="${WORKDIR}"
