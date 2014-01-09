@@ -26,6 +26,8 @@ export BACKGROUND_CYAN=`tput setab 6`
 export BACKGROUND_WHITE=`tput setab 7`
 export RESET_FORMATTING=`tput sgr0`
 
+set -o pipefail
+
 # Wrapper function for Maven's mvn-2.2 command.
 mvn-color-2()
 {
@@ -44,8 +46,12 @@ mvn-color-2()
 	       -e "s/\(Caused by: \)\([^:\t ]*\)/\1${BOLD}${TEXT_RED}\2${RESET_FORMATTING}/g" \
 	       -e "s/Tests run: \([^,]*\), Failures: \([^,]*\), Errors: \([^,]*\), Skipped: \([^,]*\)/${BOLD}${TEXT_GREEN}Tests run: \1${RESET_FORMATTING}, Failures: ${BOLD}${TEXT_RED}\2${RESET_FORMATTING}, Errors: ${BOLD}${TEXT_RED}\3${RESET_FORMATTING}, Skipped: ${BOLD}${TEXT_YELLOW}\4${RESET_FORMATTING}/g"
 
+  MVNE=$?
+
   # Make sure formatting is reset
   echo -ne ${RESET_FORMATTING}
+
+  return $MVNE 
 }
 
 # Wrapper function for Maven's mvn-3.0 command.
@@ -69,8 +75,12 @@ mvn-color-3()
 #	       -e "s/\([0-9*]) [^:]*:[^:]*:[^:]*:.*\)/${BOLD}${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
 #	       -e "s/\(\[INFO\] Failed to resolve artifact\\..*\)/${BOLD}${TEXT_RED}\1${RESET_FORMATTING}/g" \
 
+  MVNE=$?
+
   # Make sure formatting is reset
   echo -ne ${RESET_FORMATTING}
+
+  return $MVNE
 }
 
 MVN_BIN=`realpath /usr/bin/mvn | grep -o -E '[0-9]*[.][0-9]*'`
@@ -88,6 +98,10 @@ case $MVN_BIN in
 		;;
     *)
 		echo "Unknovn maven version $MVN_BIN" 
+		/bin/false
 		;;
+
 esac
+
+exit $?
 
