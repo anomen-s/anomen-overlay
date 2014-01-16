@@ -30,6 +30,6 @@ src_install() {
 	fperms 755 "${dir}/bin/${MY_PN}.sh" "${dir}/bin/fsnotifier" "${dir}/bin/fsnotifier64" || die
 
 	newicon "bin/${MY_PN}.png" "${exe}.png" || die
-	make_wrapper "idea" "/opt/${P}/bin/${MY_PN}.sh" || die
+	make_wrapper "idea-${SLOT}" "/opt/${P}/bin/${MY_PN}.sh" || die
 	make_desktop_entry ${exe} "IntelliJ IDEA $(get_version_component_range 1-3) (Community Edition)" "${exe}" "Development;IDE" || die
 }
