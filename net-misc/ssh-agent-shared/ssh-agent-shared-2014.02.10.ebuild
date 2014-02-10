@@ -22,6 +22,7 @@ src_unpack() {
 	cd "${WORKDIR}/${P}"
 	mkdir bin
 	cp -t bin "${FILESDIR}"/ssh-agent-shared
+	cp -t bin "${FILESDIR}"/ssh-add-once
 
 }
 

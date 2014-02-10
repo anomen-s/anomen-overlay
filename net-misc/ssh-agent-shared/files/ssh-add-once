@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+#
+# Copyright (C) 2013 Anomen  <ludek_h@seznam.cz>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public
+# License along with this program; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+
+
+import argparse
+import subprocess
+import os.path
+import os
+import socket
+
+__version__ = "0.9.0"
+
+def parseArguments():
+
+    parser = argparse.ArgumentParser(description='Authentication agent key importer.')
+    parser.add_argument('fileName', nargs=1, help='file with key')
+    parser.add_argument('fingerprint', nargs=1,  help='fingerprint of the key')
+
+    args = parser.parse_args()
+
+    return args;
+
+def checkKey(fingerprint):
+ try:
+   result = subprocess.check_output(['ssh-add','-l'])
+ except subprocess.CalledProcessError, e:
+   exit(e.returncode)
+
+ strResult = str(result)
+ return (fingerprint[0] in strResult);
+
+def addKey(fileName):
+ sshStatus = subprocess.call(['ssh-add', fileName])
+
+def main():
+
+    args = parseArguments()
+
+    if not checkKey(args.fingerprint):
+      addKey(args.fileName[0])
+    else:
+      print "Key present"
+
+if  __name__ =='__main__':main()
