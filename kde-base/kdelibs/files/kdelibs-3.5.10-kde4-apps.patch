@@ -1,6 +1,6 @@
 diff -ru ./kio/kio/kservice.cpp ../kdelibs-new/kio/kio/kservice.cpp
---- ./kio/kio/kservice.cpp	2008-02-13 10:41:06.000000000 +0100
-+++ ../kdelibs-new/kio/kio/kservice.cpp	2009-05-21 01:53:22.000000000 +0200
+--- kio/kio/kservice.cpp	2008-02-13 10:41:06.000000000 +0100
++++ kio/kio/kservice.cpp	2009-05-21 01:53:22.000000000 +0200
 @@ -97,6 +97,19 @@
    m_bValid = true;
  
