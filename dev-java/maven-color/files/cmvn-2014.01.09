@@ -37,7 +37,7 @@ mvn-color-2()
 	       -e "s/\(^ T E S T S.*\)/${TEXT_BLUE}${BOLD}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(\[INFO\] \[.*\)/${RESET_FORMATTING}${BOLD}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(\[INFO\] BUILD SUCCESSFUL\)/${BOLD}${TEXT_GREEN}\1${RESET_FORMATTING}/g" \
-	       -e "s/\(\[INFO\] Building\( module\|\) \)\(.*\)/${BOLD}${TEXT_BLUE}\1${TEXT_GREEN}\3${RESET_FORMATTING}/g" \
+	       -e "s/\(\[INFO\] Building module \)\(.*\)/${BOLD}${TEXT_BLUE}\1${TEXT_GREEN}\2${RESET_FORMATTING}/g" \
 	       -e "s/\(\[WARNING\].*\)/${BOLD}${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
 	       -e "s/\([0-9]*) [^:]*:[^:]*:[^:]*:.*\)/${BOLD}${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
 	       -e "s/\(\[ERROR\].*\)/${BOLD}${TEXT_RED}\1${RESET_FORMATTING}/g" \
