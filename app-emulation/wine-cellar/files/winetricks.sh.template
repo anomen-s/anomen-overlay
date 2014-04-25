@@ -17,7 +17,8 @@ export W_PREFIXES_ROOT="$HOME/Wine"
 
 cd "$WINETRICKS_CACHE"
 
-wget -nc http://www.kegel.com/wine/winetricks || exit 1
+wget -nc http://winetricks.org/winetricks || exit 1
+
 
 chmod 755 winetricks
 
