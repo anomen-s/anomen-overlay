@@ -12,6 +12,7 @@ SRC_URI="
   https://bitbucket.org/jinhui/hg-cloc/raw/9a7c5cf25816b72ccb3eaf1fa3255e565a2e4e0a/cloc.py -> 9a7c5cf25816b72ccb3eaf1fa3255e565a2e4e0a-cloc.py
   https://bitbucket.org/abuehl/hgext-cifiles/raw/091b6a4b561b65aa70f23f5cf8285e5e23676445/cifiles.py -> 091b6a4b561b65aa70f23f5cf8285e5e23676445-cifiles.py
   https://bitbucket.org/face/timestamp/raw/e85aaaa0a21a9710af1865b828188ff30e19399e/casestop.py -> e85aaaa0a21a9710af1865b828188ff30e19399e-casestop.py
+  https://bitbucket.org/peerst/hgcollapse/raw/b42d3b57df3ad014ed15d0f770f26effd416ec4c/hgext/collapse.py -> b42d3b57df3ad014ed15d0f770f26effd416ec4c-collapse.py
   "
 
 RESTRICT="mirror"
