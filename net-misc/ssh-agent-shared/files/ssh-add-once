@@ -40,7 +40,12 @@ def checkKey(fingerprint):
  try:
    result = subprocess.check_output(['ssh-add','-l'])
  except subprocess.CalledProcessError, e:
-   exit(e.returncode)
+   # error 1 = no key present
+   # error 2 = 'real' error
+   if e.returncode > 1:
+     print e.output
+     exit(e.returncode)
+   return False
 
  strResult = str(result)
  return (fingerprint[0] in strResult);
@@ -55,6 +60,6 @@ def main():
     if not checkKey(args.fingerprint):
       addKey(args.fileName[0])
     else:
-      print "Key present"
+      print "Key " + args.fingerprint[0] + " present"
 
 if  __name__ =='__main__':main()
