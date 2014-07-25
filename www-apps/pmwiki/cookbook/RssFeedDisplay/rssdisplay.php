@@ -24,7 +24,7 @@
 
 */
 
-$RecipeInfo['RSSDisplay']['Version'] = '2011-12-18';
+$RecipeInfo['RSSDisplay']['Version'] = '2014-07-23';
 
 Markup('rssdisplay', 'fulltext', '/\(:RSS\s*(.*?)\s*:\)/e',"MagpieRSS('\$1')");
 
@@ -48,6 +48,14 @@ SDV($MagpieDefaultShowContent, true);
 
 SDV($MagpieOutputEncoding, $Charset);
 
+SDV($HTMLStylesFmt['rssdisplay'], "
+.magpie-date {
+    font-size: smaller;
+}
+.magpie-title {
+    clear: both;
+}
+");
 
 
 function MagpieRssPhpInclude()
@@ -103,7 +111,7 @@ function MagpieRSSDate($item) {
    else {
      $color = 'gray';
    }
-   return '<div class="magpie-date" style="font-size:smaller;color:' . $color . '">' . $daterss . '</div>';
+   return '<div class="magpie-date" style="color:' . $color . '">' . $daterss . '</div>';
   }
   return '';
 }
@@ -181,7 +189,7 @@ function MagpieRSS($regex) {
         }
 
         $link="<a class='urllink' href='$href'>$title</a>";
-          $line .= "<h3 class='rss$what'>$link</h3>\n";
+          $line .= "<h3 class='magpie-title'>$link</h3>\n";
           if ($showdate) {
             $date = MagpieRSSDate($item);
             $line .= "$date \n" ;
@@ -201,7 +209,7 @@ function MagpieRSS($regex) {
  if (!IsEnabled($MagpieDebug)) {
    error_reporting($OriginalError_reportingLevel);
  }
- $line="<div class='rss'>$line</div>";
+ $line="<div class='magpie-rss'>$line</div>";
 
  $rss_link = "\n%right% [[$url|RSS]]\n";
 
