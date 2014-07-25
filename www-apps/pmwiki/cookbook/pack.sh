@@ -10,6 +10,7 @@ TMP=$TMPD/aescrypt
 mkdir -p "$TMP/cookbook"  "$TMP/pub/aescrypt" "$TMP/pub/guiedit"
 cp AesCrypt/aescrypt.php "$TMP/cookbook"
 cp AesCrypt/*.js "$TMP/pub/aescrypt"
+cp AesCrypt/*.txt "$TMP/pub/aescrypt"
 cp AesCrypt/{close.png,maskbg.png,showpass.png} "$TMP/pub/aescrypt"
 cp AesCrypt/aescrypt.png "$TMP/pub/guiedit"
 

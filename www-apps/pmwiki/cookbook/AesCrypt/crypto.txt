@@ -64,7 +64,7 @@ AesCtr.kdf_custom = function(password, nBits, nonce) {
    // params:
    //   password - password given by user
    //   nBits - AES variant, always 256
-   //   nonce - string of length 8 containing nonce, can be used as salt
+   //   nonce - binary string of length 8 containing nonce, can be used as salt
    return hash;
 }
 ";
