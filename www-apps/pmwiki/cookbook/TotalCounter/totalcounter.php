@@ -225,84 +225,84 @@ if ($action == 'browse') {
 	}
 
 	//find web bot
-	if (eregi('ia_archiver', $_SERVER['HTTP_USER_AGENT']))
+	if (preg_match('/ia_archiver/', $_SERVER['HTTP_USER_AGENT']))
 		$tc_bot = 'Alexa';
-	elseif (eregi('ask jeeves', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Ask Jeeves';
-	elseif (eregi('baiduspider', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Baidu';
-	elseif (eregi('libcurl', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'cURL';
-	elseif (eregi('gigabot', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Gigablast';
-	elseif (eregi('googlebot', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Google';
-	elseif (eregi('grub-client', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Grub';
-	elseif (eregi('slurp@inktomi.com', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Inktomi';
-	elseif (eregi('msnbot', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'MSN';
-	elseif (eregi('scooter', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Altavista';
-	elseif (eregi('wget', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'wget';
-	elseif (eregi('yahoo! slurp', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Yahoo!';
-	elseif (eregi('becomebot', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Become';
-	elseif (eregi('fast', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Fast/Alltheweb';
-	elseif (eregi('zyborg', $_SERVER['HTTP_USER_AGENT']) || eregi('zealbot', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'WiseNut!';
+	elseif (preg_match('/ask jeeves/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Ask Jeeves';
+	elseif (preg_match('/baiduspider/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Baidu';
+	elseif (preg_match('/libcurl/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'cURL';
+	elseif (preg_match('/gigabot/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Gigablast';
+	elseif (preg_match('/googlebot/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Google';
+	elseif (preg_match('/grub-client/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Grub';
+	elseif (preg_match('/slurp@inktomi.com/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Inktomi';
+	elseif (preg_match('/msnbot/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'MSN';
+	elseif (preg_match('/scooter/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Altavista';
+	elseif (preg_match('/wget/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'wget';
+	elseif (preg_match('/yahoo! slurp/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Yahoo!';
+	elseif (preg_match('/becomebot/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Become';
+	elseif (preg_match('/fast/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'Fast/Alltheweb';
+	elseif (preg_match('/zyborg/', $_SERVER['HTTP_USER_AGENT']) || preg_match('/zealbot/', $_SERVER['HTTP_USER_AGENT'])) $tc_bot = 'WiseNut!';
 
 	//not a bot, so find the browser
-	elseif (eregi('arachne', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Arachne GPL';
-	elseif (eregi('blazer', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Blazer';
-	elseif (eregi('opera', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Opera';
-	elseif (eregi('webtv', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'WebTV';
-	elseif (eregi('camino', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Camino';
-	elseif (eregi('netpositive', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'NetPositive';
-	elseif (eregi('internet explorer', $_SERVER['HTTP_USER_AGENT']) || eregi('msie', $_SERVER['HTTP_USER_AGENT']) || eregi('mspie', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'MS Internet Explorer';
-	elseif (eregi('avant browser', $_SERVER['HTTP_USER_AGENT']) || eregi('advanced browser', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Avant Browser';
-	elseif (eregi('galeon', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Galeon';
-	elseif (eregi('konqueror', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Konqueror';
-	elseif (eregi('icab', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'iCab';
-	elseif (eregi('omniweb', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'OmniWeb';
-	elseif (eregi('phoenix', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Phoenix';
-	elseif (eregi('firebird', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Firebird';
-	elseif (eregi('firefox', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Firefox';
-	elseif (eregi('minimo', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Minimo';
-	elseif (eregi("mozilla", $_SERVER['HTTP_USER_AGENT']) && eregi("rv:[0-9].[0-9][a-b]", $_SERVER['HTTP_USER_AGENT']) && !eregi("netscape", $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Mozilla';
-	elseif (eregi("mozilla", $_SERVER['HTTP_USER_AGENT']) && eregi("rv:[0-9].[0-9]", $_SERVER['HTTP_USER_AGENT']) && !eregi("netscape", $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Mozilla';
-	elseif (eregi("libwww", $_SERVER['HTTP_USER_AGENT'])) {
-		if (eregi("amaya", $_SERVER['HTTP_USER_AGENT'])) {
+	elseif (preg_match('/arachne/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Arachne GPL';
+	elseif (preg_match('/blazer/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Blazer';
+	elseif (preg_match('/opera/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Opera';
+	elseif (preg_match('/webtv/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'WebTV';
+	elseif (preg_match('/camino/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Camino';
+	elseif (preg_match('/netpositive/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'NetPositive';
+	elseif (preg_match('/internet explorer/', $_SERVER['HTTP_USER_AGENT']) || preg_match('/msie/', $_SERVER['HTTP_USER_AGENT']) || preg_match('/mspie/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'MS Internet Explorer';
+	elseif (preg_match('/avant browser/', $_SERVER['HTTP_USER_AGENT']) || preg_match('/advanced browser/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Avant Browser';
+	elseif (preg_match('/galeon/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Galeon';
+	elseif (preg_match('/konqueror/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Konqueror';
+	elseif (preg_match('/icab/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'iCab';
+	elseif (preg_match('/omniweb/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'OmniWeb';
+	elseif (preg_match('/phoenix/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Phoenix';
+	elseif (preg_match('/firebird/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Firebird';
+	elseif (preg_match('/firefox/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Firefox';
+	elseif (preg_match('/minimo/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Minimo';
+	elseif (preg_match("/mozilla/", $_SERVER['HTTP_USER_AGENT']) && preg_match("rv:[0-9].[0-9][a-b]", $_SERVER['HTTP_USER_AGENT']) && !preg_match("netscape", $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Mozilla';
+	elseif (preg_match("/mozilla/", $_SERVER['HTTP_USER_AGENT']) && preg_match("rv:[0-9].[0-9]", $_SERVER['HTTP_USER_AGENT']) && !preg_match("netscape", $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Mozilla';
+	elseif (preg_match("/libwww/", $_SERVER['HTTP_USER_AGENT'])) {
+		if (preg_match("/amaya/", $_SERVER['HTTP_USER_AGENT'])) {
 			$tc_browser = 'Amaya';
 		} else {
 			$tc_browser = 'Text browser';
 		}
 	}
-	elseif (eregi('chrome', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Chrome';
-	elseif (eregi('safari', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Safari';
-	elseif (eregi('elinks', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'ELinks';
-	elseif (eregi('offbyone', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Off By One';
-	elseif (eregi('playstation portable', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'PlayStation Portable';
-	elseif (eregi('netscape', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Netscape';
-	elseif (eregi('mozilla', $_SERVER['HTTP_USER_AGENT']) && !eregi("rv:[0-9]\.[0-9]\.[0-9]", $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Firefox';
-	elseif (eregi('links', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Links';
-	elseif (eregi('ibrowse', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'iBrowse';
-	elseif (eregi('w3m', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'w3m';
-	elseif (eregi('aweb', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'AWeb';
-	elseif (eregi('voyager', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Voyager';
-	elseif (eregi('oregano', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Oregano';
+	elseif (preg_match('/chrome/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Chrome';
+	elseif (preg_match('/safari/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Safari';
+	elseif (preg_match('/elinks/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'ELinks';
+	elseif (preg_match('/offbyone/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Off By One';
+	elseif (preg_match('/playstation portable/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'PlayStation Portable';
+	elseif (preg_match('/netscape/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Netscape';
+	elseif (preg_match('/mozilla/', $_SERVER['HTTP_USER_AGENT']) && !preg_match("rv:[0-9]\.[0-9]\.[0-9]", $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Firefox';
+	elseif (preg_match('/links/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Links';
+	elseif (preg_match('/ibrowse/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'iBrowse';
+	elseif (preg_match('/w3m/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'w3m';
+	elseif (preg_match('/aweb/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'AWeb';
+	elseif (preg_match('/voyager/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Voyager';
+	elseif (preg_match('/oregano/', $_SERVER['HTTP_USER_AGENT'])) $tc_browser = 'Oregano';
 	else
 		$tc_browser = 'Unknown';
 
 	//find operating system
-	if (eregi('linux', $_SERVER['HTTP_USER_AGENT']))
+	if (preg_match('/linux/', $_SERVER['HTTP_USER_AGENT']))
 		$tc_os = 'Linux';
-	elseif (eregi('irix', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'IRIX';
-	elseif (eregi('hp-ux', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'HP-Unix';
-	elseif (eregi('os/2', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'OS/2';
-	elseif (eregi('beos', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'BeOS';
-	elseif (eregi('sunos', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'SunOS';
-	elseif (eregi('palm', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'PalmOS';
-	elseif (eregi('cygwin', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Cygwin';
-	elseif (eregi('amiga', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Amiga';
-	elseif (eregi('unix', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Unix';
-	elseif (eregi('qnx', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'QNX';
-	elseif (eregi('win', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Windows';
-	elseif (eregi('mac', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Mac';
-	elseif (eregi('risc', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'RISC';
-	elseif (eregi('dreamcast', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Dreamcast';
-	elseif (eregi('freebsd', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'FreeBSD';
-	elseif (eregi('dos', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'dos';
+	elseif (preg_match('/irix/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'IRIX';
+	elseif (preg_match('/hp-ux/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'HP-Unix';
+	elseif (preg_match('/os2/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'OS/2';
+	elseif (preg_match('/beos/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'BeOS';
+	elseif (preg_match('/sunos/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'SunOS';
+	elseif (preg_match('/palm/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'PalmOS';
+	elseif (preg_match('/cygwin/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Cygwin';
+	elseif (preg_match('/amiga/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Amiga';
+	elseif (preg_match('/unix/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Unix';
+	elseif (preg_match('/qnx/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'QNX';
+	elseif (preg_match('/win/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Windows';
+	elseif (preg_match('/mac/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Mac';
+	elseif (preg_match('/risc/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'RISC';
+	elseif (preg_match('/dreamcast/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'Dreamcast';
+	elseif (preg_match('/freebsd/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'FreeBSD';
+	elseif (preg_match('/dos/', $_SERVER['HTTP_USER_AGENT'])) $tc_os = 'dos';
 	else
 		$tc_os = 'Unknown';
 
