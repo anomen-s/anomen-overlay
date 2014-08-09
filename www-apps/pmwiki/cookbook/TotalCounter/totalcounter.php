@@ -2,7 +2,7 @@
 if (!defined('PmWiki'))
 	exit ();
 
-$RecipeInfo['TotalCounter']['Version']='2010-02-08 - v1.9.2';
+$RecipeInfo['TotalCounter']['Version']='2010-02-08 - v1.9.3';
 /*
 	TotalCounter 1.9.2
 	statistic counter for PmWiki
@@ -106,9 +106,11 @@ $RecipeInfo['TotalCounter']['Version']='2010-02-08 - v1.9.2';
 		Added $TotalCounterFile & $TotalCounterLockfile configuration variables.
 	1.9.2 - 2010-02-08 - Peter Bowers
 		Tiny fix to allow Google Chrome browser to be identified correctly.
+	1.9.3 - 2014-07-31 - Anomen
+		Fir pattern matching( case insensitive)
 */
 
-define(TOTALCOUNTER, '1.9.2');
+define(TOTALCOUNTER, '1.9.3');
 
 SDV($TotalCounterAction, 'totalcounter');
 SDV($TotalCounterAuthLevel, 'admin');
