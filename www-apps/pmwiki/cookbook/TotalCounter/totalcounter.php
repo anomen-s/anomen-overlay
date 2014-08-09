@@ -65,10 +65,20 @@
 		Added {$PageViews} page variable.
 		Fixed a problem when ResolvePageName function does not exist (earlier versions of PmWiki).
 		Fixed a problem with PHP version <4.3.
-
+	1.6 - 27.03.2006
+		Morison: has also added code (using PHP Sessions) to only
+                count visitors' first visit to each page and to only count
+                their browser, Operating System, referer and location once
+                per session.
+		Florian Xaver:
+		 Added os: "DOS"
+		 Added browser: "Arachne GPL"
+		 Added browser: "Blazer"
+		 Changed 'palmos' to 'palm'
+                Schlaefer: a daily page counter, a short input field to set the $TotalCounterMaxItems. Changes he mades have a ## comment.
 */
 
-	define(TOTALCOUNTER, '1.5');
+	define(TOTALCOUNTER, '1.6');
 
 	SDV($TotalCounterAction, 'totalcounter');
 	SDV($TotalCounterAuthLevel, 'read');
@@ -120,12 +130,29 @@
 	if (function_exists('ResolvePageName')) {
 		$tc_pagename = ResolvePageName($pagename);
 	} else {
-		$tc_pagename = '';
+		$tc_pagename=str_replace('/','.',$pagename);	/* line changed by Chris Morison 9/3/06 */
 	}
+	
 	if ($tc_pagename=='') $tc_pagename="$DefaultGroup.$DefaultName";
-
-	if ($action=='browse') {
-
+	
+	/*  Start of code block added by Chris Morison 9/3/06 */
+	$tc_ignore_cookie=$CookiePrefix.'_totalcounter_ignore';
+	if ($action==$TotalCounterAction.'_setcookie') {
+		setcookie($tc_ignore_cookie,'true',mktime(0,0,0,12,31,2037),'/');
+	}
+	$tc_cookie_set=(isset($_COOKIE[$tc_ignore_cookie]) && $_COOKIE[$tc_ignore_cookie]=='true');
+	
+	if ($action=='browse' && !$tc_cookie_set) {
+		@session_start();
+		if (isset($_SESSION['tc_'.$tc_pagename])) {
+			$tc_cookie_set=true;
+		} else {
+			$_SESSION['tc_'.$tc_pagename]='1';
+		}
+	}
+	/* end of code block added by Chris Morison */
+	
+	if ($action=='browse' && !$tc_cookie_set) {	/* line changed by Chris Morison 9/3/06 */
 		//find users
 		if (isset($AuthId)) {
 			$tc_user = $AuthId;
@@ -160,6 +187,8 @@
 		elseif (eregi('zyborg',$_SERVER['HTTP_USER_AGENT']) || eregi('zealbot',$_SERVER['HTTP_USER_AGENT'])) $tc_bot='WiseNut!';
 
 		//not a bot, so find the browser
+		elseif (eregi('arachne',$_SERVER['HTTP_USER_AGENT'])) $tc_browser='Arachne GPL';
+		elseif (eregi('blazer',$_SERVER['HTTP_USER_AGENT'])) $tc_browser='Blazer';
 		elseif (eregi('opera',$_SERVER['HTTP_USER_AGENT'])) $tc_browser='Opera';
 		elseif (eregi('webtv',$_SERVER['HTTP_USER_AGENT'])) $tc_browser='WebTV';
 		elseif (eregi('camino',$_SERVER['HTTP_USER_AGENT'])) $tc_browser='Camino';
@@ -203,7 +232,7 @@
 		elseif (eregi('os/2',$_SERVER['HTTP_USER_AGENT'])) $tc_os='OS/2';
 		elseif (eregi('beos',$_SERVER['HTTP_USER_AGENT'])) $tc_os='BeOS';
 		elseif (eregi('sunos',$_SERVER['HTTP_USER_AGENT'])) $tc_os='SunOS';
-		elseif (eregi('palmos',$_SERVER['HTTP_USER_AGENT'])) $tc_os='PalmOS';
+		elseif (eregi('palm',$_SERVER['HTTP_USER_AGENT'])) $tc_os='PalmOS';
 		elseif (eregi('cygwin',$_SERVER['HTTP_USER_AGENT'])) $tc_os='Cygwin';
 		elseif (eregi('amiga',$_SERVER['HTTP_USER_AGENT'])) $tc_os='Amiga';
 		elseif (eregi('unix',$_SERVER['HTTP_USER_AGENT'])) $tc_os='Unix';
@@ -213,6 +242,7 @@
 		elseif (eregi('risc',$_SERVER['HTTP_USER_AGENT'])) $tc_os='RISC';
 		elseif (eregi('dreamcast',$_SERVER['HTTP_USER_AGENT'])) $tc_os='Dreamcast';
 		elseif (eregi('freebsd',$_SERVER['HTTP_USER_AGENT'])) $tc_os='FreeBSD';
+		elseif (eregi('dos',$_SERVER['HTTP_USER_AGENT'])) $tc_os='dos';                
 		else $tc_os='Unknown';
 
 		//find referrer domain
@@ -274,7 +304,7 @@
 		$TotalCounter['Pages'][$tc_pagename] = 0;
 	}
 
-	if (($action=='browse') && ($tc_pagename!='')) {
+	if (($action=='browse') && ($tc_pagename!='') && !$tc_cookie_set) {	/* line changed by Chris Morison 9/3/06 */
 		$TotalCount = ++$TotalCounter['Total'];
 
 		if (!@in_array($tc_pagename,$TotalCounterBlacklist['Pages'])) {
@@ -286,12 +316,19 @@
 
 			if (!$blacklisted) {
 				$PageCount = ++$TotalCounter['Pages'][$tc_pagename];
+                                ## handles the daily counter
+                                if ($TotalCounter['PagesTodayDay'][$tc_pagename] == date("%y%m%d"))
+                                $PageCountToday = ++$TotalCounter['PagesTodayCounter'][$tc_pagename] ;
+                                else {
+                                 $TotalCounter['PagesTodayDay'][$tc_pagename] = date("%y%m%d");
+                                 $TotalCounter['PagesTodayCounter'][$tc_pagename] = 1;
+                                }
 			} else {
 				$PageCount = 0;
 			}
 		}
 
-		if (!@in_array($tc_user,$TotalCounterBlacklist['Users'])) {
+		if (!@in_array($tc_user,$TotalCounterBlacklist['Users']) && !isset($_SESSION['tc_Logged'])) {	/* line changed by Chris Morison 9/3/06 */
 			$blacklisted = false;
 			if (is_array($TotalCounterBlacklist['Users']))
 				foreach ($TotalCounterBlacklist['Users'] as $value)
@@ -306,11 +343,17 @@
 			if (isset($userlang))
 				$TotalCounter['Languages'][$userlang]++;
 
-		if (isset($tc_browser)) if (!@in_array($tc_browser,$TotalCounterBlacklist['Browsers'])) $TotalCounter['Browsers'][$tc_browser]++;
-		if (isset($tc_bot)) if (!@in_array($tc_bot,$TotalCounterBlacklist['Bots'])) $TotalCounter['Bots'][$tc_bot]++;
-		if (!@in_array($tc_os,$TotalCounterBlacklist['OSes'])) $TotalCounter['OSes'][$tc_os]++;
+		if (isset($tc_browser) && !@in_array($tc_browser,$TotalCounterBlacklist['Browsers']) && !isset($_SESSION['tc_Logged'])) {	/* line changed by Chris Morison 9/3/06 */
+			$TotalCounter['Browsers'][$tc_browser]++;
+		}
+		if (isset($tc_bot) && !@in_array($tc_bot,$TotalCounterBlacklist['Bots']) && !isset($_SESSION['tc_Logged'])) {	/* line changed by Chris Morison 9/3/06 */
+			$TotalCounter['Bots'][$tc_bot]++;
+		}
+		if (!@in_array($tc_os,$TotalCounterBlacklist['OSes']) && !isset($_SESSION['tc_Logged'])) {	/* line changed by Chris Morison 9/3/06 */
+			$TotalCounter['OSes'][$tc_os]++;
+		}
 
-		if (!@in_array($tc_referer,$TotalCounterBlacklist['Referers'])) {
+		if (!@in_array($tc_referer,$TotalCounterBlacklist['Referers']) && !isset($_SESSION['tc_Logged'])) {	/* line changed by Chris Morison 9/3/06 */
 			$blacklisted = false;
 			if (is_array($TotalCounterBlacklist['Referers']))
 				foreach ($TotalCounterBlacklist['Referers'] as $value)
@@ -321,7 +364,9 @@
 				$TotalCounter['Referers'][$tc_referer]++;
 		}
 
-		if (!@in_array($tc_location,$TotalCounterBlacklist['Locations'])) $TotalCounter['Locations'][$tc_location]++;
+		if (!@in_array($tc_location,$TotalCounterBlacklist['Locations']) && !isset($_SESSION['tc_Logged'])) {	/* line changed by Chris Morison 9/3/06 */
+			$TotalCounter['Locations'][$tc_location]++;
+		}
 
 		if (defined('MULTILANGUAGE')) 
 			if (!@in_array($tc_location,$TotalCounterBlacklist['Languages']))
@@ -332,10 +377,14 @@
 			fputs($fp, serialize($TotalCounter));
 			fclose($fp);
 		}
+		
+		$_SESSION['tc_Logged']='1';	/* line added  by Chris Morison 9/3/06 */
 
 	} else {
 		$TotalCount = $TotalCounter['Total'];
 		$PageCount = $TotalCounter['Pages'][$tc_pagename];
+                ## by Schlaefer
+                $TotalCounter['PagesTodayDay'][$tc_pagename] == date("%y%m%d") ? $PageCountToday = $TotalCounter['PagesTodayCounter'][$tc_pagename] : $PageCountToday = 1;
 	}
 
 	//rmdir($lock);
@@ -346,8 +395,16 @@
 	Markup('{$PageCount}','<{$var}','/\\{\\$PageCount\\}/e',$PageCount);
 	Markup('{$TotalCount}','<{$var}','/\\{\\$TotalCount\\}/e',$TotalCount);
 
+        ## by Schlaefer
+        ## adds vars for the input form
+        Markup('{$PopularPagesItems}', '<{$var}', '/{\\$TotalCounterMaxItems}/', $_REQUEST['TotalCounterMaxItems'] ? $_REQUEST['TotalCounterMaxItems'] : $TotalCounterMaxItems );
+
 	//add the {$PageViews} page variable
 	$FmtPV['$PageViews'] = '$GLOBALS["TotalCounter"]["Pages"][$pagename]';
+
+        ## by Schlaefer
+        ## add the {$PagesTodayCounter} page variable
+        $FmtPV['$PageCountToday'] = '$GLOBALS["TotalCounter"]["PagesTodayCounter"][$pagename]';
 
 	function HandleTotalCounter($pagename, $auth='read') {
 		global $Action, $TotalCounter, $TotalCounterMaxItems, $TotalCounterBarColor, $TotalCounterShowNumbers, $TotalCount;
@@ -460,6 +517,10 @@
 
 		$Action = 'TotalCounter statistics';
 
+                ## by Schlaefer
+                ## sets the max items if provided by the form
+                if($_REQUEST['TotalCounterMaxItems']) $TotalCounterMaxItems = $_REQUEST['TotalCounterMaxItems'];
+
 
 		//------------------------------------------------------------------------------------------------------------
 		// PAGES
@@ -484,6 +545,37 @@
 					'</tr>';
 			}
 
+
+                ## by Schlaefer
+
+        //------------------------------------------------------------------------------------------------------------
+		## PAGES daily
+		
+		$html .= '</table>'.
+			'<br /><hr />'.
+			'<h2>$[Page views] $[today]</h2>'.
+			'<table border=\'0\'>'.
+			'<tr><td'.($TotalCounterShowNumbers ? ' colspan=\'2\'' : '').'><b>$[Pages]&nbsp;</b></td><td colspan=\'2\'><b>$[Percent]</b></td><td align=\'right\'><b>$[Count]</b></td></tr>';
+		$tar = array();
+		foreach ($TotalCounter['PagesTodayCounter'] as $pn=>$cnt) {
+		    if ($TotalCounter['PagesTodayDay'][$pn] === date("%y%m%d"))
+		    	$tar[$pn] = $cnt;
+	    }
+		@arsort($tar);
+    	$tot = @array_sum($tar);
+    	$tar = @array_slice($tar, 0, $TotalCounterMaxItems);
+		$max = @current($tar);
+		
+		$i = 0;
+		if (is_array($tar))
+			foreach ($tar as $pn=>$cnt) {
+				$html .= '<tr>'.
+					($TotalCounterShowNumbers ? '<td align=\'right\' valign=\'bottom\'><small>'.++$i.'.</small></td>' : '').
+					"<td><a href='\$ScriptUrl/$pn'>$pn</a>&nbsp;</td><td>". Round(100*$cnt/$tot) ."%</td><td><div style='background-color:$TotalCounterBarColor;height:13px;width:". Round(200*$cnt/$max) ."px;color:#fff'></div></td><td align='right'>&nbsp;$cnt</td>".
+					'</tr>';
+				if ($i == $TotalCounterMaxItems)
+				    break;
+		}
 		//------------------------------------------------------------------------------------------------------------
 		// USERS
 
@@ -654,6 +746,10 @@
 			}
 
 		$html .= '</table><hr /><p align=\'right\'>TotalCounter v'.TOTALCOUNTER.'</p>';
+
+		## by Schlaefer
+		## Input form for $TotalCounterMaxItems
+                $html .= MarkupToHTML($pagename, '(:input form "$PageUrl?action=totalcounter" post:) $[Items]:  (:input text TotalCounterMaxItems {$TotalCounterMaxItems} size=4:) (:input submit :)(:input end:)');
 
 		PrintFmt($pagename,array(&$PageStartFmt,$html,&$PageEndFmt));
 	}
