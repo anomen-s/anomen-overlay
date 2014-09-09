@@ -41,7 +41,7 @@ src_unpack() {
 
 	if use mssql ; then
 		mkdir jdbc/mssql
-		java-pkg_jar-from --into jdbc/mssql  jdbc-mssqlserver-2005
+		java-pkg_jar-from --into jdbc/mssql jdbc-mssqlserver-4.0 
 	fi
 
 	if use jtds ; then
