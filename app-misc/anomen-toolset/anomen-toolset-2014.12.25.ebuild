@@ -25,7 +25,7 @@ src_unpack() {
 	cd "${WORKDIR}/${P}"
 	mkdir bin sbin lib
 
-	cp -t bin "${FILESDIR}"/{chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd}
+	cp -t bin "${FILESDIR}"/{bom,chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd}
 	cp -t lib "${FILESDIR}"/{treecmp.diff.sh,treecmp.sha.sh}
 	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src,svn.mv}
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat

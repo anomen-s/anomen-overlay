@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+#
+# Copyright (C) 2013 Anomen  <ludek_h@seznam.cz>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public
+# License along with this program; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+
+import argparse
+import os
+import sys
+import tempfile
+
+__version__ = "0.1.0"
+
+BOM = '\xef\xbb\xbf' # ['\xEF', '\xBB', '\xBF']
+
+def parseArguments():
+
+    parser = argparse.ArgumentParser(description='Unicode Byto-order-mark tool..')
+    parser.add_argument('-a', dest='add', action='store_true',
+             help='Add BOM to file (default action).')
+    parser.add_argument('-r', dest='remove', action='store_true',
+             help='Remove BOM from file.')
+
+    parser.add_argument('fileName', nargs='+', help='file')
+
+    args = parser.parse_args()
+    if (args.add and args.remove):
+       raise Exception('Invalid parameter usage')
+
+    return args;
+
+def addBom(fileName):
+    f = open(fileName, "rb")
+    data = f.read()
+    f.close()
+    tmpName = mktmp();
+    outf = open(tmpName, "wb")
+    if (data[0:3] != BOM):
+       outf.write(BOM)
+    outf.write(data)
+    outf.close()
+    replace(fileName, tmpName);
+
+def removeBom(fileName):
+    f = open(fileName, "rb")
+    data = f.read()
+    f.close()
+    tmpName = mktmp();
+    outf = open(tmpName, "wb")
+    if (data[0:3] == BOM):
+        outf.write(data[3:])
+    else:
+        outf.write(data)
+    outf.close()
+    replace(fileName, tmpName);
+
+def mktmp():
+    tmp = tempfile.mkstemp(dir='.')
+    os.close(tmp[0])
+    return tmp[1]
+
+def replace(fileName, tempFile):
+    os.remove(fileName)
+    os.rename(tempFile, fileName)
+
+def main():
+    args = parseArguments()
+
+    for fn in args.fileName:
+      if args.remove:
+        removeBom(fn)
+      else:
+        addBom(fn)
+
+if  __name__ =='__main__':main()
