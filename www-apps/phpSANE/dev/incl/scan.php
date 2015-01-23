@@ -201,7 +201,7 @@
   if ($action_clean_tmp) {
     $files = glob($temp_dir."*");
     foreach($files as $file) {
-      if(is_file($file) && time() - filemtime($file) >= 24*60*60) {
+      if(is_file($file) && time() - filemtime($file) >= 24*60*60*$keep_save_files_days) {
         unlink($file);
       }
     }

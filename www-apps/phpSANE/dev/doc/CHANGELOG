@@ -68,3 +68,9 @@
 	- changed scanner detection routine to avoid webcams detected as scanners
 	- added support for pdf output through imagemagick
 	- changed mode option to support scanimage 1.0.21+
+
+* 0.8.0-as
+	- aded czech translation [not yet finished]
+	- removed --jpeg-quality default parameter
+	- added $keep_save_files_days to change number of days before old file is removed (instead of hardcoded 1 day)
+	- changed location of gocr

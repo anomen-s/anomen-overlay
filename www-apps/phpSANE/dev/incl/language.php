@@ -573,4 +573,71 @@ $lang[7] = array(
     "scannen_",            // 60
 );
 
+////////////////////////////////////////////////////////////////////////
+// 8 = Czech
+
+$lang[8] = array(
+    "Scan area",           // 0
+		"Levý okraj",                // 1
+		"Horní okraj",                 // 2
+		"Šířka",               // 3
+		"Výška",              // 4
+		"mm",                  // 5
+    "dpi",                 // 6
+    "%",                   // 7
+		"Unknown",             // 8
+		"Scan options",        // 9
+		"File format",         // 10
+		"připravuji stažení.. prosím čekejte", // 11
+    "Opravdu chcete smazat vybrané soubory? This action cannot be undone!", // 12
+    "Chyba při stahování souboru.", // 13
+		"Režim",                // 14
+		"24bit barvy",        // 15
+		"Odstíny šedi",           // 16
+		"Monochromatický",          // 17
+		"Rozlišení",          // 18
+		array("cs_CZ.UTF-8", "cs", "cs_CZ", "Czech_CzechRepublic", "Czech"), // 19
+		"Česky",             // 20
+		"Scanner device",      // 21
+		"Jas",          // 22
+		"Kontrast",            // 23
+		"náhled",             // 24
+		"Reset",               // 25
+		"Clean",               // 26
+		"Všechny",                 // 27
+    "Žádné",                // 28
+    "Dokumenty",           // 29
+    "Obrázky",              // 30
+    "Ostatní",               // 31
+		"Chyba",               // 32
+		"Nejsou k dispozici žádná zařízení.<br />Ověřte, že je skener připojen, zapnutý a lze ho detekovat pomocí utility sane-find-scanner tool pokud možno).<br />Přečtěte si prosím dokumentac k tomuto software (README, FAQ, manpages).", // 33
+		"zkusit znovu",           // 34
+		"Right-click to save", // 35
+		"Zavřít",               // 36
+		"Nápověda",                // 37
+		"Extra",               // 38
+		"no scan command",     // 39
+		"Velikost stránky",           // 40
+		"Jméno souboru",           // 41
+		"accept",              // 42
+		"PDF dokument",        // 43
+		"JPEG obrázek",          // 44
+    "PNM obrázek",           // 45
+		"TIFF obrázek",          // 46
+    "BMP obrázek",           // 47
+    "PNG obrázek",           // 48
+    "textový dokument",        // 49
+    "Skenovat další stránku?",  // 50
+    "Jméno souboru",            // 51
+    "Typ",                // 52
+    "Velikost",                // 53
+    "Datum změny",       // 54
+    "soubor",                // 55
+    "Vybrat soubor",         // 56
+    "Custom size",         // 57
+    "Stáhnout",            // 58
+    "Smazat",              // 59
+    "scan_",               // 60
+);
+
 ?>

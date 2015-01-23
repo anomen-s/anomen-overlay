@@ -6,6 +6,8 @@ $save_dir    = "./output/";                //  destination directory for scanned
 $scanner_dir = "./scanners/";              //  destination directory for storing and reading scanner configuration files
 $save_type   = "link";                     //  link / popup
 
+$keep_save_files_days = 90;			   // scanned files will be deleted after this time elapses [days]
+
 // set up a string to be prepended to the scanimage command, so that
 // scanimage looks for devices at the ip making the request
 // $SCAN_NET_SETUP = 'export SANE_NET_HOSTS='.$_SERVER['REMOTE_ADDR'].' && ';
@@ -24,7 +26,8 @@ $SCAN_NET_SETUP = '';
 // 5 = ukrainian
 // 6 = french
 // 7 = dutch
-$lang_id = 1;
+// 8 = czech
+$lang_id = 8;
 
 
 // set your scanner maximum page size, and a low dpi for previews
@@ -97,7 +100,7 @@ $do_format_pdf = true;
 // system config
 // =============
 $SCANIMAGE = "/usr/bin/scanimage"; //scanimage binary (sane)
-$GOCR      = "/opt/bin/gocr";      //optional ocr binary
+$GOCR      = "/usr/bin/gocr";      //optional ocr binary
 $PDFUNITE  = "/usr/local/bin/pdfunite"; //optional PDF merge binary
 $PNMTOJPEG = "/usr/bin/pnmtojpeg"; //netpbm pnm to jpeg conversion binary
 $PNMTOTIFF = "/usr/bin/pnmtotiff"; //netpbm pnm to tiff conversion binary
@@ -176,7 +179,7 @@ $mode = "Color";  // Lineart|Gray|Color
 $resolution = 300;
 $brightness = -1;
 $contrast = -1;
-$usr_opt = " --jpeg-quality 0";
+$usr_opt = " " ;//" --jpeg-quality 0";
 $pos_x = 0;
 $pos_y = 0;
 $geometry_x = 0;

@@ -1,6 +1,6 @@
 <?php 
   // phpSANE
-  // Version: 0.6.0
+  // Version: 0.8.0-as
   // John Walsh <john.walsh@mini-net.co.uk>
   // Wojciech Bronisz <wojtek@bronisz.eu>
   include("incl/functions.php");
@@ -357,6 +357,7 @@ if($do_btn_help || $do_lang_toggle) {
           <option"; if ($lang_id==5) echo " selected"; echo " value='5' data-image='images/lang_uk.gif'>" . $lang[5][20]."</option>
           <option"; if ($lang_id==6) echo " selected"; echo " value='6' data-image='images/lang_fr.gif'>" . $lang[6][20]."</option>
           <option"; if ($lang_id==7) echo " selected"; echo " value='7' data-image='images/lang_nl.gif'>" . $lang[7][20]."</option>
+          <option"; if ($lang_id==8) echo " selected"; echo " value='8' data-image='images/lang_cz.gif'>" . $lang[8][20]."</option>
         </select>
       </li>
     </ul>";
