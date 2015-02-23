@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI="5"
 inherit eutils versionator
 
 DESCRIPTION="Display unicode character properties"
@@ -23,7 +23,6 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 	epatch ${FILESDIR}/${P}-gentooPath.patch
-	epatch ${FILESDIR}/${P}-python2.patch
 }
 
 src_install() {
