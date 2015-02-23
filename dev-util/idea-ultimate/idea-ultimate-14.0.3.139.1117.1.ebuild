@@ -8,14 +8,14 @@ SLOT="$(get_major_version)"
 RDEPEND=">=virtual/jdk-1.6"
 
 MY_PN="idea"
-MY_PV="$(get_version_component_range 4-5)"
+MY_PV="$(get_version_component_range 4-6)"
 
 RESTRICT="strip"
 QA_TEXTRELS="opt/${P}/bin/libbreakgen.so"
 
 DESCRIPTION="IntelliJ IDEA is an intelligent Java IDE (Ultimate Edition)"
 HOMEPAGE="http://jetbrains.com/idea/"
-SRC_URI="http://download.jetbrains.com/idea/ideaIU-$(get_version_component_range 1-3)b.tar.gz"
+SRC_URI="http://download.jetbrains.com/idea/ideaIU-$(get_version_component_range 1-3).tar.gz"
 LICENSE="IntelliJ-IDEA"
 IUSE=""
 KEYWORDS="~x86 ~amd64"
