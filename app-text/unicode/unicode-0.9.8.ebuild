@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
 IUSE=""
-DEPEND="<dev-lang/python-3.0
+DEPEND="dev-lang/python
 		app-i18n/unicode-data"
 RDEPEND="${DEPEND}"
 
