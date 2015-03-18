@@ -4,7 +4,7 @@
 
 # TODO: jdbc symlinks
 
-EAPI="2"
+EAPI="5"
 
 IUSE="postgresql mysql mssql jtds"
 
@@ -25,6 +25,7 @@ LICENSE="Apache-1.1"
 RESTRICT="mirror"
 
 RDEPEND="virtual/jre
+	dev-java/java-config
 	postgresql? ( dev-java/jdbc-postgresql )
 	mssql? ( dev-java/jdbc-mssqlserver )
 	jtds? ( dev-java/jtds:1.2 )
@@ -38,6 +39,9 @@ src_unpack() {
 	unpack ${A}
 
 	cd ${S}
+
+	sed -e "3i cd ${INSTALLDIR}" \
+	    -e '5i INSTALL4J_JAVA_HOME_OVERRIDE=`java-config -o`' -i dbvis || die patch failed
 
 	if use mssql ; then
 		mkdir jdbc/mssql
@@ -68,10 +72,7 @@ src_install() {
 
 	doins -r .install4j *
 
-	fperms +x ${INSTALLDIR}/{dbvis,dbviscmd.sh,dbvisgui.sh}
-
-	dosed -e "3i cd ${INSTALLDIR}" ${INSTALLDIR}/dbvis || die patch failed
-	dosed -e "s@^app_home=\.\$@app_home=${INSTALLDIR}@" ${INSTALLDIR}/dbvis || die patch failed
+	fperms +x ${INSTALLDIR}/dbvis
 
 	dosym ${INSTALLDIR}/dbvis /opt/bin/${PN}
 
