@@ -5,7 +5,7 @@
      HomeUnicodeData = os.path.join(HomeDir, "UnicodeData.txt")
      global UnicodeDataFileNames
 -    UnicodeDataFileNames = [HomeUnicodeData, '/usr/share/unicode/UnicodeData.txt', '/usr/share/unidata/UnicodeData.txt', './UnicodeData.txt'] + \
-+    UnicodeDataFileNames = [HomeUnicodeData, '/usr/share/unicode-data/UnicodeData.txt', '/usr/share/unidata/UnicodeData.txt', './UnicodeData.txt'] + \
++    UnicodeDataFileNames = [HomeUnicodeData, '/usr/share/unicode-data/UnicodeData.txt', '/usr/share/unicode/UnicodeData.txt', '/usr/share/unidata/UnicodeData.txt', './UnicodeData.txt'] + \
          glob.glob('/usr/share/unidata/UnicodeData*.txt') + \
          glob.glob('/usr/share/perl/*/unicore/UnicodeData.txt') + \
          glob.glob('/System/Library/Perl/*/unicore/UnicodeData.txt') # for MacOSX
@@ -13,7 +13,7 @@
      HomeUnihanData = os.path.join(HomeDir, "Unihan*")
      global UnihanDataGlobs
 -    UnihanDataGlobs = [HomeUnihanData, '/usr/share/unidata/Unihan*', '/usr/share/unicode/Unihan*', './Unihan*']
-+    UnihanDataGlobs = [HomeUnihanData, '/usr/share/unicode-data/Unihan*', '/usr/share/unicode/Unihan*', './Unihan*']
++    UnihanDataGlobs = [HomeUnihanData, '/usr/share/unicode-data/Unihan*', '/usr/share/unidata/Unihan*', '/usr/share/unicode/Unihan*', './Unihan*']
  
  
  def get_unihan_files():
