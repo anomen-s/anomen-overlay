@@ -24,13 +24,13 @@ S="${WORKDIR}/${MY_PN}-IU-${MY_PV}"
 
 src_install() {
 	local dir="/opt/${P}"
-	local exe="${PN}-${SLOT}"
+	local exe="${PN}-iu-${SLOT}"
 
 	insinto "${dir}" || die
 	doins -r * || die
 	fperms 755 "${dir}/bin/${MY_PN}.sh" "${dir}/bin/inspect.sh" "${dir}/bin/fsnotifier" "${dir}/bin/fsnotifier64" || die
 
 	newicon "bin/${MY_PN}.png" "${exe}.png" || die
-	make_wrapper "idea-iu-${SLOT}" "/opt/${P}/bin/${MY_PN}.sh" || die
-	make_desktop_entry ${exe} "IntelliJ IDEA $(get_version_component_range 1-3) (Ultimate Edition)" "${exe}" "Development;IDE" || die
+	make_wrapper "${exe}" "/opt/${P}/bin/${MY_PN}.sh" || die
+	make_desktop_entry "${exe}" "IntelliJ IDEA $(get_version_component_range 1-3) (Ultimate Edition)" "${exe}" "Development;IDE" || die
 }
