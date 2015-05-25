@@ -19,12 +19,12 @@ HOMEPAGE="http://jetbrains.com/idea/"
 SRC_URI="http://download.jetbrains.com/idea/ideaIU-$(get_version_component_range 1-3).tar.gz"
 LICENSE="IntelliJ-IDEA"
 IUSE=""
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="x86 amd64"
 S="${WORKDIR}/${MY_PN}-IU-${MY_PV}"
 
 src_install() {
 	local dir="/opt/${P}"
-	local exe="${PN}-iu-${SLOT}"
+	local exe="${MY_PN}-iu-${SLOT}"
 
 	insinto "${dir}" || die
 	doins -r * || die
