@@ -24,7 +24,7 @@ import os.path
 import os
 import socket
 
-__version__ = "0.9.0"
+__version__ = "0.9.1"
 
 def parseArguments():
 
@@ -39,11 +39,11 @@ def parseArguments():
 def checkKey(fingerprint):
  try:
    result = subprocess.check_output(['ssh-add','-l'])
- except subprocess.CalledProcessError, e:
+ except subprocess.CalledProcessError as e:
    # error 1 = no key present
    # error 2 = 'real' error
    if e.returncode > 1:
-     print e.output
+     print(e.output)
      exit(e.returncode)
    return False
 
@@ -60,6 +60,6 @@ def main():
     if not checkKey(args.fingerprint):
       addKey(args.fileName[0])
     else:
-      print "Key " + args.fingerprint[0] + " present"
+      print("Key " + args.fingerprint[0] + " present")
 
 if  __name__ =='__main__':main()
