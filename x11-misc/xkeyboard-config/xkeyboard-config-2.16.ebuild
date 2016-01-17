@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
+# $Header: /var/cvsroot/gentoo-x86/x11-misc/xkeyboard-config/xkeyboard-config-2.11.ebuild,v 1.5 2014/04/06 10:11:52 ago Exp $
 
 EAPI=5
 
@@ -13,7 +13,7 @@ DESCRIPTION="X keyboard configuration database"
 HOMEPAGE="http://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 [[ ${PV} == *9999* ]] || SRC_URI="${XORG_BASE_INDIVIDUAL_URI}/data/${PN}/${P}.tar.bz2"
 
-KEYWORDS="~alpha amd64 arm hppa ~ia64 ~mips ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-interix ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 ~arm hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-interix ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE=""
 
 LICENSE="MIT"
@@ -24,6 +24,10 @@ RDEPEND=">=x11-apps/xkbcomp-1.2.3
 DEPEND="${RDEPEND}
 	dev-util/intltool
 	>=x11-proto/xproto-7.0.20"
+
+PATCHES=(
+ "${FILESDIR}"/${P}-cz_prog.patch
+)
 
 XORG_CONFIGURE_OPTIONS=(
 	--with-xkb-base="${EPREFIX}/usr/share/X11/xkb"
