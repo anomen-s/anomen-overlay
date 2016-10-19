@@ -6,14 +6,14 @@ EAPI="4"
 DESCRIPTION="Various Mercurial extensions"
 HOMEPAGE="http://mercurial.selenic.com/"
 SRC_URI="
-  https://bitbucket.org/Mekk/mercurial_keyring/raw/fb4371a55e79/mercurial_keyring.py -> fb4371a55e79-mercurial_keyring.py
-  https://bitbucket.org/gobell/hg-zipdoc/raw/a2ca45ccfd64/zipdoc.py -> a2ca45ccfd64-zipdoc.py
-  https://bitbucket.org/birkenfeld/hgchangelog/raw/bb962d35fd2b/hgchangelog.py -> bb962d35fd2b-hgchangelog.py
+  https://bitbucket.org/Mekk/mercurial_keyring/raw/8b2977b/mercurial_keyring.py -> 8b2977b-mercurial_keyring.py
+  https://bitbucket.org/gobell/hg-zipdoc/raw/3cadb68/zipdoc.py -> 3cadb68-zipdoc.py
+  https://bitbucket.org/birkenfeld/hgchangelog/raw/f043cc9/hgchangelog.py -> f043cc9-hgchangelog.py
   https://bitbucket.org/jinhui/hg-cloc/raw/9a7c5cf25816/cloc.py -> 9a7c5cf25816-cloc.py
   https://bitbucket.org/abuehl/hgext-cifiles/raw/091b6a4b561b/cifiles.py -> 091b6a4b561b-cifiles.py
   https://bitbucket.org/face/timestamp/raw/e85aaaa0a21a/casestop.py -> e85aaaa0a21a-casestop.py
-  https://bitbucket.org/peerst/hgcollapse/raw/b42d3b57df3a/hgext/collapse.py -> b42d3b57df3a-collapse.py
-  https://bitbucket.org/marmoute/mutable-history/raw/16017e1bb2a1/hgext/evolve.py -> 16017e1bb2a1-evolve.py
+  https://bitbucket.org/peerst/hgcollapse/raw/3616724/hgext/collapse.py -> 3616724-collapse.py
+  https://bitbucket.org/marmoute/mutable-history/raw/970a4c1/hgext/evolve.py -> 970a4c1-evolve.py
   "
 
 RESTRICT="mirror"
