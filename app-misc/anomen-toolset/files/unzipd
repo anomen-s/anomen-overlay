@@ -6,7 +6,8 @@ if test '!' -f "$1" ; then
 fi
 
 F="$1"
-D=${F%.*}
+#D=${F%.*}
+D="${F}.d"
 
 echo $D
 
