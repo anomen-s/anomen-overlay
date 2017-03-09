@@ -1,7 +1,7 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
-EAPI="4"
+EAPI="5"
 
 DESCRIPTION="Various Mercurial extensions"
 HOMEPAGE="http://mercurial.selenic.com/"
@@ -14,6 +14,7 @@ SRC_URI="
   https://bitbucket.org/face/timestamp/raw/e85aaaa0a21a/casestop.py -> e85aaaa0a21a-casestop.py
   https://bitbucket.org/peerst/hgcollapse/raw/3616724/hgext/collapse.py -> 3616724-collapse.py
   https://bitbucket.org/marmoute/mutable-history/raw/970a4c1/hgext/evolve.py -> 970a4c1-evolve.py
+  https://www.mercurial-scm.org/wiki/InfoExtension?action=AttachFile&do=get&target=info.py -> f565eb5-info.py
   "
 
 RESTRICT="mirror"
