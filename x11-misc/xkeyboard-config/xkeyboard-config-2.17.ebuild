@@ -26,7 +26,7 @@ DEPEND="${RDEPEND}
 	>=x11-proto/xproto-7.0.20"
 
 PATCHES=(
- "${FILESDIR}"/${P}-cz_prog.patch
+ "${FILESDIR}"/${P}-cz_prog-2017.patch
 )
 
 XORG_CONFIGURE_OPTIONS=(
