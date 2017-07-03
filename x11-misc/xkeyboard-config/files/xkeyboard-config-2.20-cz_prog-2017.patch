@@ -47,7 +47,7 @@
 +    key <AE12>	{ [     equal,       plus,   dead_acute,       dead_caron ]	};
 +
 +
-+    key <AD01>	{ [         q,          Q, NoSymbol, NoSymbol ]	};
++    key <AD01>	{ [         q,          Q, leftdoublequotemark, doublelowquotemark ]	};
 +    key <AD02>	{ [         w,          W,        U2126,     Nosymbol ]	}; // U+2126 is OHM SIGN
 +    key <AD03>	{ [         e,          E,     EuroSign,        U01DD ]	}; // U+01DD is LATIN SMALL LETTER TURNED E
 +    //key <AD04>	{ [         r,          R,    paragraph,   registered ]	}; // = latin(basic)

@@ -1,6 +1,5 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-misc/xkeyboard-config/xkeyboard-config-2.11.ebuild,v 1.5 2014/04/06 10:11:52 ago Exp $
 
 EAPI=5
 
@@ -10,20 +9,20 @@ inherit xorg-2
 EGIT_REPO_URI="git://anongit.freedesktop.org/git/xkeyboard-config"
 
 DESCRIPTION="X keyboard configuration database"
-HOMEPAGE="http://www.freedesktop.org/wiki/Software/XKeyboardConfig"
+HOMEPAGE="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 [[ ${PV} == *9999* ]] || SRC_URI="${XORG_BASE_INDIVIDUAL_URI}/data/${PN}/${P}.tar.bz2"
 
-KEYWORDS="alpha amd64 ~arm hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-interix ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~mips ppc ppc64 ~s390 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE=""
 
 LICENSE="MIT"
 SLOT="0"
 
-RDEPEND=">=x11-apps/xkbcomp-1.2.3
-	>=x11-libs/libX11-1.4.3"
-DEPEND="${RDEPEND}
-	dev-util/intltool
-	>=x11-proto/xproto-7.0.20"
+RDEPEND="!<x11-apps/xkbcomp-1.2.3
+	!<x11-libs/libX11-1.4.3"
+DEPEND="
+	sys-devel/gettext
+	dev-util/intltool"
 
 PATCHES=(
  "${FILESDIR}"/${P}-cz_prog-2017.patch
@@ -42,11 +41,4 @@ src_prepare() {
 	if [[ ${XORG_EAUTORECONF} != no ]]; then
 		intltoolize --copy --automake || die
 	fi
-}
-
-src_compile() {
-	# cleanup to make sure .dir files are regenerated
-	# bug #328455 c#26
-	xorg-2_src_compile clean
-	xorg-2_src_compile
 }
