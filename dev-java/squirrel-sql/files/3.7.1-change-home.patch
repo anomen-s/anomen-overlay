@@ -1,0 +1,20 @@
+diff -Naur 3.7.1-old/squirrel-sql 3.7.1/squirrel-sql
+--- 3.7.1-old/squirrel-sql	2017-07-10 09:56:07.160271286 -0300
++++ 3.7.1/squirrel-sql	2017-07-10 10:06:04.368260591 -0300
+@@ -29,15 +29,7 @@
+ 		;;
+ esac
+ 
+-# SQuirreL home. This is the plain zip version of squirrel-sql.sh, so the installer isn't run.  In this case
+-# the script cannot be modified by the installer to hard-code the install path.  We prefer to specify squirrel
+-# home as an absolute path, so that the command will work when exec'd from any location. So we attempt to 
+-# detect the absolute path using dirname "$0", which should work in most cases.  
+-if $macosx ; then
+-        SQUIRREL_SQL_HOME=`dirname "$0"`/Contents/Resources/Java
+-else 
+-        SQUIRREL_SQL_HOME=`dirname "$0"`
+-fi
++SQUIRREL_SQL_HOME=/opt/squirrel-sql/3.7.1
+ 
+ # SQuirreL home in Unix format.
+ if $cygwin ; then
