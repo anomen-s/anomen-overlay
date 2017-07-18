@@ -1,0 +1,2 @@
+move dev-java/dbvis dev-db/dbvis
+move dev-java/squirrel-sql dev-db/squirrel-sql
