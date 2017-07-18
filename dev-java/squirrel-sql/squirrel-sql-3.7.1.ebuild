@@ -9,8 +9,9 @@ inherit eutils java-utils-2
 
 DESCRIPTION="SQuirreL SQL Client"
 HOMEPAGE="http://squirrel-sql.sourceforge.net"
-SRC_URI="mirror://sourceforge/project/${PN}/1-stable/${PV}-plainzip/squirrelsql-${PV}-optional.zip -> ${PN}.zip"
+SRC_URI="mirror://sourceforge/project/${PN}/1-stable/${PV}-plainzip/squirrelsql-${PV}-optional.zip"
 IUSE=""
+RESTRICT="mirror"
 
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
@@ -21,20 +22,22 @@ RDEPEND="virtual/jre"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/squirrelsql-${PV}-optional"
-INSTALL_DIR="/opt/${PN}/${PVR}"
+INSTALL_DIR="/opt/${P}"
 
 
 src_install() {
 
-	mv squirrel-sql.sh squirrel-sql
-	epatch "${FILESDIR}"/${PV}-change-home.patch
+	rm *.bat
+	
+        sed -e "s@SQUIRREL_SQL_HOME=.*@SQUIRREL_SQL_HOME=${INSTALL_DIR}@" -i squirrel-sql.sh
+	
 	insinto ${INSTALL_DIR}
 	doins -r *
 	
-	fperms +x ${INSTALL_DIR}/squirrel-sql
+	fperms +x ${INSTALL_DIR}/${PN}.sh
 
-	dosym ${INSTALL_DIR}/squirrel-sql /opt/bin/${PN}
+	dosym ${INSTALL_DIR}/${PN}.sh /opt/bin/${PN}
 
 	newicon icons/acorn.png ${PN}.png
-	make_desktop_entry /opt/bin/${PN} "SQuirrel SQL Client" ${PN}.png "Development;Database" ${INSTALL_DIR}
+	make_desktop_entry /opt/bin/${PN} "SQuirrel SQL Client ${PV}" ${PN} "Development;Database"
 }
