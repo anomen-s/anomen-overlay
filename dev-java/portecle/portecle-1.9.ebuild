@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+EAPI="5"
+
 inherit eutils java-pkg-2
 
 DESCRIPTION="Keystore management tool."
@@ -17,16 +19,18 @@ DEPEND="app-arch/unzip"
 RDEPEND="|| ( >=virtual/jre-1.5 >=virtual/jdk-1.5 )"
 
 
+src_compile() {
+	sed -e  "/^Icon=/s/${PN}/${PN}.ico/" -i "${PN}.desktop"
+}
 
 src_install() {
 
 	java-pkg_dojar *.jar
-	java-pkg_dolauncher ${PN} --main net.sf.portecle.FPortecle
+	java-pkg_dolauncher "${PN}" --main net.sf.portecle.FPortecle
 
 	dodoc *.txt
 
-	doicon portecle.ico
-#	make_desktop_entry "${PN}" Portecle "portecle.ico" "Development"
-	domenu "portecle.desktop"
+	doicon "${PN}.ico"
+	domenu "${PN}.desktop"
 }
 
