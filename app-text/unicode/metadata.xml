@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+	<email>ludek.h@gmail.com</email>
+	<name>anomen-s</name>
+  </maintainer>
+  <longdescription>
+    Display unicode character properties
+  </longdescription>
+  <use>
+    <flag name="unihan">Add support for Unihan properties (unpack data from <pkg>app-i18n/unicode-data</pkg>)</flag>
+  </use>
+  <upstream>
+    <remote-id type="github">garabik/unicode</remote-id>
+  </upstream>
+</pkgmetadata>

@@ -12,13 +12,24 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 
-IUSE=""
+IUSE="unihan"
 DEPEND="dev-lang/python
-		app-i18n/unicode-data"
+	app-arch/unzip
+	app-i18n/unicode-data"
 RDEPEND="${DEPEND}"
+
+
+UNICODE_DIR=/usr/share/unicode-data
+
+src_compile() {
+    use unihan && unzip "$UNICODE_DIR/Unihan.zip"
+}
 
 src_install() {
 	dobin unicode paracode
 	dodoc README README-paracode COPYING debian/changelog
 	doman *.1
+
+	insinto "$UNICODE_DIR"
+	use unihan && doins Unihan*.txt
 }
