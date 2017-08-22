@@ -10,14 +10,14 @@ SRC_URI=""
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="subversion +xml +jad +mediainfo"
+IUSE="+xml +jad +mediainfo +xdg"
 
 DEPEND=""
 RDEPEND="
-	subversion? ( dev-vcs/subversion )
 	xml? ( dev-libs/libxml2 )
 	jad? ( dev-java/jad-bin )
 	mediainfo? ( media-video/mediainfo )
+	xdg? ( x11-misc/xdg-utils )
 	virtual/libiconv
 	"
 
@@ -28,19 +28,15 @@ src_unpack() {
 
 	cp -t bin "${FILESDIR}"/{bom,chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd}
 	cp -t lib "${FILESDIR}"/{treecmp.diff.sh,treecmp.sha.sh}
-	use "subversion" && cp -t bin "${FILESDIR}"/{rm.svn,svn.grep,svn.addall,svn.src,svn.mv}
 	use "mediainfo" &&  cp -t bin "${FILESDIR}"/mi
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
 	use "jad" && cp -t bin "${FILESDIR}"/jadd
-
-	cp -t sbin "${FILESDIR}"/revdep-list.sh
-
+	use "xdg" && cp -t bin "${FILESDIR}"/assoc
 }
 
 src_install() {
 	into /usr
 	dobin bin/*
-	dosbin sbin/*
 	
 	insinto /usr/libexec/anomen-toolset
 	doins lib/*

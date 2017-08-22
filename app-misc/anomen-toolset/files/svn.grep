@@ -1,4 +1,0 @@
-#!/bin/sh
-
-grep --colour=always -R "$@" * | grep -v '.svn/'
-

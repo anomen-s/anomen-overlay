@@ -1,0 +1,37 @@
+#!/bin/sh
+
+if [ "$#" -lt 1 ]
+then
+ echo "Syntax: $0 file [application]"
+ exit 1
+fi
+
+FILE="$1"
+APP="${2%.desktop}"
+
+
+MIME=`xdg-mime query filetype $FILE`
+
+if [ -z "$MIME" ]
+then
+ echo Unknown file type >&2
+ exit 5
+fi
+
+
+CURR=`xdg-mime query default "$MIME"`
+echo $MIME: $CURR
+
+if [ -n "$APP" ]
+then
+
+ if [ ! -r "/usr/share/applications/${APP}.desktop" ]
+ then
+  echo File not found: "/usr/share/applications/${APP}.desktop" >&2
+  exit 4
+ fi
+
+ exec xdg-mime default "$APP".desktop "$MIME"
+
+fi
+
