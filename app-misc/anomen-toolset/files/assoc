@@ -31,7 +31,10 @@ then
   exit 4
  fi
 
- exec xdg-mime default "$APP".desktop "$MIME"
+ xdg-mime default "$APP".desktop "$MIME"
+
+ CURR=`xdg-mime query default "$MIME"`
+ echo $MIME: $CURR
 
 fi
 
