@@ -8,4 +8,7 @@ anomen's personal Gentoo overlay
 * dev-java/keystore-explorer - [Keystore Explorer](http://keystore-explorer.org/)
 * dev-java/maven-color- maven output-colouring tool
 * net-analyzer/dhcpstarv - [dhcpstarv](http://dhcpstarv.sourceforge.net/) - DHCP starvation utility
-* net-misc/ssh-agent-shared - ssh-add-once and ssh-agent-shared - ssh wrappers utiitie
+* net-misc/ssh-agent-shared - ssh-add-once and ssh-agent-shared - ssh wrappers utilities
+* x11-misc/xkeyboard-config - added Czech Programmers layout
+* net-nds/ApacheDirectoryStudio - LDAP tool
+* media-libs/libdmtx - Data Matrix barcode tools
