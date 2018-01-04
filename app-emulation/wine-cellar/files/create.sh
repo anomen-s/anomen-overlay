@@ -24,7 +24,7 @@ fi
 
 echo '*** precreate WINEPREFIX'
 
-for A in loop home drive_c/wine .config .local
+for A in loop home drive_c/wine .config .local/share
 do
  mkdir -v -p "$WINEPREFIX/$A"
 done
@@ -59,8 +59,7 @@ sleep 1
 ln -v -s -f -n ../loop  "$WINEPREFIX/dosdevices/d:"
 ln -v -s -f -n .. "$WINEPREFIX/dosdevices/p:"
 ln -v -s -f -n ../../drive_t "$WINEPREFIX/dosdevices/t:"
-ln -v -s -f -n /usr/share/fonts "$WINEPREFIX/dosdevices/v:"
-ln -v -s -f -n /usr/share/wine "$WINEPREFIX/dosdevices/w:"
+ln -v -s -f -n /usr/share "$WINEPREFIX/dosdevices/s:"
 
 
 echo '*** wine fixing links to $HOME...'
@@ -75,5 +74,5 @@ done
 
 ln -v -s -f -n .. "$WINEPREFIX/dosdevices/z:"
 
-wine regedit "w:\\cellar\\setup.reg"
+wine regedit "s:\\wine\\cellar\\setup.reg"
 

@@ -4,7 +4,7 @@
 EAPI="3"
 
 DESCRIPTION="Anomen's set of scripts for managing Wine prefixes"
-HOMEPAGE="http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/app-emulation/wine-cellar"
+HOMEPAGE="https://github.com/anomen-s/anomen-overlay/tree/master/app-emulation/wine-cellar"
 SRC_URI=""
 
 LICENSE="as-is"
@@ -13,7 +13,7 @@ KEYWORDS="amd64 x86"
 IUSE=""
 
 DEPEND=""
-RDEPEND="app-emulation/wine"
+RDEPEND=" || ( virtual/wine app-emulation/wine )"
 
 src_unpack() {
 	cp -t "${WORKDIR}"  "${FILESDIR}"/*

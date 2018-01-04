@@ -1,0 +1,188 @@
+#!/bin/sh
+
+# NOTE: this script will replace create.sh and install.sh
+
+# defaults
+WINECELLAR_DIR="$HOME/Wine"
+WC_MODE="c"
+WC_INIT=""
+WC_GIT_INIT=""
+
+##################################################
+################### INIT #########################
+##################################################
+init_cellar () {
+
+ if [ -d "$WINECELLAR_DIR" ]
+ then
+  echo Cellar already exists.
+ else
+   echo Creating cellar in "$WINECELLAR_DIR"...
+   mkdir --verbose --parents "$WINECELLAR_DIR" ||  exit 10
+ fi
+
+ mkdir --verbose --parents "$WINECELLAR_DIR/shared_drive" || exit 11
+
+ if [ -d "$WINECELLAR_DIR" ]
+  echo Symlinking default prefix...
+  ln --verbose --symbolic --relative "$HOME/.wine" "$WINECELLAR/default"
+ fi
+}
+
+##################################################
+################## CREATE ########################
+##################################################
+create_prefix() {
+ PROFILE="$1"
+ if [ -z "$1" ]; then
+  echo 'Missing argument: profile name'
+  exit 1
+ fi
+
+ export WINEARCH="win32"
+ export WINEPREFIX="$WINECELLAR_DIR/$PROFILE"
+ export CELLAR_SHARE=/usr/share/wine/cellar
+
+ export REAL_HOME="$HOME"
+ export HOME="$WINEPREFIX"
+ export XDG_CONFIG_HOME="$WINEPREFIX/.config"
+ export XDG_DATA_HOME="$WINEPREFIX/.local"
+
+ if [ ! -d "$WINECELLAR_DIR" ]; then
+  echo Missing cellar: "$WINECELLAR_DIR"...
+  echo Use $CELLAR_SHARE/install.sh to create it.
+  exit 1
+ fi
+
+ echo '*** precreate WINEPREFIX'
+
+ for A in loop home drive_c/wine .config .local
+ do
+  mkdir --verbose --parents "$WINEPREFIX/$A"
+ done
+
+ for A in .fontconfig
+ do
+  echo cp $A
+  cp --a -t "$WINEPREFIX" "$REAL_HOME/$A"
+ done
+
+ echo 0 > "$WINEPREFIX/drive_c/wine/track_usage"
+
+ for F in config.sh regedit.sh run.sh winetricks.sh gitinit.sh
+ do
+    sed -e  "s/@PROFILE@/$PROFILE/g" "$CELLAR_SHARE/$F.template" > "$WINEPREFIX/$F"
+    chmod --verbose 755 "$WINEPREFIX/$F"
+ done
+
+ echo '*** wine wineboot...'
+
+ cd "$WINEPREFIX/drive_c"
+ wine wineboot
+
+
+ for I in `seq 1 10 ` ; do
+ # wait for registry
+  sleep 3
+  test -s "$WINEPREFIX/system.reg" && break
+ done
+ sleep 1
+
+ ln --verbose --symbolic --force --no-dereference ../loop  "$WINEPREFIX/dosdevices/d:"
+ ln --verbose --symbolic --force --no-dereference .. "$WINEPREFIX/dosdevices/p:"
+ ln --verbose --symbolic --force --no-dereference ../../shared_drive "$WINEPREFIX/dosdevices/s:"
+ ln --verbose --symbolic --force --no-dereference /usr/share "$WINEPREFIX/dosdevices/u:"
+
+
+ echo '*** wine fixing links to $HOME...'
+
+ for D in "${WINEPREFIX}/drive_c/users/${USER}"/*
+ do
+    if readlink "${D}"
+    then
+       ln --verbose --symbolic --force --no-dereference ../../../home "${D}"
+    fi
+ done
+
+ ln --verbose --symbolic --force --no-dereference .. "$WINEPREFIX/dosdevices/z:"
+
+ wine regedit "w:\\cellar\\setup.reg"
+
+ if [ "x$WC_GIT_INIT" != "x" ]
+ then
+   
+ fi
+}
+
+##################################################
+################## DELETE ########################
+##################################################
+delete_prefix() {
+    PROFILE="$1"
+    echo -n  "Delete prefix $PROFILE? [yes/NO] "
+    read C
+    test "x$C" = "xyes" && rm --force --verbose --recursive "$PROFILE"
+}
+
+
+##################################################
+################### MAIN #########################
+##################################################
+while getopts   "ic:d:hg" opt
+do
+  case $opt in
+    i)
+      echo "Initialize $OPTARG"
+      WC_INIT="1"
+      ;;
+    c)
+      echo "Create $OPTARG"
+      WC_MODE="c"
+      ;;
+    d)
+      echo "-$opt was triggered, Parameter: $OPTARG"
+      WC_MODE="d"
+      ;;
+#    w)
+#      WINECELLAR_DIR="$OPTARG"
+#      ;;
+    g)
+      WC_GIT_INIT=1
+    h)
+      echo "help"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument."
+      exit 2
+      ;;
+     
+  esac
+done
+
+
+shift $(expr $OPTIND - 1 )
+
+
+test -n "$WC_INIT" && init_cellar
+
+for A
+do
+ case $WC_MODE in
+  c)
+    create_prefix "$A"
+    ;;
+  d)
+    delete_prefix "$A"
+    ;;
+
+ *)
+    echo "Unknown mode" >&2
+    exit 1
+    ;;
+
+ esac
+done
