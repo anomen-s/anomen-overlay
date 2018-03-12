@@ -7,7 +7,7 @@ EAPI="2"
 inherit eutils
 
 DESCRIPTION="Fake (honey pot) SMTP server"
-HOMEPAGE="http://sourceforge.net/projects/spamsink/"
+HOMEPAGE="https://sourceforge.net/projects/spamsink/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"

@@ -5,7 +5,7 @@
 EAPI=3
 
 DESCRIPTION="FUSE file system to browse WAD and PACK archives"
-HOMEPAGE="http://sourceforge.net/projects/fusepak/"
+HOMEPAGE="https://sourceforge.net/projects/fusepak/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
