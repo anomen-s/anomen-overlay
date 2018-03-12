@@ -1,0 +1,36 @@
+#!/bin/sh
+
+FFP_PREFIX="ffp_"
+
+if [ -z "$1" ]
+then
+  compgen -u | sort -u | sed -ne "/^${FFP_PREFIX}/s/^${FFP_PREFIX}//p"
+  exit 1
+fi
+
+if [ "x-d" = "x$1" ]
+then
+  echo Delete user "${FFP_PREFIX}$2"?  Press Ctrl-C to cancel
+  read X
+  sudo userdel -rf "${FFP_PREFIX}$2"
+  exit 1
+fi
+
+PROFILE="$1"
+FFP_USER="${FFP_PREFIX}${PROFILE}"
+
+if [ ! -d "/home/${FFP_USER}" ]
+then
+ RPASS=`openssl passwd -1 -salt xyz  ${RANDOM}_${RANDOM}`
+ sudo useradd -g users -p "$RPASS" -m "$FFP_USER"
+
+ U=`whoami`
+ sudo touch /etc/sudoers.d/ffp
+ sudo chmod 600 /etc/sudoers.d/ffp
+ echo "$U ALL=($FFP_USER) NOPASSWD: /usr/bin/firefox" | sudo tee -a /etc/sudoers.d/ffp
+
+fi
+
+xhost "+SI:localuser:$FFP_USER"
+
+exec screen -d -m -S "$FFP_USER" sudo -u "$FFP_USER"  /usr/bin/firefox

@@ -10,7 +10,7 @@ SRC_URI=""
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="+xml +jad +mediainfo +xdg"
+IUSE="+xml +jad +mediainfo +xdg +firefox"
 
 DEPEND=""
 RDEPEND="
@@ -18,6 +18,7 @@ RDEPEND="
 	jad? ( dev-java/jad-bin )
 	mediainfo? ( media-video/mediainfo )
 	xdg? ( x11-misc/xdg-utils )
+	firefox? ( www-client/firefox dev-libs/openssl app-misc/screen )
 	virtual/libiconv
 	"
 
@@ -32,6 +33,7 @@ src_unpack() {
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
 	use "jad" && cp -t bin "${FILESDIR}"/jadd
 	use "xdg" && cp -t bin "${FILESDIR}"/assoc
+	use "firefox"  && cp -t bin "${FILESDIR}"/ffp
 }
 
 src_install() {
