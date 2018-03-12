@@ -1,0 +1,17 @@
+#!/bin/sh
+
+TMPFILE=`mktemp`
+
+for A
+do 
+
+ echo "##########################################" >> $TMPFILE
+ echo "### $A" >> $TMPFILE
+ echo "##########################################" >> $TMPFILE
+ echo "" >> $TMPFILE
+
+ mediainfo "$A"  >> $TMPFILE
+
+done
+less $TMPFILE
+rm -f $TMPFILE
