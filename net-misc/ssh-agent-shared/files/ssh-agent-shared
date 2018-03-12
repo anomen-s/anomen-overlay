@@ -43,7 +43,7 @@ def parseArguments():
 
     parser = argparse.ArgumentParser(description='Authentication agent wrapper.')
     parser.add_argument('command', nargs='?', help='command to be executed')
-    parser.add_argument('args', nargs='*',  help='an integer for the accumulator')
+    parser.add_argument('args', nargs='*',  help='command parameters')
 
     parser.add_argument('-q', dest='quiet', action='store_true',
              help='Quiet mode.')
