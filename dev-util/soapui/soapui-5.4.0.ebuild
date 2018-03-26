@@ -10,7 +10,7 @@ HOMEPAGE="http://www.soapui.org/"
 LICENSE="EUPL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-SRC_URI="http://cdn01.downloads.smartbear.com/${PN}/${PV}/SoapUI-${PV}-linux-bin.tar.gz"
+SRC_URI="https://s3.amazonaws.com/downloads.eviware/soapuios/${PV}/SoapUI-${PV}-linux-bin.tar.gz"
 RESTRICT="strip mirror"
 DEPEND="app-arch/unzip"
 RDEPEND=">=virtual/jre-1.6"
@@ -40,7 +40,7 @@ src_install() {
 	# executables
 	chmod 755 ${D}/${INSTALLDIR}/bin/*.sh
 
-	einstalldocs
+	#einstalldocs
 
 	newicon "$WORKDIR/$PNGFILE" "${PN}.png"
 	make_wrapper "${PN}" "${INSTALLDIR}/bin/soapui.sh"
