@@ -10,5 +10,5 @@ do
 
 done
 
-exec /opt/keystore-explorer-5.1.1/kse.sh "$@"
+exec /opt/keystore-explorer/kse.sh "$@"
 

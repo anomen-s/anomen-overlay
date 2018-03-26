@@ -2,12 +2,14 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+EAPI=6
+
 inherit eutils versionator
 
 MY_PV=$(replace_all_version_separators '')
 
 DESCRIPTION="Keystore management tool."
-SRC_URI="mirror://sourceforge/keystore-explorer/KSE%20${PV}/kse-${MY_PV}.zip"
+SRC_URI="mirror://sourceforge/keystore-explorer/v${PV}/kse-${MY_PV}.zip"
 HOMEPAGE="http://keystore-explorer.sourceforge.net"
 
 KEYWORDS="~amd64 ~x86"
@@ -26,7 +28,7 @@ src_unpack() {
     rm -v "$S/kse.exe" || die
 }
 src_install() {
-	local dir="/opt/${P}"
+	local dir="/opt/${PN}"
 	local exe="kse"
 
 	dobin  "${FILESDIR}/kse"
@@ -37,6 +39,4 @@ src_install() {
 
 	newicon "icons/kse_128.png" "${exe}.png" || die
 	make_desktop_entry "${exe}" "Keystore Explorer" "${exe}" "Development" || die
-
 }
-
