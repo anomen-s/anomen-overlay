@@ -27,7 +27,7 @@ src_unpack() {
 	cd "${WORKDIR}/${P}"
 	mkdir bin sbin lib
 
-	cp -t bin "${FILESDIR}"/{bom,chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd}
+	cp -t bin "${FILESDIR}"/{bom,chmod.std,decwin,psm,treecmp,treeprune,flatten,unzipd,shit}
 	cp -t lib "${FILESDIR}"/{treecmp.diff.sh,treecmp.sha.sh}
 	use "mediainfo" &&  cp -t bin "${FILESDIR}"/mi
 	use "xml" && cp -t bin "${FILESDIR}"/xmlformat
