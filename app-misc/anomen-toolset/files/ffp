@@ -1,36 +1,123 @@
 #!/bin/sh
 
+# Defaults
 FFP_PREFIX="ffp_"
+DEFAULT_CMD="/usr/bin/firefox"
 
-if [ -z "$1" ]
-then
+showHelp()
+{
+ echo "Usage $0 [options] [profile] [cmd]"
+ echo "	-l		list profiles"
+ echo "	-c [profile]	create profile"
+ echo "	-d [profile]	delete profile"
+ echo "	-C [cmd]	specify allowed command"
+ echo "	-A		allow to execute all commands"
+ echo "	-p [prefix]	user name prefix, (default: ffp_)"
+ echo ""
+ echo "	[profile]	profile to be started (created if not exists)"
+ echo "	[cmd]		command to be started (default: firefox)"
+}
+
+listProfiles()
+{
   compgen -u | sort -u | sed -ne "/^${FFP_PREFIX}/s/^${FFP_PREFIX}//p"
-  exit 1
-fi
+}
 
-if [ "x-d" = "x$1" ]
-then
-  echo Delete user "${FFP_PREFIX}$2"?  Press Ctrl-C to cancel
+profileExists()
+{
+    PROFILE="$1"
+    if compgen -u | grep -q "${FFP_PREFIX}${PROFILE}"
+    then
+      return 0
+    else
+      return 1
+    fi
+}
+
+deleteProfile()
+{
+  PROFILE="$1"
+  FFP_USER="${FFP_PREFIX}${PROFILE}"
+  echo -n "Delete user ${FFP_USER} [y/n]? "
   read X
-  sudo userdel -rf "${FFP_PREFIX}$2"
-  exit 1
-fi
+  if [ "x$X" = "xy" ]
+  then
+    sudo sed -i /etc/sudoers.d/ffp -e "/(${FFP_USER})/d"
+    sudo userdel -rf "${FFP_USER}"
+  else
+    Skipped deleting "${FFP_USER}"
+  fi
+}
 
-PROFILE="$1"
-FFP_USER="${FFP_PREFIX}${PROFILE}"
+createProfile()
+{
+ PROFILE="$1"
+ FFP_USER="${FFP_PREFIX}${PROFILE}"
+ FFP_HOME=`eval "echo ~${FFP_USER}"`
 
-if [ ! -d "/home/${FFP_USER}" ]
+ if [ ! -d "${FFP_HOME}" ]
+ then
+  RPASS=`openssl passwd -1 -salt x  ${RANDOM}_${RANDOM}_${RANDOM}`
+  sudo useradd --no-user-group --password "$RPASS" --create-home "$FFP_USER"
+
+  U=`whoami`
+  sudo touch /etc/sudoers.d/ffp
+  sudo chmod 600 /etc/sudoers.d/ffp
+  echo "$U ALL=(${FFP_USER}) NOPASSWD: ${CMD:-$DEFAULT_CMD}" | sudo tee -a /etc/sudoers.d/ffp
+  FFP_HOME=`eval "echo ~${FFP_USER}"`
+  echo "${CMD:-$DEFAULT_CMD}" | sudo tee  "${FFP_HOME}/ffp.cmd"
+ fi
+}
+
+startProfile()
+{
+ PROFILE="$1"
+ FFP_USER="${FFP_PREFIX}${PROFILE}"
+ FFP_HOME=`eval "echo ~${FFP_USER}"`
+
+ xhost "+SI:localuser:$FFP_USER"
+
+ test -f "${FFP_HOME}/ffp.cmd" && DEFAULT_CMD=`cat "${FFP_HOME}/ffp.cmd"`
+ exec screen -d -m -S "$FFP_USER" sudo -u "$FFP_USER" "${CMD:-$DEFAULT_CMD}"
+}
+
+while getopts "p:AC:lc:d:h" OPT
+do
+ case "$OPT" in
+   p) FFP_PREFIX="$OPTARG"
+      ;;
+   A) CMD="ALL"
+      ;;
+   C) CMD=`which "$OPTARG"`
+      ;;
+   l) listProfiles
+      exit $!
+      ;;
+   c) createProfile "$OPTARG"
+      exit $!
+      ;;
+   d) deleteProfile "$OPTARG"
+      exit $!
+      ;;
+   h) showHelp
+      exit 0
+      ;;
+   *) showHelp 1>&2
+      exit 1
+      ;;
+ esac
+done
+
+shift "$((OPTIND-1))"
+
+if ! profileExists "$1"
 then
- RPASS=`openssl passwd -1 -salt xyz  ${RANDOM}_${RANDOM}`
- sudo useradd -g users -p "$RPASS" -m "$FFP_USER"
-
- U=`whoami`
- sudo touch /etc/sudoers.d/ffp
- sudo chmod 600 /etc/sudoers.d/ffp
- echo "$U ALL=($FFP_USER) NOPASSWD: /usr/bin/firefox" | sudo tee -a /etc/sudoers.d/ffp
-
+ createProfile "$1" || exit $!
 fi
 
-xhost "+SI:localuser:$FFP_USER"
+if [ -n "$2" ]
+then
+ CMD=`which "$OPTARG"`
+fi
 
-exec screen -d -m -S "$FFP_USER" sudo -u "$FFP_USER"  /usr/bin/firefox
+startProfile "$1"
