@@ -5,8 +5,8 @@ EAPI=5
 inherit eutils linux-info versionator
 
 SLOT="0"
-PV_STRING="$(get_version_component_range 4-6)"
-MY_PV="$(get_version_component_range 1-3)"
+PV_STRING="$(get_version_component_range 3-5)"
+MY_PV="$(get_version_component_range 1-2)"
 MY_PN="idea"
 MY_DOWNLOAD_BASE="https://download.jetbrains.com/idea"
 
@@ -30,7 +30,7 @@ DESCRIPTION="A complete toolset for web, mobile and enterprise development"
 HOMEPAGE="https://www.jetbrains.com/idea"
 
 LICENSE="IDEA"
-IUSE="+custom-jdk"
+IUSE="-custom-jdk"
 
 #https://intellij-support.jetbrains.com/hc/en-us/articles/206544879-Selecting-the-JDK-version-the-IDE-will-run-under
 RDEPEND="!custom-jdk? ( >=virtual/jdk-1.8:* )
