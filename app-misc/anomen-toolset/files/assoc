@@ -10,7 +10,7 @@ FILE="$1"
 APP="${2%.desktop}"
 
 
-MIME=`xdg-mime query filetype $FILE`
+MIME=`xdg-mime query filetype "$FILE"`
 
 if [ -z "$MIME" ]
 then
