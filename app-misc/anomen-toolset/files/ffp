@@ -27,12 +27,7 @@ listProfiles()
 profileExists()
 {
     PROFILE="$1"
-    if compgen -u | grep -q "^${FFP_PREFIX}${PROFILE}\$"
-    then
-      return 0
-    else
-      return 1
-    fi
+    id "${FFP_PREFIX}${PROFILE}" > /dev/null
 }
 
 deleteProfile()
