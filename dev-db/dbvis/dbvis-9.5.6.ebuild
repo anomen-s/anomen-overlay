@@ -29,7 +29,7 @@ RESTRICT="mirror"
 RDEPEND="virtual/jre
 	dev-java/java-config
 	postgresql? ( dev-java/jdbc-postgresql )
-	mssql? ( dev-java/jdbc-mssqlserver )
+	mssql? ( dev-java/jdbc-mssqlserver:4.2 )
 	jtds? ( dev-java/jtds:1.3 )
 	mysql? ( dev-java/jdbc-mysql )"
 DEPEND="${RDEPEND}"
@@ -47,7 +47,7 @@ src_unpack() {
 
 	if use mssql ; then
 		mkdir jdbc/mssql
-		java-pkg_jar-from --into jdbc/mssql jdbc-mssqlserver-4.0
+		java-pkg_jar-from --into jdbc/mssql jdbc-mssqlserver-4.2
 	fi
 
 	if use jtds ; then
