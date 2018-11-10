@@ -3,6 +3,7 @@
 # Defaults
 FFP_PREFIX="ffp_"
 DEFAULT_CMD="/usr/bin/firefox"
+MSG=""
 
 showHelp()
 {
@@ -13,6 +14,7 @@ showHelp()
  echo "	-C [cmd]	specify allowed command"
  echo "	-A		allow to execute all commands"
  echo "	-p [prefix]	user name prefix, (default: ffp_)"
+ echo "	-m [message]	description of profile"
  echo "	-v		verbose"
  echo ""
  echo "	[profile]	profile to be started (created if not exists)"
@@ -62,6 +64,7 @@ createProfile()
   echo "$U ALL=(${FFP_USER}) NOPASSWD: ${CMD:-$DEFAULT_CMD}" | sudo tee -a /etc/sudoers.d/ffp
   FFP_HOME=`eval "echo ~${FFP_USER}"`
   echo "${CMD:-$DEFAULT_CMD}" | sudo tee  "${FFP_HOME}/ffp.cmd"
+  echo "${MSG}" | sudo tee  "${FFP_HOME}/ffp.txt"
  fi
 }
 
@@ -69,11 +72,13 @@ startProfile()
 {
  PROFILE="$1"
  FFP_USER="${FFP_PREFIX}${PROFILE}"
- FFP_HOME=`eval "echo ~${FFP_USER}"`
+ FFP_HOME=`eval "echo ~${FFP_USER}"`  # "
 
- xhost "+SI:localuser:$FFP_USER"
+ xhost "+SI:localuser:$FFP_USER" > /dev/null
 
  test -f "${FFP_HOME}/ffp.cmd" && DEFAULT_CMD=`cat "${FFP_HOME}/ffp.cmd"`
+ echo "Starting: $FFP_USER (${CMD:-$DEFAULT_CMD})"
+ test -f "${FFP_HOME}/ffp.txt" && cat "${FFP_HOME}/ffp.txt"
  cd "${FFP_HOME}"
  exec screen -d -m -S "$FFP_USER" sudo -u "$FFP_USER" "${CMD:-$DEFAULT_CMD}"
 }
@@ -91,6 +96,8 @@ do
    p) FFP_PREFIX="$OPTARG"
       ;;
    A) CMD="ALL"
+      ;;
+   m) MSG="$OPTARG"
       ;;
    C) CMD=`which "$OPTARG"`
       ;;
