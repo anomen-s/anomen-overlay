@@ -1,5 +1,5 @@
---- rules/evdev.xml.in	2011-04-06 00:47:53.000000000 +0200
-+++ rules/evdev.xml.in	2011-05-03 10:50:29.399497572 +0200
+--- a/rules/evdev.xml.in	2011-04-06 00:47:53.000000000 +0200
++++ b/rules/evdev.xml.in	2011-05-03 10:50:29.399497572 +0200
 @@ -2504,6 +2504,12 @@
              <_description>Czech (US Dvorak with CZ UCW support)</_description>
            </configItem>
@@ -13,8 +13,8 @@
        </variantList>
      </layout>
      <layout>
---- symbols/cz	2011-04-06 00:33:21.000000000 +0200
-+++ symbols/cz	2011-05-03 10:46:52.926498124 +0200
+--- a/symbols/cz	2011-04-06 00:33:21.000000000 +0200
++++ b/symbols/cz	2011-05-03 10:46:52.926498124 +0200
 @@ -175,3 +175,81 @@
  
      include "level3(ralt_switch)"
