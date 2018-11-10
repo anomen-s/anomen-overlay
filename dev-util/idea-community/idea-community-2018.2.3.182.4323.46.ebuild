@@ -5,8 +5,8 @@ EAPI=5
 inherit eutils linux-info versionator
 
 SLOT="0"
-PV_STRING="$(get_version_component_range 3-5)"
-MY_PV="$(get_version_component_range 1-2)"
+PV_STRING="$(get_version_component_range 4-6)"
+MY_PV="$(get_version_component_range 1-3)"
 MY_PN="idea"
 MY_DOWNLOAD_BASE="https://download.jetbrains.com/idea"
 
@@ -20,10 +20,10 @@ else
 fi
 
 KEYWORDS="~amd64 ~x86"
-SRC_URI="x86? ( ${MY_DOWNLOAD_BASE}/${MY_PN}${MY_EDITION}-${MY_PV}-no-jdk.tar.gz -> ${MY_PN}${MY_EDITION}-${PV_STRING}-no-jdk.tar.gz )
+SRC_URI="x86? ( ${MY_DOWNLOAD_BASE}/${MY_PN}${MY_EDITION}-${MY_PV}-no-jdk.tar.gz )
 	amd64? (
-		custom-jdk? ( ${MY_DOWNLOAD_BASE}/${MY_PN}${MY_EDITION}-${MY_PV}.tar.gz -> ${MY_PN}${MY_EDITION}-${PV_STRING}.tar.gz )
-		!custom-jdk? ( ${MY_DOWNLOAD_BASE}/${MY_PN}${MY_EDITION}-${MY_PV}-no-jdk.tar.gz -> ${MY_PN}${MY_EDITION}-${PV_STRING}-no-jdk.tar.gz )
+		custom-jdk? ( ${MY_DOWNLOAD_BASE}/${MY_PN}${MY_EDITION}-${MY_PV}.tar.gz )
+		!custom-jdk? ( ${MY_DOWNLOAD_BASE}/${MY_PN}${MY_EDITION}-${MY_PV}-no-jdk.tar.gz )
 	)"
 
 DESCRIPTION="A complete toolset for web, mobile and enterprise development"
@@ -91,9 +91,9 @@ src_install() {
 	newicon "bin/idea.png" "${PN}.png"
 	newbin "${FILESDIR}/idea-launcher" "${PN}"
 
-	#https://confluence.jetbrains.com/display/IDEADEV/Inotify+Watches+Limit
 	mkdir -p "${D}/etc/sysctl.d/"
-	echo "fs.inotify.max_user_watches = 524288" > "${D}/etc/sysctl.d/30-${PN}-inotify-watches.conf"
+	echo '# https://confluence.jetbrains.com/display/IDEADEV/Inotify+Watches+Limit' > "${D}/etc/sysctl.d/30-${PN}-inotify-watches.conf"
+	echo "fs.inotify.max_user_watches = 524288" >> "${D}/etc/sysctl.d/30-${PN}-inotify-watches.conf"
 
 	make_desktop_entry ${PN} "IntelliJ IDEA (${MY_EDITION_FULL})" "${PN}" "Development;IDE"
 }
