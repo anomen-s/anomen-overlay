@@ -90,7 +90,7 @@ then
   echo "*****************" >&2
 fi
 
-while getopts "p:AC:lc:d:hv" OPT
+while getopts "p:Am:C:lc:d:hv" OPT
 do
  case "$OPT" in
    p) FFP_PREFIX="$OPTARG"
