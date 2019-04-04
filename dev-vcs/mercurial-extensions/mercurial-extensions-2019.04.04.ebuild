@@ -14,8 +14,8 @@ SRC_URI="
   https://bitbucket.org/face/timestamp/raw/e85aaaa0a21a/casestop.py -> e85aaaa0a21a-casestop.py
   https://bitbucket.org/peerst/hgcollapse/raw/3616724/hgext/collapse.py -> 3616724-collapse.py
   https://bitbucket.org/marmoute/mutable-history/raw/970a4c1/hgext/evolve.py -> 970a4c1-evolve.py
-  https://bitbucket.org/dwt/hg-info/raw/f414954183b05cc4dbc3dc10ec6fd3422016682f/info.py -> f414954-info.py
   "
+# removed:  https://bitbucket.org/dwt/hg-info/
 
 RESTRICT="mirror"
 LICENSE="GPL-2+ as-is"
