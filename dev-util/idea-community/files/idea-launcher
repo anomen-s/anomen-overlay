@@ -1,6 +1,0 @@
-#!/usr/bin/env perl
-
-$SIG{INT} = 'DEFAULT';
-$SIG{TERM} = 'DEFAULT';
-
-exec "/opt/idea-community/bin/idea.sh";
