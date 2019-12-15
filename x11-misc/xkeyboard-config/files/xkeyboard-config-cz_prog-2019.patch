@@ -21,7 +21,7 @@
 +
 +    include "latin"
  
-     name[group1]="Czech (programming)";
+     name[Group1]="Czech (programming)";
  
 -    key <AB01> { [ z,	Z ] };
 -    key <AB02> { [ x,	X ] };
