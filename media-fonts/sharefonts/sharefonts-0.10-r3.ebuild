@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-fonts/sharefonts/sharefonts-0.10-r3.ebuild,v 1.12 2008/02/03 19:54:49 dirtyepic Exp $
 
+EAPI="5"
 inherit font
 
 DESCRIPTION="A Collection of Postscript Type1 Fonts"
