@@ -40,7 +40,7 @@ deleteProfile()
   read X
   if [ "x$X" = "xy" ]
   then
-    sudo sed -i /etc/sudoers.d/ffp -e "/(${FFP_USER})/d"
+    sudo sed -i /etc/sudoers.d/99-ffp -e "/(${FFP_USER})/d"
     sudo userdel -rf "${FFP_USER}"
   else
     Skipped deleting "${FFP_USER}"
@@ -59,9 +59,9 @@ createProfile()
   sudo useradd --no-user-group --password "$RPASS" --create-home "$FFP_USER"
 
   U=`whoami`
-  sudo touch /etc/sudoers.d/ffp
-  sudo chmod 600 /etc/sudoers.d/ffp
-  echo "$U ALL=(${FFP_USER}) NOPASSWD: ${CMD:-$DEFAULT_CMD}" | sudo tee -a /etc/sudoers.d/ffp
+  sudo touch /etc/sudoers.d/99-ffp
+  sudo chmod 600 /etc/sudoers.d/99-ffp
+  echo "$U ALL=(${FFP_USER}) NOPASSWD: ${CMD:-$DEFAULT_CMD}" | sudo tee -a /etc/sudoers.d/99-ffp
   FFP_HOME=`eval "echo ~${FFP_USER}"`
   echo "${CMD:-$DEFAULT_CMD}" | sudo tee  "${FFP_HOME}/ffp.cmd"
   echo "${MSG}" | sudo tee  "${FFP_HOME}/ffp.txt"
