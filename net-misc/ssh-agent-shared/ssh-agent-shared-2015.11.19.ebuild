@@ -4,7 +4,7 @@
 EAPI="4"
 
 DESCRIPTION="Anomen's wrapper for ssh-agent"
-HOMEPAGE="http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/net-misc/ssh-agent-shared"
+HOMEPAGE="https://github.com/anomen-s/anomen-overlay/tree/master/net-misc/ssh-agent-shared"
 SRC_URI=""
 
 LICENSE="GPL-2+"

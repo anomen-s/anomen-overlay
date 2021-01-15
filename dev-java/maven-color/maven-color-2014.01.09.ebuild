@@ -4,7 +4,7 @@
 EAPI="4"
 
 DESCRIPTION="Colorize Maven output"
-HOMEPAGE="http://repo.or.cz/w/anomen-overlay.git/tree/HEAD:/dev-java/maven-color"
+HOMEPAGE="https://github.com/anomen-s/anomen-overlay/tree/master/dev-java/maven-color"
 SRC_URI=""
 
 LICENSE="as-is"

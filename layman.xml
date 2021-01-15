@@ -2,11 +2,6 @@
 <layman>
   <!--
     Anomen's personal overlay.
-    
-    This is overlay description file for layman.
-    To add this overlay, add following line into overlays section in /etc/layman/layman.cfg:
-    http://repo.or.cz/w/anomen-overlay.git/blob_plain/HEAD:/layman.xml
-    
   -->
   <overlay name="anomen" status="unofficial" contact="ludek.h@gmail.com"
 	src="https://github.com/anomen-s/anomen-overlay.git" type="git">
