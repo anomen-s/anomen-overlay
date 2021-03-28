@@ -1,22 +1,22 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-fonts/sharefonts/sharefonts-0.10-r3.ebuild,v 1.12 2008/02/03 19:54:49 dirtyepic Exp $
 
-EAPI="5"
+EAPI=7
+
 inherit font
 
 DESCRIPTION="A Collection of Postscript Type1 Fonts"
+HOMEPAGE="http://www.gimp.org"
 SRC_URI="mirror://gimp/fonts/${P}.tar.gz"
-HOMEPAGE="http://www.gimp.org/"
-LICENSE="public-domain"
 
-KEYWORDS="alpha amd64 arm ia64 ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
-IUSE=""
+LICENSE="all-rights-reserved"
 SLOT="0"
+KEYWORDS="alpha amd64 arm ia64 ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
+IUSE="X"
+RESTRICT="mirror bindist"
 
-FONT_S=${WORKDIR}/sharefont
-S=${FONT_S}
+S="${WORKDIR}/sharefont"
 
+DOCS="README *.shareware"
+FONT_S="${S}"
 FONT_SUFFIX="pfb"
-
-DOCS="*.shareware"
