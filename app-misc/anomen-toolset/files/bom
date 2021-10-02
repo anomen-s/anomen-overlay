@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
-# Copyright (C) 2013 Anomen  <ludek_h@seznam.cz>
+# Copyright (C) 2021 Anomen  <ludek_h@seznam.cz>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -22,9 +22,9 @@ import os
 import sys
 import tempfile
 
-__version__ = "0.1.0"
+__version__ = "0.1.3"
 
-BOM = '\xef\xbb\xbf' # ['\xEF', '\xBB', '\xBF']
+BOM = b'\xef\xbb\xbf' # ['\xEF', '\xBB', '\xBF']
 
 def parseArguments():
 
