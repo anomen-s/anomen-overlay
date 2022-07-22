@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="5"
+EAPI="7"
 
-inherit eutils java-pkg-2
+inherit eutils desktop java-pkg-2 xdg-utils
 
 DESCRIPTION="Keystore management tool."
 SRC_URI="mirror://sourceforge/${PN}/${P}.zip"
@@ -16,11 +16,10 @@ LICENSE="GPL-2"
 IUSE=""
 
 DEPEND="app-arch/unzip"
-RDEPEND="|| ( >=virtual/jre-1.5 >=virtual/jdk-1.5 )"
-
+RDEPEND="|| ( >=virtual/jre-1.8 >=virtual/jdk-1.8 )"
 
 src_compile() {
-	sed -e  "/^Icon=/s/${PN}/${PN}.ico/" -i "${PN}.desktop"
+	:
 }
 
 src_install() {
@@ -30,7 +29,20 @@ src_install() {
 
 	dodoc *.txt
 
-	doicon "${PN}.ico"
-	domenu "${PN}.desktop"
+	local size
+	for size in 16 32 64 128 ; do
+	    doicon --size "${size}" icons/${size}x${size}/${PN}.png
+	done
+
+	domenu "net.sf.portecle.desktop"
 }
 
+pkg_postinst() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+}
