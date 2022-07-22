@@ -2,9 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="5"
-
-inherit eutils
+EAPI="8"
 
 DESCRIPTION="Tool for decoding the DTMF and MF tones from PCM wave files."
 HOMEPAGE="http://aluigi.org/mytoolz.htm"
@@ -22,6 +20,7 @@ RDEPEND=""
 S="${WORKDIR}"
 
 src_prepare() {
+    default
     sed -i -e '/^CFLAGS/d' Makefile
 }
 
