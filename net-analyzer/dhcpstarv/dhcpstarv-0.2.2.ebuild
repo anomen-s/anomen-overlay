@@ -2,12 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=7
 
-inherit autotools eutils versionator
+inherit autotools eutils
 
 DESCRIPTION="Utility for DHCP starvation attacks"
-MY_PV=$(get_version_component_range '1-2')
+MY_PV=$(ver_cut '1-2')
 SRC_URI="mirror://sourceforge/${PN}/${MY_PV}/${P}.tar.gz"
 HOMEPAGE="http://dhcpstarv.sourceforge.net/"
 LICENSE="GPL-3"
@@ -23,4 +23,5 @@ DEPEND="
 
 src_prepare(){
 	eautoreconf
+	default
 }
