@@ -1,39 +1,37 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 2020-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
-EAPI="7"
-inherit eutils
+EAPI=8
 
-PYTHON_COMPAT=( python3_{6,7,8,9} )
+PYTHON_COMPAT=( python3_{8,9,10} )
+inherit distutils-r1
 
 DESCRIPTION="Display unicode character properties"
 HOMEPAGE="http://kassiopeia.juls.savba.sk/~garabik/software/unicode/"
-SRC_URI="https://github.com/garabik/unicode/archive/v${PV}.tar.gz"
+SRC_URI="https://github.com/garabik/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
-
+KEYWORDS="~amd64 ~x86"
 IUSE="unihan"
 
-BDEPEND="app-arch/unzip"
-RDEPEND="=dev-lang/python-3*
-	app-i18n/unicode-data"
-DEPEND="${RDEPEND}"
+DEPEND="app-i18n/unicode-data"
+RDEPEND="${DEPEND}"
+BDEPEND="unihan? ( app-arch/unzip )"
 
-DOCS=(README{,-paracode} COPYING debian/changelog)
+DOCS=(README{,-paracode} COPYING debian/changelog debian/copyright)
 
 UNICODE_DIR=/usr/share/unicode-data
 
-
 src_compile() {
+	distutils-r1_src_compile
+
 	use unihan && unzip "$UNICODE_DIR/Unihan.zip"
 }
 
 src_install() {
-	default
+	distutils-r1_src_install
 
-	dobin unicode paracode
 	doman *.1
 
 	insinto "$UNICODE_DIR"
