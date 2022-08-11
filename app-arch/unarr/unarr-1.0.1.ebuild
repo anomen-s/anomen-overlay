@@ -1,9 +1,9 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
-inherit cmake-utils
+inherit cmake
 
 DESCRIPTION="A lightweight decompression library with support for rar, tar and zip archives"
 HOMEPAGE="http://github.com/selmf/unarr"
