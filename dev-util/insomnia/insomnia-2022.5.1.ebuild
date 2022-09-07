@@ -1,21 +1,22 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit eutils pax-utils gnome2-utils xdg-utils
+inherit eutils pax-utils xdg-utils
+
+MY_PN="Insomnia.Core"
 
 DESCRIPTION="The most intuitive cross-platform REST API Client"
 HOMEPAGE="https://insomnia.rest/"
-SRC_URI="https://github.com/getinsomnia/insomnia/releases/download/v${PV}/insomnia_${PV}_amd64.deb"
-LICENSE="Insomnia"
+SRC_URI="https://github.com/Kong/insomnia/releases/download/core%40${PV}/${MY_PN}-${PV}.deb"
+
+LICENSE="MIT"
 RESTRICT="mirror"
 
 SLOT="0"
 KEYWORDS="~amd64 -*"
 IUSE=""
-
-QA_PREBUILT="usr/lib/slack/*"
 
 DEPEND=""
 RDEPEND="
@@ -48,11 +49,11 @@ src_install() {
 }
 
 pkg_postinst() {
-    gnome2_icon_cache_update
+    xdg_icon_cache_update
     xdg_desktop_database_update
 }
 
 pkg_postrm() {
-    gnome2_icon_cache_update
+    xdg_icon_cache_update
     xdg_desktop_database_update
 }
