@@ -29,6 +29,7 @@ DEPEND="
 	dev-qt/qtscript:5
 	virtual/glu
 	dev-qt/qtquickcontrols:5
+	dev-qt/qtquickcontrols2:5
 	dev-util/desktop-file-utils
 	app-arch/unarr
 	pdf? ( app-text/poppler:=[qt5] )
@@ -57,8 +58,5 @@ pkg_postinst(){
 	elog
 	elog "If you want support for extra image files, you can do it by"
 	elog "installing dev-qt/qtimageformats"
-	elog
-	elog "Also, if you want to add QR codes support, you can do it by"
-	elog "installing media-gfx/qrencode"
 	echo
 }
