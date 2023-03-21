@@ -20,7 +20,6 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="
-	gnome-base/gconf
 	x11-libs/libnotify
 	dev-libs/libappindicator
 	x11-libs/libXtst
@@ -49,11 +48,11 @@ src_install() {
 }
 
 pkg_postinst() {
-    xdg_icon_cache_update
-    xdg_desktop_database_update
+	xdg_icon_cache_update
+	xdg_desktop_database_update
 }
 
 pkg_postrm() {
-    xdg_icon_cache_update
-    xdg_desktop_database_update
+	xdg_icon_cache_update
+	xdg_desktop_database_update
 }
