@@ -1,11 +1,14 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header$
-EAPI="6"
+EAPI="7"
+
+COMMIT=d4f447f
 
 DESCRIPTION="Tool for [un]packing Unreal Engine 4 .pak archives"
 HOMEPAGE="https://github.com/panzi/u4pak"
-SRC_URI="https://raw.githubusercontent.com/panzi/u4pak/66ab16e/u4pak.py -> 66ab16e-u4pak.py"
+SRC_URI="https://raw.githubusercontent.com/panzi/u4pak/${COMMIT}/u4pak.py -> ${COMMIT}-u4pak.py
+	https://raw.githubusercontent.com/panzi/u4pak/${COMMIT}/README.md -> ${COMMIT}-README.md"
 
 RESTRICT="mirror"
 LICENSE="as-is"
@@ -20,9 +23,11 @@ S="${WORKDIR}"
 
 src_unpack() {
 	cd "${DISTDIR}"
-	cp *-u4pak.py "$S/u4pak"
+	cp ${COMMIT}-u4pak.py "$S/u4pak"
+	cp ${COMMIT}-README.md "$S/README.md"
 }
 
 src_install() {
 	dobin u4pak
+	dodoc README.md
 }
