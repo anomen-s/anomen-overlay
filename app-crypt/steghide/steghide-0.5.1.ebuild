@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit autotools eutils
+inherit autotools
 
 DESCRIPTION="A steganography program which hides data in various media files"
 HOMEPAGE="http://steghide.sourceforge.net/"
