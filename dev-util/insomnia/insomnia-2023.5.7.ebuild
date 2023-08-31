@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit eutils pax-utils xdg-utils
+inherit wrapper pax-utils xdg-utils
 
 MY_PN="Insomnia.Core"
 
