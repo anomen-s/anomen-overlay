@@ -4,11 +4,11 @@
 
 EAPI=7
 
-inherit eutils rpm
+inherit rpm
 
 DESCRIPTION="FormAppsSigningExtension"
 HOMEPAGE="https://www.602.cz/formfiller"
-SRC_URI="https://formulare.ricany.cz/fas/page/apps/FormAppsSigningExtension.noarch.rpm"
+SRC_URI="https://formulare.ricany.cz/fas/page/apps/FormAppsSigningExtension.noarch.rpm -> ${P}.noarch.rpm"
 
 LICENSE="all-rights-reserved no-source-code"
 SLOT="0"
