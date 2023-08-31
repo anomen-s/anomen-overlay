@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="7"
+EAPI=7
 
-inherit eutils desktop java-pkg-2 xdg-utils
+inherit desktop java-pkg-2 xdg-utils
 
 DESCRIPTION="Keystore management tool."
 SRC_URI="mirror://sourceforge/${PN}/${P}.zip"
