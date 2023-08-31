@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+EAPI=7
+
 DESCRIPTION="ASN.1 to C compiler"
 HOMEPAGE="http://asn1c.sourceforge.net/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
@@ -12,6 +14,6 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 src_install(){
-	emake DESTDIR="${D}" install || die "make install failed"
-	dodoc BUGS FAQ NEWS README TODO || die "dodoc failed"
+	emake DESTDIR="${ED}" install || die "make install failed"
+	mv "$D/usr/share/doc/asn1c" "$D/usr/share/doc/${PF}"
 }
