@@ -4,7 +4,7 @@
 
 EAPI=7
 
-inherit desktop eutils pax-utils xdg
+inherit desktop wrapper pax-utils xdg
 
 MY_PN="${PN/-bin/}"
 
@@ -25,17 +25,12 @@ RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${MY_PN^}/app"
 
-src_prepare() {
-	mv _Postman Postman
-	default
-}
-
 src_install() {
 	local dir="/opt/${PN}"
 
 	insinto "${dir}"
 	doins -r *
-	fperms 755 "${dir}"/Postman
+	fperms 755 "${dir}"/Postman "${dir}"/postman
 
 	make_wrapper "postman" "${dir}/Postman"
 	newicon "resources/app/assets/icon.png" "${PN}.png"
