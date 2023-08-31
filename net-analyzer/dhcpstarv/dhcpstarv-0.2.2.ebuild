@@ -4,7 +4,7 @@
 
 EAPI=7
 
-inherit autotools eutils
+inherit autotools
 
 DESCRIPTION="Utility for DHCP starvation attacks"
 MY_PV=$(ver_cut '1-2')
