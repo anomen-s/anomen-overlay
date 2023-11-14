@@ -76,7 +76,7 @@ startProfile()
 
  xhost "+SI:localuser:$FFP_USER" > /dev/null
 
- test -f "${FFP_HOME}/ffp.cmd" && DEFAULT_CMD=`cat "${FFP_HOME}/ffp.cmd"`
+ test -f "${FFP_HOME}/ffp.cmd" && DEFAULT_CMD=`head -n 1 "${FFP_HOME}/ffp.cmd"`
  echo "Starting: $FFP_USER (${CMD:-$DEFAULT_CMD})"
  test -f "${FFP_HOME}/ffp.txt" && cat "${FFP_HOME}/ffp.txt"
  cd "${FFP_HOME}"
