@@ -1,36 +1,51 @@
 --- a/symbols/cz	2023-10-05 21:26:07.000000000 +0200
-+++ b/symbols/cz	2023-12-23 11:43:14.741292775 +0100
-@@ -489,32 +489,77 @@
- };
++++ b/symbols/cz	2023-12-23 12:12:28.737828512 +0100
+@@ -494,27 +494,76 @@
+     // for touch-typing programmers who need to write Czech occasionally.
+     // https://github.com/michalkahle/czech-coder-xkb
  
- xkb_symbols "coder" {
-+     // This layout based on czech programmers' keyboard layout from windows 
-+     // (c) 2017 by anomen
-+     // $Id: cz 16 2017-01-14 10:48:28Z ludek $
+-    include "us"
++    // This layout based on czech programmers' keyboard layout from windows
++    // https://github.com/anomen-s/czech-programmer-keyboard-layout-xkb
 +
 +    include "latin"
 +
-+    name[Group1]="Czech (programming)";
-+
+     name[Group1]= "Czech (coder)";
+ 
+-    key <TLDE>	{[     grave,  asciitilde,     semicolon, dead_abovering ]};
+-    key <AE02>	{[         2,          at,        ecaron,     Ecaron ]};
+-    key <AE03>	{[         3,  numbersign,        scaron,     Scaron ]};
+-    key <AE04>	{[         4,      dollar,        ccaron,     Ccaron ]};
+-    key <AE05>	{[         5,     percent,        rcaron,     Rcaron ]};
+-    key <AE06>	{[         6, asciicircum,        zcaron,     Zcaron ]};
+-    key <AE07>	{[         7,   ampersand,        yacute,     Yacute ]};
+-    key <AE08>	{[         8,    asterisk,        aacute,     Aacute ]};
+-    key <AE09>	{[         9,   parenleft,        iacute,     Iacute ]};
+-    key <AE10>	{[         0,  parenright,        eacute,     Eacute ]};
 +    key <TLDE>  { [ grave,   asciitilde,      twosuperior, dead_abovering ]};
 +
-+    key <AE01>  { [         1,     exclam,    plusminus,       dead_tilde ]};
-+    key <AE02>  { [         2,         at,       ecaron,       dead_caron ]}; // TODO: replace caron
-+    key <AE03>  { [         3, numbersign,       scaron,  dead_circumflex ]};
-+    key <AE04>  { [         4,     dollar,       ccaron,       dead_breve ]};
-+    key <AE05>  { [         5,    percent,       rcaron,   dead_abovering ]};
-+    key <AE06>  { [         6, asciicircum,      zcaron,      dead_ogonek ]     };
-+    key <AE07>  { [         7,  ampersand,       yacute,       dead_grave ] };
-+    key <AE08>  { [         8,   asterisk,       aacute,    dead_abovedot ] };
-+    key <AE09>  { [         9,  parenleft,       iacute,       dead_acute ] }; // TODO: replace acute
-+    key <AE10>  { [         0, parenright,       eacute, dead_doubleacute ] };
-+    key <AE11>  { [     minus, underscore,    identical,            U2030 ] }; // U+2030 is permille
-+    key <AE12>  { [     equal,       plus,   dead_acute,       dead_caron ] };
-+
-+
++    key <AE01>	{[         1,     exclam,    plusminus,       dead_tilde ]};
++    key <AE02>	{[         2,         at,       ecaron,       dead_caron ]}; // TODO: replace caron
++    key <AE03>	{[         3, numbersign,       scaron,  dead_circumflex ]};
++    key <AE04>	{[         4,     dollar,       ccaron,       dead_breve ]};
++    key <AE05>	{[         5,    percent,       rcaron,   dead_abovering ]};
++    key <AE06>	{[         6, asciicircum,      zcaron,      dead_ogonek ]};
++    key <AE07>	{[         7,  ampersand,       yacute,       dead_grave ]};
++    key <AE08>	{[         8,   asterisk,       aacute,    dead_abovedot ]};
++    key <AE09>	{[         9,  parenleft,       iacute,       dead_acute ]}; // TODO: replace acute
++    key <AE10>	{[         0, parenright,       eacute, dead_doubleacute ]};
++    key <AE11>	{[     minus, underscore,    identical,            U2030 ]}; // U+2030 permille
+     key <AE12>	{[     equal,        plus,    dead_acute, dead_caron ]};
+ 
+-    key <AD03>	{[         e,           E,             e,   EuroSign ]};
+-    key <AD11>	{[ bracketleft, braceleft,        uacute,     Uacute ]};
+ 
+-    key <AC10>	{[ semicolon,      colon,          uring,      Uring ]};
+-    key <AC11>	{[ apostrophe,  quotedbl,        section,   quotedbl ]};
+-    key <BKSL>	{[ backslash,        bar, dead_diaeresis, apostrophe ]};
 +    key <AD01>  { [         q,          Q, leftdoublequotemark, doublelowquotemark ]    };
-+    key <AD02>  { [         w,          W,        U2126,     Nosymbol ] }; // U+2126 is OHM SIGN
-+    key <AD03>  { [         e,          E,     EuroSign,        U01DD ] }; // U+01DD is LATIN SMALL LETTER TURNED E
++    key <AD02>  { [         w,          W,        U2126,     Nosymbol ] }; // U+2126 OHM SIGN
++    key <AD03>  { [         e,          E,     EuroSign,        U01DD ] }; // U+01DD LATIN SMALL LETTER TURNED E
 +    //key <AD04>    { [         r,          R,    paragraph,   registered ] }; // = latin(basic)
 +    //key <AD05>    { [         t,          T,       tslash,       Tslash ] }; // = latin(basic)
 +    //key <AD06>    { [         y,          Y,    leftarrow,          yen ] }; // = latin(basic)
@@ -39,7 +54,7 @@
 +    key <AD09>  { [         o,          O,       oslash,       Oslash ] };
 +    //key <AD10>    { [         p,          P,        thorn,        Thorn ] }; // = latin(basic)
 +
-+    key <AD11>  { [bracketleft,  braceleft,      uacute,        U2044 ] }; // U+2044 is FRACTION SLASH
++    key <AD11>  { [bracketleft,  braceleft,      uacute,        U2044 ] }; // U+2044 FRACTION SLASH
 +    key <AD12>  { [bracketright, braceright,guillemotright,guillemotleft ]  };
 +
 +    key <AC01>  { [         a,          A,           ae,           AE ] };
@@ -70,32 +85,7 @@
 +    key <AB08>  { [     comma,       less, questiondown,     multiply ] }; // CHECK
 +    key <AB09>  { [    period,    greater,     ellipsis,     division ] };
 +    key <AB10>  { [     slash,   question,       endash,       emdash ] }; //dead_belowdot, dead_abovedot
- 
--    // A US layout with Czech characters under AltGr,
--    // for touch-typing programmers who need to write Czech occasionally.
--    // https://github.com/michalkahle/czech-coder-xkb
--
--    include "us"
--    name[Group1]= "Czech (coder)";
--
--    key <TLDE>	{[     grave,  asciitilde,     semicolon, dead_abovering ]};
--    key <AE02>	{[         2,          at,        ecaron,     Ecaron ]};
--    key <AE03>	{[         3,  numbersign,        scaron,     Scaron ]};
--    key <AE04>	{[         4,      dollar,        ccaron,     Ccaron ]};
--    key <AE05>	{[         5,     percent,        rcaron,     Rcaron ]};
--    key <AE06>	{[         6, asciicircum,        zcaron,     Zcaron ]};
--    key <AE07>	{[         7,   ampersand,        yacute,     Yacute ]};
--    key <AE08>	{[         8,    asterisk,        aacute,     Aacute ]};
--    key <AE09>	{[         9,   parenleft,        iacute,     Iacute ]};
--    key <AE10>	{[         0,  parenright,        eacute,     Eacute ]};
--    key <AE12>	{[     equal,        plus,    dead_acute, dead_caron ]};
--
--    key <AD03>	{[         e,           E,             e,   EuroSign ]};
--    key <AD11>	{[ bracketleft, braceleft,        uacute,     Uacute ]};
--
--    key <AC10>	{[ semicolon,      colon,          uring,      Uring ]};
--    key <AC11>	{[ apostrophe,  quotedbl,        section,   quotedbl ]};
--    key <BKSL>	{[ backslash,        bar, dead_diaeresis, apostrophe ]};
++
 +    key <SPCE>  { [     space,      space, nobreakspace, nobreakspace ] };
 +
 +    key <KPDL>  { type[Group1]="FOUR_LEVEL_KEYPAD",
