@@ -9,8 +9,8 @@ inherit desktop versionator
 MY_PV=$(replace_all_version_separators '')
 
 DESCRIPTION="Keystore management tool."
-SRC_URI="mirror://sourceforge/keystore-explorer/v${PV}/kse-${MY_PV}.zip"
-HOMEPAGE="http://keystore-explorer.sourceforge.net"
+SRC_URI="https://github.com/kaikramer/${PN}/releases/download/v${PV}/kse-${MY_PV}.zip"
+HOMEPAGE="https://keystore-explorer.org/"
 
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
@@ -19,7 +19,7 @@ IUSE=""
 
 DEPEND="app-arch/unzip"
 RDEPEND="dev-java/java-config
-    || ( >=dev-java/oracle-jdk-bin-1.6 >=dev-java/oracle-jre-bin-1.6 )"
+    || ( virtual/jre virtual/jre )"
 
 S="${WORKDIR}/kse-${MY_PV}"
 
@@ -31,7 +31,7 @@ src_install() {
 	local dir="/opt/${PN}"
 	local exe="kse"
 
-	dobin  "${FILESDIR}/kse"
+	dosym ${dir}/kse.sh /opt/bin/kse
 
 	insinto "${dir}" || die
 	doins -r * || die
