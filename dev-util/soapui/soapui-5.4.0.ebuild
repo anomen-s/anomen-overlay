@@ -3,7 +3,7 @@
 # $Header: $
 
 EAPI="6"
-inherit eutils
+inherit desktop wrapper
 
 DESCRIPTION="SoapUI is a free and open source cross-platform Functional Testing solution."
 HOMEPAGE="http://www.soapui.org/"
