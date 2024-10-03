@@ -21,7 +21,6 @@ IUSE=""
 DEPEND=""
 RDEPEND="
 	x11-libs/libnotify
-	dev-libs/libappindicator
 	x11-libs/libXtst
 	dev-libs/nss
 "
