@@ -2,11 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=6
+EAPI=7
 
-inherit desktop versionator
+inherit desktop
 
-MY_PV=$(replace_all_version_separators '')
+MY_PV=$(ver_rs 1- '')
 
 DESCRIPTION="Keystore management tool."
 SRC_URI="https://github.com/kaikramer/${PN}/releases/download/v${PV}/kse-${MY_PV}.zip"
