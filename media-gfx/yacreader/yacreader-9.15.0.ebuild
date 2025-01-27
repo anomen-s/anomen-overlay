@@ -19,7 +19,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="pdf qrencode"
+IUSE="pdf qrencode webp"
 
 DEPEND="
 	dev-qt/qtcore:5
@@ -27,6 +27,7 @@ DEPEND="
 	dev-qt/qtdeclarative:5
 	dev-qt/qtopengl:5
 	dev-qt/qtscript:5
+	webp? ( dev-qt/qtimageformats:5 )
 	virtual/glu
 	dev-qt/qtquickcontrols:5
 	dev-qt/qtquickcontrols2:5
@@ -56,7 +57,7 @@ pkg_postinst(){
 	elog "You can also add support for 7z files by installing app-arch/p7zip"
 	elog "and LHA files by installing app-arch/lha."
 	elog
-	elog "If you want support for extra image files, you can do it by"
-	elog "installing dev-qt/qtimageformats"
+	use webp || elog "Enable useflag webp if you want support for extra image files (WebP, ...)"
+	use webp || elog "through dev-qt/qtimageformats"
 	echo
 }
