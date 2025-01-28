@@ -20,11 +20,12 @@ fi
 
 LICENSE="LGPL-3"
 SLOT="0"
-IUSE=""
+IUSE="7zip"
 
 DEPEND="
 	sys-libs/zlib
 	app-arch/bzip2
 	app-arch/xz-utils
+	7zip? ( app-arch/p7zip )
 "
 RDEPEND="${DEPEND}"
