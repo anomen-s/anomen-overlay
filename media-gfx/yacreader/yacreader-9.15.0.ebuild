@@ -27,6 +27,8 @@ DEPEND="
 	dev-qt/qtdeclarative:5
 	dev-qt/qtopengl:5
 	dev-qt/qtscript:5
+	dev-qt/qtsql:5[sqlite]
+	dev-qt/qtnetwork:5
 	webp? ( dev-qt/qtimageformats:5 )
 	virtual/glu
 	dev-qt/qtquickcontrols:5
@@ -39,7 +41,7 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 src_configure(){
-	eqmake5 YACReader.pro
+	eqmake5
 }
 
 src_install(){
