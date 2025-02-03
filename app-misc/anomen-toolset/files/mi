@@ -1,9 +1,9 @@
 #!/bin/sh
 
-TMPFILE=`mktemp`
+TMPFILE=`mktemp --suffix=.txt`
 
 for A
-do 
+do
 
  echo "##########################################" >> $TMPFILE
  echo "### $A" >> $TMPFILE
