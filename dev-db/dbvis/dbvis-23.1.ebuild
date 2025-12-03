@@ -4,7 +4,7 @@
 
 # TODO: jdbc symlinks
 
-EAPI="7"
+EAPI="8"
 
 IUSE=""
 
