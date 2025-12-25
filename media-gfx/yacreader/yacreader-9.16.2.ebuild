@@ -41,7 +41,8 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 src_configure(){
-	eqmake5
+#	eqmake5 CONFIG+=7zip
+	eqmake5 #CONFIG+=unarr
 }
 
 src_install(){
