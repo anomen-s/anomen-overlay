@@ -26,15 +26,14 @@ DEPEND="
 	dev-qt/qtmultimedia:5
 	dev-qt/qtdeclarative:5
 	dev-qt/qtopengl:5
-	dev-qt/qtscript:5
 	dev-qt/qtsql:5[sqlite]
 	dev-qt/qtnetwork:5
-	webp? ( dev-qt/qtimageformats:5 )
 	virtual/glu
 	dev-qt/qtquickcontrols:5
 	dev-qt/qtquickcontrols2:5
 	dev-util/desktop-file-utils
 	app-arch/unarr
+	webp? ( media-libs/libwebp )
 	pdf? ( app-text/poppler:=[qt5] )
 	qrencode? ( media-gfx/qrencode:= )
 "
