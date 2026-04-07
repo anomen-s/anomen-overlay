@@ -25,8 +25,7 @@ DEPEND="
 	dev-qt/qtcore:5
 	dev-qt/qtmultimedia:5
 	dev-qt/qtdeclarative:5
-	dev-qt/qtopengl:5
-	dev-qt/qtsql:5[sqlite]
+	dev-qt/qtwidgets:5
 	dev-qt/qtnetwork:5
 	virtual/glu
 	dev-qt/qtquickcontrols:5
