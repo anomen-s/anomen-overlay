@@ -32,7 +32,7 @@ DEPEND="
 	dev-qt/qtquickcontrols2:5
 	dev-util/desktop-file-utils
 	app-arch/unarr
-	webp? ( media-libs/libwebp )
+	webp? ( media-libs/libwebp dev-qt/qtimageformats:5 )
 	pdf? ( app-text/poppler:=[qt5] )
 	qrencode? ( media-gfx/qrencode:= )
 "
