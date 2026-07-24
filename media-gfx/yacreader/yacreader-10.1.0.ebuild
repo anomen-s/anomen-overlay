@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit qmake-utils xdg
+inherit cmake xdg
 
 DESCRIPTION="A comic reader for cross-platform reading and managing your comic collection"
 HOMEPAGE="http://www.yacreader.com"
@@ -19,35 +19,43 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="pdf qrencode webp"
+IUSE="pdf qrencode speech webp"
 
 DEPEND="
-	dev-qt/qtcore:5
-	dev-qt/qtmultimedia:5
-	dev-qt/qtdeclarative:5
-	dev-qt/qtwidgets:5
-	dev-qt/qtnetwork:5
+	dev-qt/qtbase:6[gui,network,opengl,sql,widgets]
+	dev-qt/qt5compat:6
+	dev-qt/qtdeclarative:6
+	dev-qt/qtmultimedia:6
+	dev-qt/qtshadertools:6
+	dev-qt/qtsvg:6
 	virtual/glu
-	dev-qt/qtquickcontrols:5
-	dev-qt/qtquickcontrols2:5
-	dev-util/desktop-file-utils
 	app-arch/unarr
-	webp? ( media-libs/libwebp dev-qt/qtimageformats:5 )
-	pdf? ( app-text/poppler:=[qt5] )
+	webp? ( media-libs/libwebp dev-qt/qtimageformats:6 )
+	pdf? ( app-text/poppler:=[qt6] )
 	qrencode? ( media-gfx/qrencode:= )
+	speech? ( dev-qt/qtspeech:6 )
 "
 RDEPEND="${DEPEND}"
+BDEPEND="dev-qt/qttools:6[linguist]"
 
-src_configure(){
-#	eqmake5 CONFIG+=7zip
-	eqmake5 #CONFIG+=unarr
+src_configure() {
+	local mycmakeargs=(
+		-DDECOMPRESSION_BACKEND=unarr
+		-DPDF_BACKEND=$(usex pdf poppler no_pdf)
+		-DBUILD_TESTS=OFF
+	)
+	cmake_src_configure
 }
 
-src_install(){
-	INSTALL_ROOT="${D}" default
+src_compile() {
+	cmake_src_compile
 }
 
-pkg_postinst(){
+src_install() {
+	cmake_src_install
+}
+
+pkg_postinst() {
 	xdg_pkg_postinst
 	echo
 	elog "Additional packages are required to open the most common comic archives:"
