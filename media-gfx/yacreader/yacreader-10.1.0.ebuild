@@ -19,7 +19,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="pdf qrencode speech webp"
+IUSE="pdf qrencode webp"
 
 DEPEND="
 	dev-qt/qtbase:6[gui,network,opengl,sql,widgets]
@@ -27,13 +27,13 @@ DEPEND="
 	dev-qt/qtdeclarative:6
 	dev-qt/qtmultimedia:6
 	dev-qt/qtshadertools:6
+	dev-qt/qtspeech:6
 	dev-qt/qtsvg:6
 	virtual/glu
 	app-arch/unarr
 	webp? ( media-libs/libwebp dev-qt/qtimageformats:6 )
 	pdf? ( app-text/poppler:=[qt6] )
 	qrencode? ( media-gfx/qrencode:= )
-	speech? ( dev-qt/qtspeech:6 )
 "
 RDEPEND="${DEPEND}"
 BDEPEND="dev-qt/qttools:6[linguist]"
