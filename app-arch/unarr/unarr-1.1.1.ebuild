@@ -26,6 +26,6 @@ DEPEND="
 	sys-libs/zlib
 	app-arch/bzip2
 	app-arch/xz-utils
-	7zip? ( app-arch/p7zip )
+	7zip? ( app-arch/7zip )
 "
 RDEPEND="${DEPEND}"
