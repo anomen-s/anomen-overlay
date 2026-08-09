@@ -63,7 +63,7 @@ pkg_postinst() {
 	elog "	cbr: app-arch/unrar"
 	elog "	cbz: app-arch/unzip"
 	elog
-	elog "You can also add support for 7z files by installing app-arch/p7zip"
+	elog "You can also add support for 7z files by installing app-arch/7zip"
 	elog "and LHA files by installing app-arch/lha."
 	elog
 	use webp || elog "Enable useflag webp if you want support for extra image files (WebP, ...)"
